@@ -1,4 +1,7 @@
-
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { AppState } from "../Context";
+import { Item } from "../data/Item";
+import { db } from "../firebase";
 
 export function StringSymplify(name : string)
 {
@@ -25,4 +28,41 @@ export function formatTime(time: number) {
         return `${minutes}:0${seconds}`
     }
     return `${minutes}:${seconds}`;
+}
+
+export function DateFormat(date : Date) {
+    // format : dd/mm à hh:mm
+    let day = date.getDate();
+    let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+    let str = day + "/" + month + " à " + hour + ":" + minute;
+    return str;
+}
+
+   
+export async function Reserver(item : Item,setAlert,user)
+{
+    if (user == null)
+    {
+        setAlert({
+            open: true,
+            type: "error",
+            message: "Vous devez être connecté pour réserver un événement"
+        });
+        return;
+    }
+    try {
+        const UserDocRef = doc(db, 'calendrier', item.id);
+        await updateDoc(UserDocRef, { users: arrayUnion(user.uid) });
+        setAlert({
+            open: true,
+            type: "success",
+            message: "Vous avez réservé l'événement"
+        });
+    } 
+    catch (error) {
+        console.log(error);
+    }
 }

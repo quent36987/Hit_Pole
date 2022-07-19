@@ -4,13 +4,17 @@ import logging from '../config/logging';
 import './allPage.css';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { collection, limit, onSnapshot, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { arrayUnion, collection, doc, limit, onSnapshot, orderBy, query, Timestamp, updateDoc, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Item, ItemConverter } from '../data/Item';
+import { DateFormat, Reserver } from '../Utils/utils';
+import { AppState } from '../Context';
 
 
 const HomePage: React.FunctionComponent<IPage> = props => {
     const [data, setData] = useState([]);
+    const { user, setAlert, perm } = AppState();
+    
 
 
     useEffect(() => {
@@ -32,38 +36,11 @@ const HomePage: React.FunctionComponent<IPage> = props => {
     }, [props.name])
 
 
-    function DateFormat(date : Date) {
-        // format : dd/mm à hh:mm
-        let day = date.getDate();
-        let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-        let hour = date.getHours();
-        let minute = date.getMinutes();
-        let second = date.getSeconds();
-        let str = day + "/" + month + " à " + hour + ":" + minute;
-        return str;
-    }
+    
+   
 
 
-
-    function WithHeaderExample(item : Item) {
-
-        return (
-          <Card style={{"marginBottom" : "1vh", "width":"100%"}}>
-            <Card.Header style={{"display":"flex", "justifyContent":"space-between"}}>
-            < div > {DateFormat(item.date.toDate())}</div>
-                <div >{item.temps} h</div>
-                </Card.Header>
-            <Card.Body>
-              <Card.Title>{item.titre}</Card.Title>
-              <Card.Text>
-                {item.desc}
-              </Card.Text>
-              <Button variant="outline-success" style={{"marginRight":"10px"}}>Réserver !</Button>
-                il reste 3 places sur {item.place}.
-            </Card.Body>
-          </Card>
-        );
-      }
+    
 
 
     return (
@@ -72,7 +49,7 @@ const HomePage: React.FunctionComponent<IPage> = props => {
 
                 <div className="HomePage-content">
                     {data.map((data) => (
-                        WithHeaderExample(data)
+                        data.WithHeaderExample(user,setAlert)
                     ))}
                     
                     

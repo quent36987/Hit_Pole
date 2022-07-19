@@ -1,4 +1,6 @@
 import { Timestamp } from "firebase/firestore";
+import { Button, Card } from "react-bootstrap";
+import { DateFormat, Reserver } from '../Utils/utils';
 
 export class Item {
 
@@ -8,15 +10,49 @@ export class Item {
     public temps: number;
     public place: number;
     public id: string;
+    public users: string[] = [];
 
-    constructor(titre: string, desc: string, date: Timestamp, temps: number, place: number, id:    string) {
+    constructor(titre: string, desc: string, date: Timestamp, temps: number, place: number, id:    string, users: string[]) {
         this.titre = titre;
         this.desc = desc;
         this.date = date;
         this.temps = temps;
         this.place = place;
         this.id = id;
+        this.users = users;
     }
+
+    WithHeaderExample(user, setAlert) {
+        return (
+          <Card style={{"marginBottom" : "1vh", "width":"100%"}}>
+            <Card.Header style={{"display":"flex", "justifyContent":"space-between"}}>
+            < div > {DateFormat(this.date.toDate())}</div>
+                <div >{this.temps} h</div>
+                </Card.Header>
+            <Card.Body>
+              <Card.Title>{this.titre}</Card.Title>
+              <Card.Text>
+                {this.desc}
+              </Card.Text>
+              {user && this.users  && this.users.includes(user.uid) ?
+              <Button variant="outline-danger" style={{"marginRight":"10px"}}
+                onClick={() => {
+                    setAlert({
+                        open: true,
+                        type: "error",
+                        message: "Annulation impossible pour le moment"
+                    });
+                }}>Annuler</Button>
+                :
+                <Button variant="outline-success" style={{"marginRight":"10px"}}
+                onClick={() => Reserver(this,setAlert,user)}>Réserver !</Button>
+                
+              }
+                il reste {this.place - this.users.length} places sur {this.place}.
+            </Card.Body>
+          </Card>
+        );
+      }
 
 }
 
@@ -29,11 +65,12 @@ export const ItemConverter =
             date: item.date,
             temps: item.temps,
             place: item.place,
-            id: item.id
+            id: item.id,
+            users: item.users
         };
     },
     fromFirestore: function (snapshot, options) {
         const item = snapshot.data(options);
-        return new Item(item.titre, item.desc, item.date, item.temps, item.place, item.id);
+        return new Item(item.titre, item.desc, item.date, item.temps, item.place, item.id, item.users);
     }
 };

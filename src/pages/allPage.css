@@ -273,9 +273,14 @@
   .calendar-table__item_item {
     font-size: 9px;
     overflow: hidden;
+    margin-bottom: 1px;
+    max-height: 25px;
     text-overflow: ellipsis;
     background-color: #a6c8d8;
   
+  }
+  .calendar-table__item:hover {
+    background-color: #47545a;
   }
 
 
@@ -318,4 +323,16 @@
 }
 .calendar_header_item{
     padding: 1vh
+}
+
+.calendar-type{
+    margin: 10px;
+    font-size: 14px;
+}
+.calendar-type-choix{
+    margin: 10px;
+    font-size: 14px;
+    color: rgb(36, 36, 212);
+    font-weight: bold;
+    border-bottom: rgb(36, 36, 212) solid 2px;
 }
