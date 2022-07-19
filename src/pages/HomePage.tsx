@@ -18,7 +18,7 @@ const HomePage: React.FunctionComponent<IPage> = props => {
 
         logging.info(`Loading ${props.name}`);
         const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
-        const queryRef = query(collectionRef,orderBy("date"),limit(2),where("date", ">", Timestamp.fromDate(new Date())));
+        const queryRef = query(collectionRef,orderBy("date"),limit(3),where("date", ">", Timestamp.fromDate(new Date())));
         onSnapshot(queryRef, (snapshot) => {
             const list: Item[] = [];
             snapshot.forEach((doc) => {
@@ -32,19 +32,34 @@ const HomePage: React.FunctionComponent<IPage> = props => {
     }, [props.name])
 
 
+    function DateFormat(date : Date) {
+        // format : dd/mm à hh:mm
+        let day = date.getDate();
+        let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+        let str = day + "/" + month + " à " + hour + ":" + minute;
+        return str;
+    }
+
 
 
     function WithHeaderExample(item : Item) {
 
         return (
           <Card style={{"marginBottom" : "1vh", "width":"100%"}}>
-            <Card.Header>{item.date.toDate().toUTCString()}</Card.Header>
+            <Card.Header style={{"display":"flex", "justifyContent":"space-between"}}>
+            < div > {DateFormat(item.date.toDate())}</div>
+                <div >{item.temps} h</div>
+                </Card.Header>
             <Card.Body>
               <Card.Title>{item.titre}</Card.Title>
               <Card.Text>
                 {item.desc}
               </Card.Text>
-              <Button variant="primary">Réserver !</Button>
+              <Button variant="outline-success" style={{"marginRight":"10px"}}>Réserver !</Button>
+                il reste 3 places sur {item.place}.
             </Card.Body>
           </Card>
         );

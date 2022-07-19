@@ -9,11 +9,11 @@
 }
 
 .Titre {
-    font-size: 7vw;
+    font-size: 6vw;
 }
 
 .HomePage-content {
-
+    text-align: left;
     padding: 3vw;
     align-items: center;
     justify-content: center;
@@ -22,24 +22,7 @@
     flex-direction: column;
 }
 
-.HomePage-content-quote-right {
-    font-size: 10vw;
-    float: right;
-    position: relative;
-    top: 7vw;
-}
 
-.HomePage-content-quote-left {
-    font-size: 10vw;
-    float: left;
-    position: relative;
-    top: -2vw;
-}
-
-.HomePage-content-text {
-    font-size: 2.5vw;
-    margin-top: 3vh;
-}
 
 
 .AuthPage {
@@ -256,4 +239,83 @@
     flex-grow: 1;
     border: 1px solid rgb(129, 127, 127);
     font-size: 15px;
+}
+
+
+
+/*calendier*/
+.calendar-container__body
+{
+    padding: 1vh;
+}
+
+  .calendar-table {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto;
+    
+    column-gap: 5px;
+    row-gap: 5px;
+    justify-items: stretch;
+  }
+  .calendar-table__item {
+    border: 1px solid #F2F6F8;
+    max-width: 14vw;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    height: 9vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calendar-table__item_item {
+    font-size: 9px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #a6c8d8;
+  
+  }
+
+
+  .calendar-table__item_2{
+    background-color: #F2F6F8;
+    border: 1px solid #F2F6F8;
+    padding: 5px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    height: 100%;
+  }
+
+.calendar-table__header  {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(7, 1fr);
+  color: #99A4AE;
+  font-size: 11px;
+  column-gap: 5px;
+    row-gap: 5px;
+    justify-items: stretch;
+    border-bottom: 2px solid #F2F6F8;
+    margin-bottom: 4px;
+}
+
+.calendar-table__col {
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    height: 100%;
+  }
+
+.calendar_header{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vh;
+}
+.calendar_header_item{
+    padding: 1vh
 }
