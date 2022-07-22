@@ -28,6 +28,7 @@ const Context = ({ children }) => {
             if (!user || perm) {
                 return;
             }
+            console.log("setperm !")
             const ref = doc(db, "ADM", user.uid);
             const docSnap = await getDoc(ref);
             if (docSnap.exists()) {

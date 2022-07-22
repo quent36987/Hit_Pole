@@ -23,6 +23,7 @@ const HomePage: React.FunctionComponent<IPage> = props => {
         logging.info(`Loading ${props.name}`);
         const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
         const queryRef = query(collectionRef,orderBy("date"),limit(3),where("date", ">", Timestamp.fromDate(new Date())));
+
         onSnapshot(queryRef, (snapshot) => {
             const list: Item[] = [];
             snapshot.forEach((doc) => {

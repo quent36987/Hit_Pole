@@ -8,7 +8,7 @@ import { auth } from "../firebase";
 
 const App = () => {
   
-  const {user, setAlert} = AppState();
+  const {user, setAlert,perm} = AppState();
 
   const logOut = () => {
     signOut(auth);
@@ -33,10 +33,11 @@ const App = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-na" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto px-2">
-          <Nav.Link href="/ajout">Ajouter</Nav.Link>
+          {perm ? <Nav.Link href="/ajout">Ajouter</Nav.Link> : <></>}
+          <Nav.Link href="/">Acceuil</Nav.Link>
           <Nav.Link href="/calendrier">Calendrier</Nav.Link>
           <Nav.Link href="/profile" >Profile</Nav.Link>
-          <Nav.Link href="/timer" >Contact</Nav.Link>
+          <Nav.Link href="/contact" >Contact</Nav.Link>
         </Nav>
         <Nav>
           {user ? 

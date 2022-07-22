@@ -2,8 +2,17 @@ import { Timestamp } from "firebase/firestore";
 import { Button, Card } from "react-bootstrap";
 import { DateFormat, Reserver } from '../Utils/utils';
 
+export enum TYPE_COURS
+{
+    COURS,
+    INITIATION,
+    STAGE,
+    PRACTICE,
+}
+
 export class Item {
 
+    public type : TYPE_COURS; 
     public titre: string;
     public desc: string;
     public date: Timestamp;
@@ -12,7 +21,9 @@ export class Item {
     public id: string;
     public users: string[] = [];
 
-    constructor(titre: string, desc: string, date: Timestamp, temps: number, place: number, id:    string, users: string[]) {
+    constructor(titre: string, desc: string, date: Timestamp,
+       temps: number, place: number, id:    string,
+        users: string[], type : TYPE_COURS) {
         this.titre = titre;
         this.desc = desc;
         this.date = date;
@@ -20,6 +31,9 @@ export class Item {
         this.place = place;
         this.id = id;
         this.users = users;
+        this.type = type;
+
+        this.users = users ? users : [];
     }
 
     WithHeaderExample(user, setAlert) {
@@ -66,11 +80,13 @@ export const ItemConverter =
             temps: item.temps,
             place: item.place,
             id: item.id,
-            users: item.users
+            users: item.users,
+            type : item.type,
         };
     },
     fromFirestore: function (snapshot, options) {
         const item = snapshot.data(options);
-        return new Item(item.titre, item.desc, item.date, item.temps, item.place, item.id, item.users);
+        return new Item(item.titre, item.desc, item.date, 
+          item.temps, item.place, item.id, item.users,item.type);
     }
 };

@@ -4,6 +4,7 @@ import HomePage from '../pages/HomePage';
 import AuthPage from '../pages/AuthPage';
 import AjoutPage from '../pages/AjoutPage';
 import CalendrierPage from '../pages/CalendrierPage';
+import ContactPage from '../pages/ContactPage';
 
 
 const routes: IRoute[] = [
@@ -36,7 +37,13 @@ const routes: IRoute[] = [
         name: 'Calendrier Page',
         component: CalendrierPage,
         exact: true
-    }
+    },
+    {
+        path: '/contact',
+        name: 'Contact Page',
+        component: ContactPage,
+        exact: true
+    },
 
 ]
 
