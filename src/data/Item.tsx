@@ -20,10 +20,11 @@ export class Item {
     public place: number;
     public id: string;
     public users: string[] = [];
+    public unite: number;
 
     constructor(titre: string, desc: string, date: Timestamp,
        temps: number, place: number, id:    string,
-        users: string[], type : TYPE_COURS) {
+        users: string[], type : TYPE_COURS, unite : number) {
         this.titre = titre;
         this.desc = desc;
         this.date = date;
@@ -32,6 +33,7 @@ export class Item {
         this.id = id;
         this.users = users;
         this.type = type;
+        this.unite = unite ? unite : 0;
 
         this.users = users ? users : [];
     }
@@ -82,11 +84,13 @@ export const ItemConverter =
             id: item.id,
             users: item.users,
             type : item.type,
+            unite : item.unite,
         };
     },
     fromFirestore: function (snapshot, options) {
         const item = snapshot.data(options);
         return new Item(item.titre, item.desc, item.date, 
-          item.temps, item.place, item.id, item.users,item.type);
+          item.temps, item.place, item.id, item.users,item.type,
+          item.unite);
     }
 };

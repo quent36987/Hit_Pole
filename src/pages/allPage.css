@@ -276,6 +276,15 @@
     margin-bottom: 1px;
     max-height: 25px;
     text-overflow: ellipsis;
+    background-color: #81bdad;
+  
+  }
+  .calendar-table__item_item2 {
+    font-size: 9px;
+    overflow: hidden;
+    margin-bottom: 1px;
+    max-height: 25px;
+    text-overflow: ellipsis;
     background-color: #a6c8d8;
   
   }
@@ -322,7 +331,8 @@
     margin-bottom: 1vh;
 }
 .calendar_header_item{
-    padding: 1vh
+    padding: 1vh;
+    font-size: 28px;
 }
 
 .calendar-type{
@@ -335,4 +345,11 @@
     color: rgb(36, 36, 212);
     font-weight: bold;
     border-bottom: rgb(36, 36, 212) solid 2px;
+}
+.calendar_header_item_centre
+{
+    text-align: center;
+    min-width: 25vw;
+    font-size: large;
+    border: rgb(200, 200, 203) solid 1px;
 }

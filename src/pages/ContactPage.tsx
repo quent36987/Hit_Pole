@@ -40,22 +40,21 @@ const ContactPage: React.FunctionComponent<IPage> = props => {
                 type: "error",
             });
         }
-    
-        
-        
     }
 
 
     return (
         <div>
-            <h1 className='Titre' >Contact</h1>
+            <h1 className='Titre' style={{"textAlign":"center"}}>Contact</h1>
 
-            <div>Hit Form</div>
-            <div>5 rue Albert Thomas</div>
-            <div>42300 Roanne</div>
-            <div>04 77 72 94 21</div>
+            <div style={{"textAlign":"center"}}>
+                <div>Hit Form</div>
+                <div>5 rue Albert Thomas</div>
+                <div>42300 Roanne</div>
+                <div>04 77 72 94 21</div>
+            </div>
 
-            <div>
+            <div className='mt-4' style={{"textAlign":"center"}}>
                 {is_send ? 
                     <div>Merci pour votre retour</div>
                 :

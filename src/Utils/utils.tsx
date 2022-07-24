@@ -1,4 +1,5 @@
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { FirebaseError } from "firebase/app";
+import { arrayUnion, doc, FieldValue, Firestore, increment, updateDoc } from "firebase/firestore";
 import { AppState } from "../Context";
 import { Item } from "../data/Item";
 import { db } from "../firebase";
@@ -54,8 +55,10 @@ export async function Reserver(item : Item,setAlert,user)
         return;
     }
     try {
-        const UserDocRef = doc(db, 'calendrier', item.id);
-        await updateDoc(UserDocRef, { users: arrayUnion(user.uid) });
+        const CaldendarDocRef = doc(db, 'calendrier', item.id);
+        const UserDocRef = doc(db,'Users',user.uid)
+        await updateDoc(CaldendarDocRef, { users: arrayUnion(user.uid) });
+        await updateDoc(UserDocRef, {solde: increment(-item.unite)})
         setAlert({
             open: true,
             type: "success",

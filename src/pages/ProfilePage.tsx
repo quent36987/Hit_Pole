@@ -7,35 +7,29 @@ import { collection, getDocs, limit, onSnapshot, orderBy, query, Timestamp, wher
 import { Item, ItemConverter } from '../data/Item';
 import { AppState } from '../Context';
 import { db } from '../firebase';
+import { Button, Spinner } from 'react-bootstrap';
 
 
 
 const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = props => {
 
     const [data, setData] = useState([]);
+    const [dataUser, setdataUser] = useState(null);
     const { user, setAlert, perm } = AppState();
 
-
-    async function name() {
+    async function LoadItem() {
         console.log("e");
         const q = query(collection(db, "calendrier").withConverter(ItemConverter),
          where('users', 'array-contains', user.uid),
          where("date", ">", Timestamp.fromDate(new Date())),
          orderBy("date"), 
          limit(5));
-
         const querySnapshot = await getDocs(q);
         console.log("p"); const list: Item[] = [];
         querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-
-
             const exo = doc.data();
             exo.id = doc.id;
             list.push(exo);
-
-            //setData(list);
-
         });
         setData(list);
         console.log("pub", data);
@@ -43,51 +37,36 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
 
 
     useEffect(() => {
-
         if (user) {
-            name();
+            LoadItem();
         }
-
-
-
-
-        return;
-
-        logging.info(`Loading ${props.name}`);
-        const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
-        const queryRef = query(collectionRef, orderBy("date"), limit(3)
-            //,where('users','array-contains','a8PsQr6Z7KX4qwaeiscQ3ZxkPgW2')
-            , where('users', 'array-contains', 'a8PsQr6Z7KX4qwaeiscQ3ZxkPgW2')
-        );
-
-
-
-
-        console.log(queryRef)
-        onSnapshot(queryRef, (snapshot) => {
-            console.log("oco")
-            const list: Item[] = [];
-            snapshot.forEach((doc) => {
-                const exo = doc.data();
-                exo.id = doc.id;
-                list.push(exo);
-            });
-            //setData(list);
-            console.log("pub", data);
-        });
-
     }, [user])
 
 
     return (
-        <div className="container">
+        <div className="container" style={{"textAlign":"center"}}>
             <h1 className='Titre' >Profile 👩</h1>
+            {user ?
             <div className="HomePage-content">
                 Mes prochains cours réservés:
-                {data.map((data) => (
-                    data.WithHeaderExample(user, setAlert)
-                ))}
+                {data.length == 0 ? 
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                :
+                    <>{data.map((data) => (
+                        data.WithHeaderExample(user, setAlert)
+                    ))}</>
+                }
             </div>
+            :
+            <div>
+                <div>
+                    Connecte toi pour avoir acces au profile !
+                </div>
+                <Button variant="outline-success" href="/auth/login" >Login</Button>
+            </div> 
+            }
         </div>
     );
 }

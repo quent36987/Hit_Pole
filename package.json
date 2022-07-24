@@ -76,7 +76,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/requirejs": "^2.1.34"
   },
-  "description": "This project is intended to get you off and running with React, React Router and Typescript!",
+  "description": "Création d'une app pour hit form",
   "main": "index.js",
   "keywords": [],
   "author": "",

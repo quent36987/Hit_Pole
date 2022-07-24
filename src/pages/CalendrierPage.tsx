@@ -1,3 +1,4 @@
+import { styled } from '@material-ui/core';
 import { collection, limit, onSnapshot, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
@@ -13,8 +14,9 @@ import './allPage.css';
 const CalendrierPage: React.FunctionComponent<IPage> = props => {
     const { user, setAlert, perm } = AppState();
     const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    const jours = ["dimanche", "lundi" , "mardi", "mercredi","jeudi","vendredi","samedi"];
     const [datenow, setDatenow] = useState(new Date());
-    const [data, setData] = useState([]);
+    const [data, setData]  = useState<Item[]>([]);
     const [type, setType] = useState("mois"); // mois,semaine,jour
 
     useEffect(() => {
@@ -63,7 +65,9 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                     return ( <div className="calendar-table__item"  
                                 onClick={() => { setDatenow(date); setType("jour"); } } >{date.getDate()}
                                {data.filter(item => item.date.toDate().getDate() === date.getDate()).map(item => {
-                                     return <div className='calendar-table__item_item'>{item.titre}</div>
+                                     return <div 
+                                     className={user && item.users.includes(user.uid) ? 'calendar-table__item_item' : 'calendar-table__item_item2'  }
+                                     >{item.titre}</div>
                                })}
                             </div>
                     );
@@ -95,11 +99,11 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                         <div className="calendar_header">
                             <div className="calendar_header_item" 
                             onClick={() => setDatenow(new Date(datenow.getFullYear(), datenow.getMonth() - 1, 1))}>
-                                {"<"}</div>
-                            <div className="calendar_header_item">{mois[datenow.getMonth()]}</div>
+                                {"◀️"}</div>
+                            <div className="calendar_header_item_centre">{mois[datenow.getMonth()]}</div>
                             <div className="calendar_header_item"
                             onClick={() => setDatenow(new Date(datenow.getFullYear(), datenow.getMonth() + 1, 1))}>
-                                {">"}</div>
+                                {"▶️"}</div>
                         </div>
                         <div  className="calendar-table__header">
                                 <div className="calendar-table__col">M</div>
@@ -120,16 +124,21 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                         <div className="calendar_header">
                             <div className="calendar_header_item" 
                             onClick={() => setDatenow(new Date(datenow.getFullYear(), datenow.getMonth() , datenow.getDate() - 1))}>
-                                {"<"}</div>
-                            <div className="calendar_header_item">{datenow.toLocaleDateString()}</div>
+                                {"◀️"}</div>
+                            <div className="calendar_header_item_centre">{datenow.toLocaleDateString()}</div>
                             <div className="calendar_header_item"
                             onClick={() => setDatenow(new Date(datenow.getFullYear(), datenow.getMonth() , datenow.getDate() + 1))}>
-                                {">"}</div>
+                                {"▶️"}</div>
                         </div>
                         <div className="HomePage-content">
                             {data.filter(item => item.date.toDate().getDate() === datenow.getDate()).map(item => {
                                 return item.WithHeaderExample(user,setAlert)
                             })}
+                            {data.filter(item => item.date.toDate().getDate() === datenow.getDate()).length == 0 ?
+                            <div>
+                                Aucun cours prévus ce {jours[datenow.getDay()]}
+                            </div>
+                            : null}
                         </div>
                         </>
                          : null}

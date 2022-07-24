@@ -38,7 +38,8 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
                 temps: temps,
                 date: Timestamp.fromDate(new Date(date)),
                 place: place,
-                users : []
+                users : [],
+                unite : 1,
             }
             try {
                 const collectionRef = collection(db, "calendrier");
