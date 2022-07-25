@@ -5,6 +5,7 @@ import AuthPage from '../pages/AuthPage';
 import AjoutPage from '../pages/AjoutPage';
 import CalendrierPage from '../pages/CalendrierPage';
 import ContactPage from '../pages/ContactPage';
+import UsersDashPage from '../pages/Dashboard/UserDashPage';
 
 
 const routes: IRoute[] = [
@@ -44,6 +45,12 @@ const routes: IRoute[] = [
         component: ContactPage,
         exact: true
     },
+    {
+        path: '/dashboard/users',
+        name: 'Dashboard Users Page',
+        component: UsersDashPage,
+        exact: true 
+    }
 
 ]
 
