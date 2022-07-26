@@ -65,7 +65,7 @@ const ContactPage: React.FunctionComponent<IPage> = props => {
                         required value={message} 
                         rows={4}
                         onChange={(e) => Setmessage(e.target.value)}/>
-                        <Form.Text>Le message sera envoyé et traiter dans les jours suivant.</Form.Text>
+                        <Form.Text>Le message sera envoyé et traité dans les jours suivant.</Form.Text>
                     </FormGroup>
                     <Button type="submit" variant="outline-success">ENVOYER</Button>
                 </Form>

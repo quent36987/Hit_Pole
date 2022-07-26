@@ -65,7 +65,12 @@ export class Item {
                 onClick={() => Reserver(this,setAlert,user)}>Réserver !</Button>
                 
               }
-                il reste {this.place - this.users.length} places sur {this.place}.
+              { this.place - this.users.length <= 0 ?
+              "Complet"
+              :
+               <> {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
+                </>
+                }
             </Card.Body>
           </Card>
         );

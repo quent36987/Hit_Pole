@@ -14,7 +14,7 @@ import { AppState } from '../Context';
 const HomePage: React.FunctionComponent<IPage> = props => {
     const [data, setData] = useState([]);
     const { user, setAlert, perm } = AppState();
-    
+
 
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const HomePage: React.FunctionComponent<IPage> = props => {
 
         logging.info(`Loading ${props.name}`);
         const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
-        const queryRef = query(collectionRef,orderBy("date"),limit(3),where("date", ">", Timestamp.fromDate(new Date())));
+        const queryRef = query(collectionRef, orderBy("date"), limit(3), where("date", ">", Timestamp.fromDate(new Date())));
 
         onSnapshot(queryRef, (snapshot) => {
             const list: Item[] = [];
@@ -32,30 +32,19 @@ const HomePage: React.FunctionComponent<IPage> = props => {
                 list.push(exo);
             });
             setData(list);
-            console.log("pub" , data);
+            console.log("pub", data);
         });
     }, [props.name])
 
 
-    
-   
-
-
-    
-
-
     return (
         <div className='HomePage'>
-            <h1 className='Titre' >Futur évenements à venir:</h1>
-
-                <div className="HomePage-content">
-                    {data.map((data) => (
-                        data.WithHeaderExample(user,setAlert)
-                    ))}
-                    
-                    
-
-                </div>
+            <h1 className='Titre' >Prochains évenements à venir:</h1>
+            <div className="HomePage-content">
+                {data.map((data) => (
+                    data.WithHeaderExample(user, setAlert)
+                ))}
+            </div>
         </div>
     )
 }

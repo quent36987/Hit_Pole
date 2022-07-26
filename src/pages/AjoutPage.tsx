@@ -15,6 +15,7 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
 
 
     const [titre, setTitre] = useState("");
+    const [niveau, setNiveau] = useState("");
     const [desc, setDesc] = useState("");
     const [date, setDate] = useState("");
     const [temps, setTemps] = useState("");
@@ -44,6 +45,11 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
             try {
                 const collectionRef = collection(db, "calendrier");
                 await addDoc(collectionRef, payload);
+                setAlert({
+                    open: true,
+                    message: "ajouté avec succès",
+                    type: "sucess",
+                });
             }
             catch (error) {
                 setAlert({
@@ -71,8 +77,25 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
                         </Form.Control.Feedback>
                     </Row>
                     <Row className="mb-3" style={{"marginRight":"1vw","marginLeft":"1vw"}}>
+                        <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Niveau</Form.Label>
+                        <Form.Select aria-label="" value={niveau}
+                            onChange={(e) => { setNiveau(e.target.value) }}
+                            required
+                        >
+                            <option value="">Sélectioner un niveau</option>
+                            <option value="Débutant">Débutant</option>
+                            <option value="Intermédiaire">Intermédiaire</option>
+                            <option value="Avancé">Avancé</option>
+
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Veuillez entrer un Niveau.
+                        </Form.Control.Feedback>
+                    </Row>
+                    <Row className="mb-3" style={{"marginRight":"1vw","marginLeft":"1vw"}}>
                         <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Description</Form.Label>
-                        <Form.Control type="text" value={desc} placeholder="Nom" required 
+                        <Form.Control as="textarea" value={desc} placeholder="Description" required 
+                        rows={2}
                         onChange={(e) => setDesc(e.target.value)}/>
                         <Form.Control.Feedback type="invalid">
                             Veuillez entrer un Titre.
@@ -88,7 +111,7 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
                     </Row>
                     <Row className="mb-3" style={{"marginRight":"1vw","marginLeft":"1vw"}}>
                         <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Temps</Form.Label>
-                        <Form.Control type="number" value={temps} placeholder="Temps" required 
+                        <Form.Control type="number" value={temps} placeholder="Minute" required 
                         onChange={(e) => setTemps(e.target.value)}/>
                         <Form.Control.Feedback type="invalid">
                             Veuillez entrer un Titre.

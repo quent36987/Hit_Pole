@@ -5,7 +5,7 @@ import AuthPage from '../pages/AuthPage';
 import AjoutPage from '../pages/AjoutPage';
 import CalendrierPage from '../pages/CalendrierPage';
 import ContactPage from '../pages/ContactPage';
-import UsersDashPage from '../pages/Dashboard/UserDashPage';
+import DashPage from '../pages/Dashboard/UserDashPage';
 
 
 const routes: IRoute[] = [
@@ -46,9 +46,9 @@ const routes: IRoute[] = [
         exact: true
     },
     {
-        path: '/dashboard/users',
-        name: 'Dashboard Users Page',
-        component: UsersDashPage,
+        path: '/dashboard',
+        name: 'Dashboard Page',
+        component: DashPage,
         exact: true 
     }
 

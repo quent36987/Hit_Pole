@@ -268,6 +268,7 @@
     height: 9vh;
     display: flex;
     flex-direction: column;
+    border-radius: 5px;
   }
 
   .calendar-table__item_item {
@@ -277,6 +278,7 @@
     max-height: 25px;
     text-overflow: ellipsis;
     background-color: #81bdad;
+    border-radius: 5px;
   
   }
   .calendar-table__item_item2 {
@@ -286,6 +288,7 @@
     max-height: 25px;
     text-overflow: ellipsis;
     background-color: #a6c8d8;
+    border-radius: 5px;
   
   }
   .calendar-table__item:hover {
@@ -301,6 +304,7 @@
     font-size: 12px;
     font-weight: bold;
     height: 100%;
+    border-radius: 5px;
   }
 
 .calendar-table__header  {
@@ -353,3 +357,23 @@
     font-size: large;
     border: rgb(200, 200, 203) solid 1px;
 }
+
+
+.tt{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 10px;
+    overflow:scroll
+}
+
+.t1{
+    font-family:  Calibri;
+    font-size: 20px;
+    width: 100px;
+    height: 35px;
+    text-align: center;
+    background-color: #303233;
+    color: #F2F6F8;
+    border-radius: 7px;
+}
+

@@ -10,7 +10,7 @@ import { db } from "../../firebase";
 import IPage from "../../interfaces/page";
 
 
-const UsersDashPage: React.FunctionComponent<IPage> = props => {
+const DashPage: React.FunctionComponent<IPage> = props => {
 
     const [data, setData] = useState<Item[]>([]);
     const [key, setKey] = useState('users');
@@ -46,9 +46,12 @@ const UsersDashPage: React.FunctionComponent<IPage> = props => {
             orderBy("date"),
             where("date", ">", Timestamp.fromDate(new Date())),
             startAt(last),
-            limit(2));
+            limit(15));
             await getDocs(next).then(snapshot => {
                 const list = data;
+                if (snapshot.size == 1) {
+                    return;
+                }
                 snapshot.forEach((doc) => {
                     const exo = doc.data();
                     exo.id = doc.id;
@@ -64,7 +67,7 @@ const UsersDashPage: React.FunctionComponent<IPage> = props => {
             const next = query(collection(db, "calendrier").withConverter<Item>(ItemConverter),
             orderBy("date"),
             where("date", ">", Timestamp.fromDate(new Date())),
-            limit(2));
+            limit(15));
 
             await getDocs(next).then(snapshot => {
                 const list :Item[] = [];
@@ -176,4 +179,4 @@ const UsersDashPage: React.FunctionComponent<IPage> = props => {
 
 }
 
-export default UsersDashPage;
+export default DashPage;

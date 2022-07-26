@@ -143,6 +143,23 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                         </>
                          : null}
 
+                        {type === "semaine" && false ? <>
+                        
+                        <div className='tt'>
+                            <div className='t1'>Lundi</div>
+                            <div className='t1'>Mardi</div>
+                            <div className='t1'>Mercredi</div>
+                            <div className='t1'>Jeudi</div>
+                            <div className='t1'>Vendredi</div>
+                            <div className='t1'>Samedi</div>
+                            <div className='t1'>Dimanche</div>
+                        </div>
+                        
+                        pas encore implémenté
+
+
+                        </> : null}
+
                     </div>
                 </div>
             </div>
