@@ -11,7 +11,7 @@ import { Item, ItemConverter, TYPE_COURS } from '../data/Item';
 const Titres = [
     'Pole',
     'Pole ados',
-    'Hit',
+    'Hit Streching',
     'Chair et Exotic',
 ]
 const Niveaux = [

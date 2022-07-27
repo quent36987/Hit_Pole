@@ -212,7 +212,11 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                                 <Button variant="success-outline">❔</Button>
                             </td>
                             <td>
-                            <Button variant="danger-outline"
+                                <Button variant="success-outline"
+                                href={"/modif/" + item.id} >✏️</Button>
+                            </td>
+                            <td>
+                            <Button variant="outline-danger"
                             onClick={() => {
                                 deleteDoc(doc(db, "calendrier", item.id)).then(() => {
                                     var list = data;
@@ -258,7 +262,11 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                                 <Button variant="success-outline">❔</Button>
                             </td>
                             <td>
-                            <Button variant="danger-outline"
+                                <Button variant="success-outline"
+                                href={"/modif/" + item.id} >✏️</Button>
+                            </td>
+                            <td>
+                            <Button variant="outline-danger"
                             onClick={() => {
                                 deleteDoc(doc(db, "calendrier", item.id)).then(() => {
                                     var list = data_bis;
