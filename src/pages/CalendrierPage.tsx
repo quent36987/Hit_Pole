@@ -1,18 +1,15 @@
-import { styled } from '@material-ui/core';
-import { collection, limit, onSnapshot, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { collection , onSnapshot, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
 import { AppState } from '../Context';
 import { Item, ItemConverter } from '../data/Item';
 import { db } from '../firebase';
 import IPage from '../interfaces/page';
-import { DateFormat } from '../Utils/utils';
 import './allPage.css';
 
 
 
 const CalendrierPage: React.FunctionComponent<IPage> = props => {
-    const { user, setAlert, perm } = AppState();
+    const { user, setAlert } = AppState();
     const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
     const jours = ["dimanche", "lundi" , "mardi", "mercredi","jeudi","vendredi","samedi"];
     const [datenow, setDatenow] = useState(new Date());
@@ -25,7 +22,6 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
     }, [datenow])
 
     useEffect(() => {
-      
         const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
         //juste this month
         const queryRef = query(collectionRef,orderBy("date"),
@@ -60,10 +56,15 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                 [0, 1, 2, 3, 4, 5, 6].map(j => {
                     const date = new Date(datenow.getFullYear(), datenow.getMonth(), i * 7 + j - firstDay);
                     if (date.getMonth() !== datenow.getMonth()) {
-                       return  <div className="calendar-table__item_2">{date.getDate()}</div>;
+                       return  <div className="calendar-table__item_2"
+                    
+                       >{date.getDate()}</div>;
                     }
                     return ( <div className="calendar-table__item"  
-                                onClick={() => { setDatenow(date); setType("jour"); } } >{date.getDate()}
+                                onClick={() => { setDatenow(date); setType("jour"); } } 
+                                style={{ 'backgroundColor' : date.getDate() === new Date().getDate() &&
+                                date.getMonth() === new Date().getMonth() ? '#77777749' : ''}}
+                                >{date.getDate()}
                                {data.filter(item => item.date.toDate().getDate() === date.getDate()).map(item => {
                                      return <div 
                                      className={user && item.users.includes(user.uid) ? 'calendar-table__item_item' : 'calendar-table__item_item2'  }
@@ -134,7 +135,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                             {data.filter(item => item.date.toDate().getDate() === datenow.getDate()).map(item => {
                                 return item.WithHeaderExample(user,setAlert)
                             })}
-                            {data.filter(item => item.date.toDate().getDate() === datenow.getDate()).length == 0 ?
+                            {data.filter(item => item.date.toDate().getDate() === datenow.getDate()).length === 0 ?
                             <div>
                                 Aucun cours prévus ce {jours[datenow.getDay()]}
                             </div>

@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { auth, db } from "./../firebase";
-import { GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth } from "./../firebase";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { AppState } from "../Context";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Link } from "@material-ui/core";
-import GoogleButton from "react-google-button";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
+
 
 
 
@@ -16,50 +15,7 @@ const Login = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const googleProvider = new GoogleAuthProvider();
-  const signInWithGoogle = async () => {
-    signInWithPopup(auth, googleProvider)
-      .then((res) => {
-        setAlert({
-          open: true,
-          message: `Sign Up Successful. Welcome ${res.user.email}`,
-          type: "success",
-        });
-        try {
-          setDoc(doc(db, "Users", res.user.uid), {
-            firstName: res.user.displayName,
-            lastName: "",
-            genre: "",
-            date_inscription: Timestamp.now(),
-          });
-          console.log(res.user.uid);
-          setAlert({
-            open: true,
-            message: `Sign Up Successful. Welcome ${res.user.email}`,
-            type: "success",
-          });
-          window.location.href = "/";
-        }
-        catch (error) {
-          console.log(error);
-          setAlert({
-            open: true,
-            type: "error",
-            message: "Error on creating user"
-          });
-        }
-      })
-      .catch((error) => {
-        setAlert({
-          open: true,
-          message: error.message,
-          type: "error",
-        });
-        return;
-      });
-  };
+  const handleShow = () => setShow(true);   
 
   function forgotPassword(email) {
       return sendPasswordResetEmail(auth, email, {

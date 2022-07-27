@@ -2,101 +2,117 @@ import { Timestamp } from "firebase/firestore";
 import { Button, Card } from "react-bootstrap";
 import { DateFormat, Reserver } from '../Utils/utils';
 
-export enum TYPE_COURS
-{
-    COURS,
-    INITIATION,
-    STAGE,
-    PRACTICE,
+
+
+export enum TYPE_COURS {
+  COURS,
+  INITIATION,
+  STAGE,
+  PRACTICE,
 }
 
 export class Item {
 
-    public type : TYPE_COURS; 
-    public titre: string;
-    public desc: string;
-    public date: Timestamp;
-    public temps: number;
-    public place: number;
-    public id: string;
-    public users: string[] = [];
-    public unite: number;
+  public type: TYPE_COURS;
+  public titre: string;
+  public desc: string;
+  public date: Timestamp;
+  public temps: number;
+  public place: number;
+  public id: string;
+  public users: string[] = [];
+  public unite: number;
+  public niveau: string;
 
-    constructor(titre: string, desc: string, date: Timestamp,
-       temps: number, place: number, id:    string,
-        users: string[], type : TYPE_COURS, unite : number) {
-        this.titre = titre;
-        this.desc = desc;
-        this.date = date;
-        this.temps = temps;
-        this.place = place;
-        this.id = id;
-        this.users = users;
-        this.type = type;
-        this.unite = unite ? unite : 0;
+  constructor(titre: string, desc: string, date: Timestamp,
+    temps: number, place: number, id: string,
+    users: string[], type: TYPE_COURS, unite: number, niveau: string) {
+    this.titre = titre;
+    this.desc = desc;
+    this.date = date;
+    this.temps = temps;
+    this.place = place;
+    this.id = id;
+    this.users = users;
+    this.type = type;
+    this.unite = unite ? unite : 0;
 
-        this.users = users ? users : [];
-    }
+    this.users = users ? users : [];
+    this.niveau = niveau
+  }
 
 
-    WithHeaderExample(user, setAlert) {
-        return (
-          <Card style={{"marginBottom" : "1vh", "width":"100%"}}>
-            <Card.Header style={{"display":"flex", "justifyContent":"space-between"}}>
-            < div > {DateFormat(this.date.toDate())}</div>
-                <div >{this.temps} h</div>
-                </Card.Header>
-            <Card.Body>
-              <Card.Title>{this.titre}</Card.Title>
-              <Card.Text>
-                {this.desc}
-              </Card.Text>
-              {user && this.users  && this.users.includes(user.uid) ?
-              <Button variant="outline-danger" style={{"marginRight":"10px"}}
-                onClick={() => {
+  WithHeaderExample(user, setAlert) {
+    return (
+      <Card style={{ "marginBottom": "1vh", "width": "100%" }}>
+        <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }}>
+          < div > {DateFormat(this.date.toDate())}</div>
+          <div >⌚ {this.temps} min</div>
+        </Card.Header>
+        <Card.Body>
+          <Card.Title>{this.titre}</Card.Title>
+          <Card.Text>
+            {this.niveau}
+          </Card.Text>
+
+          {this.date < Timestamp.fromDate(new Date()) ?
+            <div>
+              Ce cours est passé.
+            </div>
+            :
+            <>
+              {user && this.users && this.users.includes(user.uid) ?
+                <Button variant="outline-danger" style={{ "marginRight": "10px" }}
+                  onClick={() => {
                     setAlert({
-                        open: true,
-                        type: "error",
-                        message: "Annulation impossible pour le moment"
+                      open: true,
+                      type: "error",
+                      message: "Annulation impossible pour le moment"
                     });
-                }}>Annuler</Button>
+                  }}>Annuler la réservation</Button>
                 :
-                <Button variant="outline-success" style={{"marginRight":"10px"}}
-                onClick={() => Reserver(this,setAlert,user)}>Réserver !</Button>
-                
+                <>
+
+                  {this.place - this.users.length <= 0 ?
+                    "Complet"
+                    :
+                    <> <Button variant="outline-success" style={{ "marginRight": "10px" }}
+                      onClick={() => Reserver(this, setAlert, user)}>Réserver !</Button>
+                      {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
+                    </>
+                  }</>
+
+
               }
-              { this.place - this.users.length <= 0 ?
-              "Complet"
-              :
-               <> {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
-                </>
-                }
-            </Card.Body>
-          </Card>
-        );
-      }
+            </>
+          }
+
+        </Card.Body>
+      </Card>
+    );
+  }
 
 }
 
-export const ItemConverter = 
+export const ItemConverter =
 {
-    toFirestore: function (item: Item) {
-        return {
-            titre: item.titre,
-            desc: item.desc,
-            date: item.date,
-            temps: item.temps,
-            place: item.place,
-            id: item.id,
-            users: item.users,
-            type : item.type,
-            unite : item.unite,
-        };
-    },
-    fromFirestore: function (snapshot, options) {
-        const item = snapshot.data(options);
-        return new Item(item.titre, item.desc, item.date, 
-          item.temps, item.place, item.id, item.users,item.type,
-          item.unite);
-    }
+  toFirestore: function (item: Item) {
+    return {
+      titre: item.titre,
+      desc: item.desc,
+      date: item.date,
+      temps: item.temps,
+      place: item.place,
+      niveau: item.niveau,
+      users: item.users,
+      type: item.type,
+      unite: item.unite,
+    };
+  },
+  fromFirestore: function (snapshot, options) {
+    const item = snapshot.data(options);
+    return new Item(item.titre, item.desc, item.date,
+      item.temps, item.place, item.id, item.users, item.type,
+      item.unite, item.niveau);
+  }
 };

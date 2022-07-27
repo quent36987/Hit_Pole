@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import IPage from '../interfaces/page';
-import logging from '../config/logging';
-import { DialogContent, FormGroup } from '@material-ui/core';
+import { FormGroup } from '@material-ui/core';
 import { Button, Form } from 'react-bootstrap';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -15,7 +14,6 @@ const ContactPage: React.FunctionComponent<IPage> = props => {
     const { user, setAlert } = AppState();
 
     const handleSubmit = async (event) => {
-        const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation()
         console.log(message)

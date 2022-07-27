@@ -279,6 +279,7 @@
     text-overflow: ellipsis;
     background-color: #81bdad;
     border-radius: 5px;
+    font-weight: bold;
   
   }
   .calendar-table__item_item2 {
@@ -289,6 +290,7 @@
     text-overflow: ellipsis;
     background-color: #a6c8d8;
     border-radius: 5px;
+    font-weight: bold;
   
   }
   .calendar-table__item:hover {

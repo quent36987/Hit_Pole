@@ -1,5 +1,4 @@
-import { useScrollTrigger } from "@material-ui/core";
-import { collection, doc, getDoc, getDocs, increment, limit, onSnapshot, orderBy, query, startAfter, startAt, Timestamp, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDocs, increment, limit, onSnapshot, orderBy, query, startAfter, startAt, Timestamp, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Button, Tab, Table, Tabs } from "react-bootstrap";
 import logging from "../../config/logging";
@@ -14,10 +13,9 @@ const DashPage: React.FunctionComponent<IPage> = props => {
 
     const [data, setData] = useState<Item[]>([]);
     const [key, setKey] = useState('users');
-    const { user, setAlert } = AppState();
+    const { setAlert } = AppState();
     const [users, setusers] = useState<User[]>([]);
     const [last, setlast] = useState(null);
-    const [update, setUpdate] = useState(false);
 
     useEffect(() => {
         logging.info(`Loading ${props.name}`);
@@ -35,9 +33,6 @@ const DashPage: React.FunctionComponent<IPage> = props => {
         });
     }, [props])
 
-    useEffect(() => {
-        VoirPlus();
-    }, [update])
 
     async function VoirPlus() {
        if (last) {
@@ -49,7 +44,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
             limit(15));
             await getDocs(next).then(snapshot => {
                 const list = data;
-                if (snapshot.size == 1) {
+                if (snapshot.size === 1) {
                     return;
                 }
                 snapshot.forEach((doc) => {

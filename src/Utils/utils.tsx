@@ -1,8 +1,10 @@
-import { FirebaseError } from "firebase/app";
-import { arrayUnion, doc, FieldValue, Firestore, increment, updateDoc } from "firebase/firestore";
-import { AppState } from "../Context";
+
+import { arrayUnion, doc,  increment, updateDoc } from "firebase/firestore";
 import { Item } from "../data/Item";
 import { db } from "../firebase";
+
+const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+const jours = ["dimanche", "lundi" , "mardi", "mercredi","jeudi","vendredi","samedi"];
 
 export function StringSymplify(name : string)
 {
@@ -32,14 +34,8 @@ export function formatTime(time: number) {
 }
 
 export function DateFormat(date : Date) {
-    // format : dd/mm à hh:mm
-    let day = date.getDate();
-    let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-    let hour = date.getHours();
-    let minute = date.getMinutes();
-    let second = date.getSeconds();
-    let str = day + "/" + month + " à " + hour + ":" + minute;
-    return str;
+    // format : lundi 4 juillet à 20h30
+    return `${jours[date.getDay()]} ${date.getDate()} ${mois[date.getMonth()]} à ${date.getHours()}h${date.getMinutes()}`;
 }
 
    
@@ -57,8 +53,11 @@ export async function Reserver(item : Item,setAlert,user)
     try {
         const CaldendarDocRef = doc(db, 'calendrier', item.id);
         const UserDocRef = doc(db,'Users',user.uid)
-        await updateDoc(CaldendarDocRef, { users: arrayUnion(user.uid) });
-        await updateDoc(UserDocRef, {solde: increment(-item.unite)})
+        await Promise.all(
+            [updateDoc(CaldendarDocRef, { users: arrayUnion(user.uid) }),
+            updateDoc(UserDocRef, {solde: increment(-item.unite)})])
+
+
         setAlert({
             open: true,
             type: "success",

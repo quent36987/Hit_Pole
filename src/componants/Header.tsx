@@ -33,8 +33,12 @@ const App = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-na" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto px-2">
-          {perm ? <><Nav.Link href="/ajout">Ajouter</Nav.Link>
-                  <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+          {perm ? <>
+          <NavDropdown title='Administration'>
+                  <NavDropdown.Item href="/ajout">Ajouter</NavDropdown.Item>
+                  <NavDropdown.Item href="/dashboard">Dashboard</NavDropdown.Item>
+          </NavDropdown>
+          
           </> : <></>}
           <Nav.Link href="/">Acceuil</Nav.Link>
           <Nav.Link href="/calendrier">Calendrier</Nav.Link>

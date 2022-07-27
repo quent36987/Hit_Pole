@@ -10,7 +10,7 @@ import { db } from '../firebase';
 
 const AjoutPage: React.FunctionComponent<IPage> = props => {
 
-    const { user, setAlert, perm } = AppState();
+    const {setAlert } = AppState();
     const [validated, setValidated] = useState(false);
 
 
