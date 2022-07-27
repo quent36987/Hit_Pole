@@ -6,6 +6,8 @@ import AjoutPage from '../pages/AjoutPage';
 import CalendrierPage from '../pages/CalendrierPage';
 import ContactPage from '../pages/ContactPage';
 import DashPage from '../pages/Dashboard/UserDashPage';
+import DuplicaPage from '../pages/DuplicaPage';
+import ModifPage from '../pages/ModifPage';
 
 
 const routes: IRoute[] = [
@@ -34,6 +36,12 @@ const routes: IRoute[] = [
         exact: true
     },
     {
+        path: '/duplica',
+        name: 'Duplica Page',
+        component: DuplicaPage,
+        exact: true
+    },
+    {
         path: '/calendrier',
         name: 'Calendrier Page',
         component: CalendrierPage,
@@ -50,8 +58,13 @@ const routes: IRoute[] = [
         name: 'Dashboard Page',
         component: DashPage,
         exact: true 
+    },
+    {
+        path: '/modif/:id',
+        name: 'Modif Page',
+        component: ModifPage,
+        exact: true
     }
-
 ]
 
 export default routes;

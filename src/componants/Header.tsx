@@ -36,6 +36,7 @@ const App = () => {
           {perm ? <>
           <NavDropdown title='Administration'>
                   <NavDropdown.Item href="/ajout">Ajouter</NavDropdown.Item>
+                  <NavDropdown.Item href="/duplica">Duplication</NavDropdown.Item>
                   <NavDropdown.Item href="/dashboard">Dashboard</NavDropdown.Item>
           </NavDropdown>
           

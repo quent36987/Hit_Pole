@@ -25,7 +25,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
          orderBy("date"), 
          limit(10));
         const querySnapshot = await getDocs(q);
-        console.log("p"); const list: Item[] = [];
+        const list: Item[] = [];
         querySnapshot.forEach((doc) => {
             const exo = doc.data();
             exo.id = doc.id;

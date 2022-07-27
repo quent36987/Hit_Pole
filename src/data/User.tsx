@@ -7,10 +7,10 @@ export class User{
     public id : string;
 
     constructor(prenom: string, nom: string, solde: number, genre: string){
-        this.prenom = prenom;
-        this.nom = nom;
-        this.solde = solde;
-        this.genre = genre;
+        this.prenom = prenom ? prenom : "";
+        this.nom = nom ? nom : "";
+        this.solde = solde ? solde : 0;
+        this.genre = genre ? genre : "";
         this.id = "";
     }
     

@@ -27,18 +27,18 @@ export class Item {
   constructor(titre: string, desc: string, date: Timestamp,
     temps: number, place: number, id: string,
     users: string[], type: TYPE_COURS, unite: number, niveau: string) {
-    this.titre = titre;
-    this.desc = desc;
-    this.date = date;
-    this.temps = temps;
-    this.place = place;
-    this.id = id;
-    this.users = users;
-    this.type = type;
+    this.titre = titre ? titre : "";
+    this.desc = desc ? desc : "";
+    this.date = date ? date : new Timestamp(0, 0);
+    this.temps = temps ? temps : 0;
+    this.place = place ? place : 0;
+    this.id = id ? id : "";
+    this.users = users ? users : [];
+    this.type = type ? type : TYPE_COURS.COURS;
     this.unite = unite ? unite : 0;
 
     this.users = users ? users : [];
-    this.niveau = niveau
+    this.niveau = niveau ? niveau : "";
   }
 
 
