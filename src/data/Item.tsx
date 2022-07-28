@@ -2,6 +2,21 @@ import { Timestamp } from "firebase/firestore";
 import { Button, Card } from "react-bootstrap";
 import { DateFormat, Reserver } from '../Utils/utils';
 
+export const Titres = [
+  'Pole',
+  'Pole ados',
+  'Hit Streching',
+  'Chair et Exotic',
+]
+export const Niveaux = [
+  'Tout niveau',
+  'Initiation/débutant',
+  'Deb 2/3',
+  'Débutant/Inter 1',
+  'Inter 1',
+  'Inter 1/2',
+  'Inter 2',
+]
 
 
 export enum TYPE_COURS {
@@ -41,11 +56,26 @@ export class Item {
     this.niveau = niveau ? niveau : "";
   }
 
+  
+  public getHour(): string {
+    //returun HH:MM - HH:MM
+    var datefin = new Date(this.date.seconds * 1000 + this.temps * 60 * 1000);
+    var dateDebut = new Date(this.date.seconds * 1000);
+
+    return (dateDebut.getHours() < 10 ? "0" + dateDebut.getHours() : dateDebut.getHours())
+     +":" +
+      ( dateDebut.getMinutes() < 10 ? "0" + dateDebut.getMinutes() : dateDebut.getMinutes())
+      +" - " + 
+      (datefin.getHours() < 10 ? "0" + datefin.getHours() : datefin.getHours())
+      +":" +
+      (datefin.getMinutes() < 10 ? "0" + datefin.getMinutes() : datefin.getMinutes());
+  }
+
 
   WithHeaderExample(user, setAlert) {
     return (
       <Card style={{ "marginBottom": "1vh", "width": "100%" }}>
-        <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }}>
+        <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }} className='header'>
           < div > {DateFormat(this.date.toDate())}</div>
           <div >⌚ {this.temps} min</div>
         </Card.Header>
@@ -76,10 +106,10 @@ export class Item {
                   {this.place - this.users.length <= 0 ?
                     "Complet"
                     :
-                    <> <Button variant="outline-success" style={{ "marginRight": "10px" }}
+                    <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px"}} className="header"
                       onClick={() => Reserver(this, setAlert, user)}>Réserver !</Button>
                       {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
-                    </>
+                    </div>
                   }</>
 
 

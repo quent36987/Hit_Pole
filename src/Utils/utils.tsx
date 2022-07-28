@@ -19,12 +19,6 @@ export function StringSymplify(name : string)
 }
 
 export function formatTime(time: number) {
-    if (time === -1) {
-        return "♾";
-    }
-    if (time === -2) {
-        return "Finished !"
-    }
     const minutes = Math.floor(time / 60);
     let seconds = time % 60;
     if (seconds < 10) {
@@ -47,6 +41,36 @@ export async function Reserver(item : Item,setAlert,user)
             open: true,
             type: "error",
             message: "Vous devez être connecté pour réserver un événement"
+        });
+        return;
+    }
+    try {
+        const CaldendarDocRef = doc(db, 'calendrier', item.id);
+        const UserDocRef = doc(db,'Users',user.uid)
+        await Promise.all(
+            [updateDoc(CaldendarDocRef, { users: arrayUnion(user.uid) }),
+            updateDoc(UserDocRef, {solde: increment(-item.unite)})])
+
+
+        setAlert({
+            open: true,
+            type: "success",
+            message: "Vous avez réservé l'événement"
+        });
+    } 
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export async function Annuler(item : Item,setAlert,user)
+{
+    if (user == null)
+    {
+        setAlert({
+            open: true,
+            type: "error",
+            message: "Vous devez être connecté pour annuler un événement"
         });
         return;
     }

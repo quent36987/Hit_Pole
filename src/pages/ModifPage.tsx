@@ -7,23 +7,7 @@ import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 're
 import { addDoc, collection, doc, getDoc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { RouteComponentProps } from 'react-router-dom';
-import { Item, ItemConverter } from '../data/Item';
-
-const Titres = [
-    'Pole',
-    'Pole ados',
-    'Hit',
-    'Chair et Exotic',
-]
-const Niveaux = [
-    'Tout niveau',
-    'Initiation/débutant',
-    'Deb 2/3',
-    'Débutant/Inter 1',
-    'Inter 1',
-    'Inter 1/2',
-    'Inter 2',
-]
+import { Item, ItemConverter, Niveaux, Titres } from '../data/Item';
 
 
 

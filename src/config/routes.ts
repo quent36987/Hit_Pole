@@ -5,9 +5,9 @@ import AuthPage from '../pages/AuthPage';
 import AjoutPage from '../pages/AjoutPage';
 import CalendrierPage from '../pages/CalendrierPage';
 import ContactPage from '../pages/ContactPage';
-import DashPage from '../pages/Dashboard/UserDashPage';
 import DuplicaPage from '../pages/DuplicaPage';
 import ModifPage from '../pages/ModifPage';
+import DashPage from '../pages/Dashboard/UserDashPage';
 
 
 const routes: IRoute[] = [

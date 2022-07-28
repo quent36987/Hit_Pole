@@ -355,7 +355,7 @@
 .calendar_header_item_centre
 {
     text-align: center;
-    min-width: 25vw;
+    min-width: 28vw;
     font-size: large;
     border: rgb(200, 200, 203) solid 1px;
 }
@@ -378,4 +378,55 @@
     color: #F2F6F8;
     border-radius: 7px;
 }
+.header{
+    font-size:minmax(4vw,18px)
+}
 
+.semaine{
+    text-align: left;
+    font-family: 'Roboto Condensed','Helvetica','Arial','Lucida','sans-serif';
+}
+.jour{
+    border-top-style: solid;
+    background-color: rgba(0,0,0,0.03);
+    color: rgba(0,0,0,0.8);
+    font-size: 14px;
+    line-height: 20px;
+    padding: 8px 16px;
+    border-top-style: none;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: rgba(0,0,0,0.1);
+}
+
+.carte{
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: rgba(0,0,0,0.1);
+    padding: 8px 16px 12px;
+    background-color: rgba(255,255,255,0.03);
+}
+.carte-info{
+    align-items: center;
+    display: flex;
+}
+.carte-info-1{
+    flex-grow: 1;
+    margin-right: 16px;
+    min-width: 0;
+}
+.carte-info-heure{
+    color: black;
+    font-size: 14px;
+    font-weight :500;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 160px;
+}
+.carte-info-plus{
+    color: rgba(0,0,0,0.55);
+    font-size: 12px;
+    line-height: 18px;
+}

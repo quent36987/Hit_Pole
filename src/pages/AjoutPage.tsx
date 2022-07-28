@@ -6,23 +6,8 @@ import { AppState } from '../Context';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Item, ItemConverter, TYPE_COURS } from '../data/Item';
+import { Item, ItemConverter, Niveaux, Titres, TYPE_COURS } from '../data/Item';
 
-const Titres = [
-    'Pole',
-    'Pole ados',
-    'Hit Streching',
-    'Chair et Exotic',
-]
-const Niveaux = [
-    'Tout niveau',
-    'Initiation/débutant',
-    'Deb 2/3',
-    'Débutant/Inter 1',
-    'Inter 1',
-    'Inter 1/2',
-    'Inter 2',
-]
 
 
 
