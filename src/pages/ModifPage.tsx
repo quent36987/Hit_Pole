@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import IPage from '../interfaces/page';
-import logging from '../config/logging';
 import './allPage.css';
 import { AppState } from '../Context';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
-import { addDoc, collection, doc, getDoc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { RouteComponentProps } from 'react-router-dom';
 import { Item, ItemConverter, Niveaux, Titres } from '../data/Item';

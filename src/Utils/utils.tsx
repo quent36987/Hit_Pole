@@ -29,7 +29,7 @@ export function formatTime(time: number) {
 
 export function DateFormat(date : Date) {
     // format : lundi 4 juillet à 20h30
-    return `${jours[date.getDay()]} ${date.getDate()} ${mois[date.getMonth()]} à ${date.getHours()}h${date.getMinutes()}`;
+    return `${jours[date.getDay()]} ${date.getDate()} ${mois[date.getMonth()]} à ${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}h${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`;
 }
 
    

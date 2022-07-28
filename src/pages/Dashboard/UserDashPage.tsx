@@ -1,6 +1,6 @@
-import { collection, deleteDoc, doc, getDocs, increment, limit, onSnapshot, orderBy, query, startAfter, startAt, Timestamp, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, increment, limit, onSnapshot, orderBy, query, startAfter, Timestamp, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Button, Tab, Table, Tabs } from "react-bootstrap";
+import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from "react-bootstrap";
 import logging from "../../config/logging";
 import { AppState } from "../../Context";
 import { Item, ItemConverter } from "../../data/Item";
@@ -35,20 +35,23 @@ const DashPage: React.FunctionComponent<IPage> = props => {
             setusers(list);
         });
         VoirPlus();
+        VoirPlus_bis();
     }, [props])
 
 
     async function VoirPlus() {
+        var limi = 10;
        if (last) {
             console.log("last", last);
             const next = query(collection(db, "calendrier").withConverter<Item>(ItemConverter),
             orderBy("date"),
             where("date", ">", Timestamp.fromDate(new Date())),
-            startAt(last),
-            limit(15));
+            startAfter(last),
+            limit(limi));
             await getDocs(next).then(snapshot => {
                 const list = data;
-                if (snapshot.size === 1) {
+                if (snapshot.size === 0) {
+                    setlast(null);
                     return;
                 }
                 snapshot.forEach((doc) => {
@@ -61,6 +64,9 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 if(list.length > 0) {
                     setlast(list[list.length - 1].date);
                 }
+                if (snapshot.size < limi) {
+                    setlast(null);
+                }
             });
         }
         else
@@ -68,7 +74,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
             const next = query(collection(db, "calendrier").withConverter<Item>(ItemConverter),
             orderBy("date"),
             where("date", ">", Timestamp.fromDate(new Date())),
-            limit(15));
+            limit(limi));
 
             await getDocs(next).then(snapshot => {
                 const list :Item[] = [];
@@ -82,21 +88,26 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 if (list.length > 0) {
                     setlast(list[list.length - 1].date);
                 }
+                if (snapshot.size < limi) {
+                    setlast(null);
+                }
             });
         }
     }
 
     async function VoirPlus_bis() {
+        var limi = 10;
         if (last_bis) {
              console.log("last", last_bis);
              const next = query(collection(db, "calendrier").withConverter<Item>(ItemConverter),
              orderBy("date", "desc"),
              where("date", "<=", Timestamp.fromDate(new Date())),
              startAfter(last_bis),
-             limit(10));
+             limit(limi));
              await getDocs(next).then(snapshot => {
                  const list = data_bis;
-                 if (snapshot.size === 1) {
+                 if (snapshot.size === 0) {
+                        setlastBis(null);
                      return;
                  }
                  snapshot.forEach((doc) => {
@@ -109,6 +120,9 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                  if(list.length > 0) {
                  setlastBis(list[list.length - 1].date);
                     }
+                    if (snapshot.size < limi) {
+                        setlastBis(null);
+                    }
              });
          }
          else
@@ -116,7 +130,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
              const next = query(collection(db, "calendrier").withConverter<Item>(ItemConverter),
              orderBy("date", "desc"),
              where("date", "<=", Timestamp.fromDate(new Date())),
-             limit(10));
+             limit(limi));
  
              await getDocs(next).then(snapshot => {
                  const list :Item[] = [];
@@ -130,6 +144,9 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                  if (list.length > 0) {
                      setlastBis(list[list.length - 1].date);
                  }
+                    if (snapshot.size < limi) {
+                        setlastBis(null);
+                    }
              });
          }
      }
@@ -148,6 +165,22 @@ const DashPage: React.FunctionComponent<IPage> = props => {
             });
         }
     }
+
+
+    const popover = (list) => (
+        <Popover id="popover-basic">
+          <Popover.Header as="h3">Inscrits :</Popover.Header>
+          <Popover.Body>
+            {list.map((user, index) => (
+                <div key={index}>
+                    <div>{user.prenom} {user.nom}</div>
+                </div>
+            ))}
+
+            
+          </Popover.Body>
+        </Popover>
+      );
 
 
     return (
@@ -209,7 +242,9 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
                             <td>
+                            <OverlayTrigger trigger="click" placement="left" overlay={popover(item.users.map(u => users.find(user => user.id === u)))}>
                                 <Button variant="success-outline">❔</Button>
+                            </OverlayTrigger>
                             </td>
                             <td>
                                 <Button variant="success-outline"
@@ -235,9 +270,10 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 </tbody>
             </Table>
 
-            <div style={{"textAlign":"center"}} onClick={() => VoirPlus()}>
+            {last !== null ? 
+                <div style={{"textAlign":"center"}} onClick={() => VoirPlus()}>
                 voir plus.. 
-            </div>
+                </div> : null}
       </Tab>
 
       <Tab eventKey="cours passe" title="Cours passé">
@@ -259,7 +295,9 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
                             <td>
+                            <OverlayTrigger trigger="click" placement="left" overlay={popover(item.users.map(u => users.find(user => user.id === u)))}>
                                 <Button variant="success-outline">❔</Button>
+                            </OverlayTrigger>
                             </td>
                             <td>
                                 <Button variant="success-outline"
@@ -285,9 +323,10 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 </tbody>
             </Table>
 
-            <div style={{"textAlign":"center"}} onClick={() => VoirPlus_bis()}>
+            {last_bis !== null ? 
+                <div style={{"textAlign":"center"}} onClick={() => VoirPlus_bis()}>
                 voir plus.. 
-            </div>
+                </div> : null}
       </Tab>
       
     </Tabs>

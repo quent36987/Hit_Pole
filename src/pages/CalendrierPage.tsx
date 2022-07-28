@@ -1,4 +1,4 @@
-import { collection, deleteDoc, onSnapshot, orderBy, query, Timestamp, where,doc, updateDoc, arrayUnion, increment, arrayRemove } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query, Timestamp, where,doc, updateDoc, increment, arrayRemove } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { AppState } from '../Context';
@@ -22,15 +22,12 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
 
 
     useEffect(() => {
-        console.log(datenow.toLocaleDateString());
-        console.log(datenow.toLocaleTimeString());
         if (datenow.getDay() !== 1) {
             setDatenow_firstweek(new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate() - datenow.getDay() + 1));
         }
         else {
             setDatenow_firstweek(datenow)
         }
-        console.log("now", datenow_firstweek.toLocaleDateString());
     }, [datenow])
 
     useEffect(() => {
@@ -220,7 +217,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                             "Complet"
                                                                             :
                                                                             <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px" }} className="header"
-                                                                                onClick={() => Reserver(item2, setAlert, user)}>Réserver !</Button>
+                                                                                onClick={() => Reserver(item2, setAlert, user)}>Réserver</Button>
 
                                                                             </div>
                                                                         }</>

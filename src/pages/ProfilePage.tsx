@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import IPage from '../interfaces/page';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './allPage.css';
-import { collection, doc, getDoc, getDocs, limit, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, limit, orderBy, query, startAfter, Timestamp, where } from 'firebase/firestore';
 import { Item, ItemConverter } from '../data/Item';
 import { AppState } from '../Context';
 import { db } from '../firebase';
@@ -16,24 +16,69 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
     const [data, setData] = useState([]);
     const [dataUser, setdataUser] = useState<User>(null);
     const { user, setAlert } = AppState();
+    const [last, setlast] = useState(null);
+    const [update, setUpdate] = useState(false);
+
 
     async function LoadItem() {
-        console.log("e");
-        const q = query(collection(db, "calendrier").withConverter(ItemConverter),
-         where('users', 'array-contains', user.uid),
-         where("date", ">", Timestamp.fromDate(new Date())),
-         orderBy("date"), 
-         limit(10));
-        const querySnapshot = await getDocs(q);
-        const list: Item[] = [];
-        querySnapshot.forEach((doc) => {
-            const exo = doc.data();
-            exo.id = doc.id;
-            list.push(exo);
-        });
-        setData(list);
-        console.log("pub", data);
-    }
+        var limi = 10;
+        if (last) {
+             console.log("last", last);
+             const q = query(collection(db, "calendrier").withConverter(ItemConverter),
+             where('users', 'array-contains', user.uid),
+             where("date", ">", Timestamp.fromDate(new Date())),
+             orderBy("date"),
+             startAfter(last), 
+             limit(limi));
+            const querySnapshot = await getDocs(q);
+            const list = data;
+            if (querySnapshot.size === 0) {
+                setlast(null);
+                return;
+            }
+            querySnapshot.forEach((doc) => {
+                const exo = doc.data();
+                exo.id = doc.id;
+                list.push(exo);
+            });
+            setData(list);
+            console.log("pub", data);
+             if (list.length > 0) {
+                 setlast(list[list.length - 1].date);
+             }
+             if (querySnapshot.size < limi) {
+                setlast(null);
+            }
+
+         }
+         else
+         {
+            const q = query(collection(db, "calendrier").withConverter(ItemConverter),
+            where('users', 'array-contains', user.uid),
+            where("date", ">", Timestamp.fromDate(new Date())),
+            orderBy("date"), 
+            limit(limi));
+           const querySnapshot = await getDocs(q);
+
+           const list: Item[] = [];
+           querySnapshot.forEach((doc) => {
+               const exo = doc.data();
+               exo.id = doc.id;
+               list.push(exo);
+           });
+           setData(list);
+           console.log("pub", data);
+            if (list.length > 0) {
+                setlast(list[list.length - 1].date);
+            }
+            if (querySnapshot.size < limi) {
+                setlast(null);
+            }
+             
+         }
+     }
+
+
     async function LoadProfile() {
 
         const query = doc(db,"Users",user.uid).withConverter(UserConverter);
@@ -68,6 +113,10 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
                         data.WithHeaderExample(user, setAlert)
                     ))}</>
                 }
+                {last !== null ? 
+                <div style={{"textAlign":"center"}} onClick={() => LoadItem()}>
+                voir plus.. 
+                </div> : null}
             </div>
             :
             <div>
