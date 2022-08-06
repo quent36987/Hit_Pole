@@ -88,11 +88,11 @@ const Signup = () => {
           </Form.Select>
         </Form.Group>
         <Form.Group as={Col} md="4" controlId="validationCustom01">
-          <Form.Label>First name</Form.Label>
+          <Form.Label>Prénom</Form.Label>
           <Form.Control
             required
             type="text"
-            placeholder="First name"
+            placeholder="Prénom"
             autoComplete="given-name"
             defaultValue=""
             value={firstName}
@@ -101,11 +101,11 @@ const Signup = () => {
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} md="4" controlId="validationCustom03">
-          <Form.Label>Last name</Form.Label>
+          <Form.Label>Nom</Form.Label>
           <Form.Control
             required
             type="text"
-            placeholder="Last name"
+            placeholder="Nom"
             autoComplete="lname"
             defaultValue=""
             value={lastName}
@@ -121,7 +121,7 @@ const Signup = () => {
             <InputGroup.Text id="inputGroupPrepend1">@</InputGroup.Text>
             <Form.Control
               type="email"
-              placeholder="Email"
+              placeholder="Email@email.fr"
               autoComplete="email"
               aria-describedby="inputGroupPrepend"
               required
@@ -134,12 +134,12 @@ const Signup = () => {
           </InputGroup>
         </Form.Group>
         <Form.Group as={Col} md="6" controlId="validationCustom05">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Mot de passe</Form.Label>
           <InputGroup hasValidation>
             <InputGroup.Text id="inputGroupPrepend2">🔑</InputGroup.Text>
             <Form.Control
               type="password"
-              placeholder="Password"
+              placeholder="**********"
               autoComplete="new-password"
               aria-describedby="inputGroupPrepend"
               required
@@ -152,11 +152,11 @@ const Signup = () => {
           </InputGroup>
         </Form.Group>
         <Form.Text id="passwordHelpBlock" muted>
-          Your password must be 8-20 characters long, contain letters and numbers, and
-          must not contain spaces, special characters, or emoji.
+        Votre mot de passe doit comporter entre 8 et 20 caractères, contenir des lettres et des chiffres, et
+          ne doit pas contenir d'espaces, de caractères spéciaux ou d'emoji.
         </Form.Text>
       </Row>
-      <p>already have an account ? <Link href="/auth/login" >Log in here !</Link></p>
+      <p>Déjà un compte ? <Link href="/auth/login" >Connectez-vous ici !</Link></p>
       <Button variant="primary" type="submit">Register</Button>
     </Form>
   </>

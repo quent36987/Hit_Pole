@@ -271,13 +271,37 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                     <>
                                                         {user && item2.users && item2.users.includes(user.uid) ?
                                                             <Button variant="outline-danger" style={{ "marginRight": "10px", "fontSize": "12px" }}
-                                                                onClick={() => {
+                                                            onClick={async () => {
+                                                                //if the date is less than 24h before now, the cancel is forbiden
+                                                                if(item2.date.toDate() < new Date(new Date().getTime() + (24 * 60 * 60 * 1000))) {
                                                                     setAlert({
                                                                         open: true,
                                                                         type: "error",
-                                                                        message: "Annulation impossible pour le moment"
-                                                                    });
-                                                                }}>Annuler la réservation</Button>
+                                                                        message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
+                                                                        });
+                                                                    return;
+                                                                } 
+
+                                                                if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
+                                                                    //remove the user from the item2.users and update on firestore
+                                                                    const CaldendarDocRef = doc(db, 'calendrier', item2.id);
+                                                                    const UserDocRef = doc(db,'Users',user.uid)
+                                                                    try{
+                                                                    await Promise.all(
+                                                                        [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
+                                                                        updateDoc(UserDocRef, {solde: increment(item2.unite)})])
+                                                                    
+                                                                    }
+                                                                    catch(error){
+                                                                        setAlert({
+                                                                        open: true,
+                                                                        type: "error",
+                                                                        message: "Une error est survenue, veuillez réessayer ultérieurement."
+                                                                        });
+                                                                    }
+                                                                }
+                                                                
+                                                            }}>Annuler la réservation</Button>
                                                             :
                                                             <>
 

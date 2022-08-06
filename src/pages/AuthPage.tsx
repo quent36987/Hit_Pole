@@ -17,12 +17,12 @@ const AuthPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = prop
       function PageRender() {
         let type = props.match.params.type;
         if (type === "login") {
-            setTitre("Sign in !");
+            setTitre("S'identifier !");
             return <div className="AuthPage-content-form-login">
                     <Login />
                 </div>
         } else if (type === "signup") {
-            setTitre("Signup !");
+            setTitre("S'inscrire !");
            return  <div className="AuthPage-content-form-signup">
                     <Signup />
                 </div>

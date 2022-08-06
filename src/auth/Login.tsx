@@ -19,7 +19,7 @@ const Login = () => {
 
   function forgotPassword(email) {
       return sendPasswordResetEmail(auth, email, {
-        url: `https://sport-apli.web.app/`,
+        url: `https://hit-pole.web.app/`,
       });
   }
 
@@ -28,7 +28,7 @@ const Login = () => {
       console.log("email or password is empty");
       setAlert({
         open: true,
-        message: "Please fill all the Fields",
+        message: "Veuillez remplir tous les champs",
         type: "error",
       });
       return;
@@ -40,7 +40,7 @@ const Login = () => {
       window.location.href = "/";
       setAlert({
         open: true,
-        message: `Sign Up Successful. Welcome ${result.user.email}`,
+        message: `Inscription réussie. Bonjour ${result.user.email}`,
         type: "success",
       });
     } catch (error) {
@@ -59,9 +59,9 @@ const Login = () => {
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Forgot your password ?</Modal.Title>
+          <Modal.Title>Mot de passe oublié ?</Modal.Title>
         </Modal.Header>
-        <Modal.Body>what is your email address ?</Modal.Body>
+        <Modal.Body>quelle est ton adresse email ?</Modal.Body>
         <input style={{ "margin": "15px" }} type="email" autoComplete="email" onChange={(e) => setEmail(e.target.value)} placeholder="email" value={email} ></input>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -72,7 +72,7 @@ const Login = () => {
             try {await forgotPassword(email);
             setAlert({
               open: true,
-              message: `An email has been sent to ${email}`,
+              message: `Un email a été envoyé à ${email}`,
               type: "success",
             });
             }
@@ -85,7 +85,7 @@ const Login = () => {
             }
             handleClose();
           }}>
-            Send new password
+            Envoyer un nouveau mot de passe
           </Button>
         </Modal.Footer>
       </Modal>
@@ -100,22 +100,22 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
-            placeholder="Enter email" />
+            placeholder="email@email.fr" />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Mot de passe</Form.Label>
           <Form.Control
             type="password"
             name="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password" />
+            placeholder="**************" />
         </Form.Group>
-        <p>Not registered yet ?<Link href="/auth/signup" >Clic ici !</Link></p>
-        <p>password forget  ? <Link onClick={handleShow} >Clic here !</Link></p>
+        <p>Pas encore inscrit ?<Link href="/auth/signup" > Clic ici !</Link></p>
+        <p>mot de passe oublié ?<Link onClick={handleShow} > Clic ici !</Link></p>
         <Button onClick={handleSubmit} >
-          Submit
+          Valider
         </Button>
       </Form>
      

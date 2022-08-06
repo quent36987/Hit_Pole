@@ -1,5 +1,6 @@
-import { Timestamp } from "firebase/firestore";
+import { arrayRemove, doc, increment, Timestamp, updateDoc } from "firebase/firestore";
 import { Button, Card } from "react-bootstrap";
+import { db } from "../firebase";
 import { DateFormat, Reserver } from '../Utils/utils';
 
 export const Titres = [
@@ -93,13 +94,37 @@ export class Item {
             <>
               {user && this.users && this.users.includes(user.uid) ?
                 <Button variant="outline-danger" style={{ "marginRight": "10px" }}
-                  onClick={() => {
-                    setAlert({
-                      open: true,
-                      type: "error",
-                      message: "Annulation impossible pour le moment"
-                    });
-                  }}>Annuler la réservation</Button>
+                onClick={async () => {
+                  //if the date is less than 24h before now, the cancel is forbiden
+                  if(this.date.toDate() < new Date(new Date().getTime() + (24 * 60 * 60 * 1000))) {
+                      setAlert({
+                          open: true,
+                          type: "error",
+                          message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
+                          });
+                      return;
+                  } 
+
+                  if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
+                      //remove the user from the item2.users and update on firestore
+                      const CaldendarDocRef = doc(db, 'calendrier', this.id);
+                      const UserDocRef = doc(db,'Users',user.uid)
+                      try{
+                      await Promise.all(
+                          [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
+                          updateDoc(UserDocRef, {solde: increment(this.unite)})])
+                      
+                      }
+                      catch(error){
+                          setAlert({
+                          open: true,
+                          type: "error",
+                          message: "Une error est survenue, veuillez réessayer ultérieurement."
+                          });
+                      }
+                  }
+                  
+              }}>Annuler la réservation</Button>
                 :
                 <>
 
