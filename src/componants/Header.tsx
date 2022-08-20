@@ -38,12 +38,13 @@ const App = () => {
                   <NavDropdown.Item href="/ajout">Ajouter</NavDropdown.Item>
                   <NavDropdown.Item href="/duplica">Duplication</NavDropdown.Item>
                   <NavDropdown.Item href="/dashboard">Dashboard</NavDropdown.Item>
+                  <NavDropdown.Item href="/particip/0">Tcheck !</NavDropdown.Item>
           </NavDropdown>
           
           </> : <></>}
-          <Nav.Link href="/">Acceuil</Nav.Link>
+          <Nav.Link href="/">Accueil</Nav.Link>
           <Nav.Link href="/calendrier">Calendrier</Nav.Link>
-          <Nav.Link href="/profile" >Profile</Nav.Link>
+          <Nav.Link href="/profile" >Profil</Nav.Link>
           <Nav.Link href="/contact" >Contact</Nav.Link>
         </Nav>
         <Nav>

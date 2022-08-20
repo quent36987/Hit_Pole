@@ -11,6 +11,7 @@ const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", 
 
 const DuplicaPage: React.FunctionComponent<IPage> = props => {
 
+
     const [type, setType] = useState("");
     const [dateCP, setDateCP] = useState(0);
     const [dateCL, setDateCL] = useState([]);
@@ -87,7 +88,8 @@ const DuplicaPage: React.FunctionComponent<IPage> = props => {
                 });
             }
         }
-        
+        //refesh the page
+        window.location.reload();
     }
 
     

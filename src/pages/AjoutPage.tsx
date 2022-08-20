@@ -50,7 +50,7 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
             try {
                 for(let i = 0; i < dates.length; i++) {
                     var item = new Item(titre,desc,Timestamp.fromDate(new Date(dates[i])),
-                    Number(temps),Number(place),"",[],TYPE_COURS.COURS,1,niveau);
+                    Number(temps),Number(place),"",[],TYPE_COURS.COURS,1,niveau,[]);
                     
                     const collectionRef = collection(db, "calendrier").withConverter(ItemConverter);
                     await addDoc(collectionRef, item);

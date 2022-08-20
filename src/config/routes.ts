@@ -8,6 +8,8 @@ import ContactPage from '../pages/ContactPage';
 import DuplicaPage from '../pages/DuplicaPage';
 import ModifPage from '../pages/ModifPage';
 import DashPage from '../pages/Dashboard/UserDashPage';
+import ParticipPage from '../pages/Dashboard/ParticipPage';
+
 
 
 const routes: IRoute[] = [
@@ -63,6 +65,12 @@ const routes: IRoute[] = [
         path: '/modif/:id',
         name: 'Modif Page',
         component: ModifPage,
+        exact: true
+    },
+    {
+        path: '/particip/:id',
+        name: 'Tcheck Page',
+        component: ParticipPage,
         exact: true
     }
 ]

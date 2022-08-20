@@ -39,10 +39,11 @@ export class Item {
   public users: string[] = [];
   public unite: number;
   public niveau: string;
+  public participation : string[] = [];
 
   constructor(titre: string, desc: string, date: Timestamp,
     temps: number, place: number, id: string,
-    users: string[], type: TYPE_COURS, unite: number, niveau: string) {
+    users: string[], type: TYPE_COURS, unite: number, niveau: string, participation : string[]) {
     this.titre = titre ? titre : "";
     this.desc = desc ? desc : "";
     this.date = date ? date : new Timestamp(0, 0);
@@ -55,6 +56,7 @@ export class Item {
 
     this.users = users ? users : [];
     this.niveau = niveau ? niveau : "";
+    this.participation = participation ? participation : [];
   }
 
   
@@ -162,12 +164,13 @@ export const ItemConverter =
       users: item.users,
       type: item.type,
       unite: item.unite,
+      participation : item.participation
     };
   },
   fromFirestore: function (snapshot, options) {
     const item = snapshot.data(options);
     return new Item(item.titre, item.desc, item.date,
       item.temps, item.place, item.id, item.users, item.type,
-      item.unite, item.niveau);
+      item.unite, item.niveau, item.participation);
   }
 };

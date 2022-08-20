@@ -15,6 +15,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [tel,setTel] = useState("");
   const [genre, setGenre] = useState("");
   const { setAlert } = AppState();
 
@@ -34,6 +35,7 @@ const Signup = () => {
           genre: genre,
           date_inscription: Timestamp.now(),
           solde : 0,
+          tel : tel,
         });
         setAlert({
           open: true,
@@ -113,7 +115,21 @@ const Signup = () => {
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
+        <Form.Group as={Col} md="4" controlId="validationCustom03">
+          <Form.Label>Téléphone</Form.Label>
+          <Form.Control
+            required
+            type="text"
+            placeholder="06 xx xx xx xx"
+            autoComplete="lname"
+            defaultValue=""
+            value={tel}
+            onChange={(e) => setTel(e.target.value)}
+          />
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        </Form.Group>
       </Row>
+
       <Row className="mb-3">
         <Form.Group as={Col} md="6" controlId="validationCustom04">
           <Form.Label>Email</Form.Label>

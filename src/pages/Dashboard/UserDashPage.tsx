@@ -200,6 +200,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                         <th>Nom</th>
                         <th>Solde</th>
                         <th>Modifier le solde</th>
+                        <th>Tel</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -214,9 +215,11 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             <Button disabled variant="success-outline">✏️</Button>
                             </td>
                             <td>
+                                {user.tel}
+                            </td>
+                            <td>
                             <Button variant="success-outline">❔</Button>
                             </td>
-                            
                         </tr>
                     ))}
                 </tbody>
@@ -237,8 +240,8 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 <tbody>
                     {data.map((item) => (
                         <tr key={item.id}>
-                            <td>{item.titre}</td>
-                            <td>{item.date.toDate().toLocaleDateString()}</td>
+                            <td>{item.titre} - {item.niveau}</td>
+                            <td>{item.date.toDate().toLocaleDateString()} - {item.date.toDate().toLocaleTimeString()}</td>
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
                             <td>
@@ -290,8 +293,8 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 <tbody>
                     {data_bis.map((item) => (
                         <tr key={item.id}>
-                            <td>{item.titre}</td>
-                            <td>{item.date.toDate().toLocaleDateString()}</td>
+                            <td>{item.titre} - {item.niveau}</td>
+                            <td>{item.date.toDate().toLocaleDateString()} - {item.date.toDate().toLocaleTimeString()}</td>
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
                             <td>

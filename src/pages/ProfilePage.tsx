@@ -17,7 +17,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
     const [dataUser, setdataUser] = useState<User>(null);
     const { user, setAlert } = AppState();
     const [last, setlast] = useState(null);
-    const [update, setUpdate] = useState(false);
+    const [update, setUpdate] = useState(true);
 
 
     async function LoadItem() {
@@ -31,6 +31,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
              startAfter(last), 
              limit(limi));
             const querySnapshot = await getDocs(q);
+            setUpdate(false);
             const list = data;
             if (querySnapshot.size === 0) {
                 setlast(null);
@@ -59,7 +60,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
             orderBy("date"), 
             limit(limi));
            const querySnapshot = await getDocs(q);
-
+        setUpdate(false);
            const list: Item[] = [];
            querySnapshot.forEach((doc) => {
                const exo = doc.data();
@@ -97,14 +98,14 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
 
     return (
         <div className="container" style={{"textAlign":"center", "marginTop" : "5px"}}>
-            <h1 className='Titre' >{dataUser?.genre === "Homme" ? 'Profile 👨' : 'Profile 👩'}</h1>
+            <h1 className='Titre' >{dataUser?.genre === "Homme" ? 'Profil 👨' : 'Profil 👩'}</h1>
             {user && dataUser ?
             <div className="HomePage-content">
                 <div style={{"marginBottom" : "15px"}}>
-                    Bonjour {dataUser.prenom}, il te reste {dataUser.solde} unité sur ton compte.
+                    Bonjour {dataUser.prenom}, il te reste {dataUser.solde} unité(s) sur ton compte.
                 </div>
                 Mes prochains cours réservés:
-                {data.length === 0 ? 
+                {data.length  === 0 && update ? 
                     <Spinner animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>

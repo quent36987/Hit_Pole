@@ -166,7 +166,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                     <div className='carte-info-1'>
                                                         <div className='carte-info-heure' >{item2.getHour()}</div>
                                                         <div className='carte-info-titre' >{item2.titre} - {item2.niveau}</div>
-                                                        <div className='carte-info-plus'>voir les détails</div>
+                                                        <div className='carte-info-plus'>{item2.place - item2.users.length }/{item2.place} {"place(s) dispo"}</div>
                                                     </div>
                                                     <span className='carte-info-2' >
 
@@ -258,7 +258,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                             <div className='carte-info-1'>
                                                 <div className='carte-info-heure' >{item2.getHour()}</div>
                                                 <div className='carte-info-titre' >{item2.titre} - {item2.niveau}</div>
-                                                <div className='carte-info-plus'>voir les détails</div>
+                                                <div className='carte-info-plus'>{item2.place - item2.users.length }/{item2.place} {"place(s) dispo"}</div>
                                             </div>
                                             <span className='carte-info-2' >
 

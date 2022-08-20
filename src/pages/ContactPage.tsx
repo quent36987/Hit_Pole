@@ -46,10 +46,11 @@ const ContactPage: React.FunctionComponent<IPage> = props => {
             <h1 className='Titre' style={{"textAlign":"center"}}>Contact</h1>
 
             <div style={{"textAlign":"center"}}>
-                <div>Hit Form</div>
+                <div>Hit Forme</div>
                 <div>5 rue Albert Thomas</div>
                 <div>42300 Roanne</div>
                 <div>04 77 72 94 21</div>
+                <div>hitform@gmail.com</div>
             </div>
 
             <div className='mt-4' style={{"textAlign":"center"}}>
@@ -58,7 +59,7 @@ const ContactPage: React.FunctionComponent<IPage> = props => {
                 :
                 <Form onSubmit={handleSubmit} className='m-3'>
                     <FormGroup className='m-1'>
-                        <Form.Label>Signaler un problème ou une amélioration ?</Form.Label>
+                        <Form.Label>Signaler un problème ou une amélioration ? {"(pour l'application)"}</Form.Label>
                         <Form.Control as="textarea" placeholder='message..'
                         required value={message} 
                         rows={4}
