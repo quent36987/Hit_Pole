@@ -250,8 +250,14 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             </OverlayTrigger>
                             </td>
                             <td>
-                                <Button variant="success-outline"
+                                <Button variant="outline-warning"
                                 href={"/modif/" + item.id} >✏️</Button>
+                            </td>
+                            <td>
+                                <Button variant="outline-success" 
+                                    href={"/particip/" + item.id} >
+                                    ✔️
+                                </Button>
                             </td>
                             <td>
                             <Button variant="outline-danger"
@@ -268,6 +274,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             }}
                             >🗑️</Button>
                             </td>
+                            
                         </tr>
                     ))}
                 </tbody>
