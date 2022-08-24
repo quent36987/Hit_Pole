@@ -112,6 +112,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="**************" />
         </Form.Group>
+
         <p>Pas encore inscrit ?<Link href="/auth/signup" > Clic ici !</Link></p>
         <p>mot de passe oublié ?<Link onClick={handleShow} > Clic ici !</Link></p>
         <Button onClick={handleSubmit} >

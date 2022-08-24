@@ -18,7 +18,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
     const [datenow, setDatenow] = useState(new Date());
     const [datenow_firstweek, setDatenow_firstweek] = useState(new Date());
     const [data, setData] = useState<Item[]>([]);
-    const [type, setType] = useState("mois"); // mois,semaine,jour
+    const [type, setType] = useState("semaine"); // mois,semaine,jour
 
 
     useEffect(() => {

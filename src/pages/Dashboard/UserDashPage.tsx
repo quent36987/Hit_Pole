@@ -314,6 +314,12 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                                 href={"/modif/" + item.id} >✏️</Button>
                             </td>
                             <td>
+                                <Button variant="outline-success" 
+                                    href={"/particip/" + item.id} >
+                                    ✔️
+                                </Button>
+                            </td>
+                            <td>
                             <Button variant="outline-danger"
                             onClick={() => {
                                 deleteDoc(doc(db, "calendrier", item.id)).then(() => {

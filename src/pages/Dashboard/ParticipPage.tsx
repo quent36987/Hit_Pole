@@ -59,8 +59,8 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
         const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
         const list: Item[] = [];
        if (props.match.params.id == '0') {
-            const datenow = new Date(2022, 7, 24);
-            //const datenow = new Date();
+            //const datenow = new Date(2022, 7, 24);
+            const datenow = new Date();
             //get the item with date is today
             const data = await getDocs(query(collectionRef, 
                 where("date", ">", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate()))),
@@ -179,7 +179,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                         {items[selected].users.map((item, index) => 
                             
                              ( <div key={index}
-                                style={{height:"30px", fontSize:"25px",marginBottom:"5px"}}>
+                                style={{height:"35px", fontSize:"25px",marginBottom:"5px",overflow:'hidden'}}>
                              
                                         <input type="checkbox"
                                             style={{marginRight:"10px",marginLeft:"10px",width:"20px",height:"20px"}}
