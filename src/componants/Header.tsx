@@ -3,12 +3,14 @@ import { signOut } from "firebase/auth";
 import { Button, Nav, Navbar, NavDropdown } from "react-bootstrap"
 import { AppState } from "../Context";
 import { auth } from "../firebase";
-
+import {  Link } from "react-router-dom";
+import { useState } from "react";
 //import "./Header.css"
 
 const App = () => {
   
   const {user, setAlert,perm} = AppState();
+  const [expanded, setExpanded] = useState(false);
 
   const logOut = () => {
     signOut(auth);
@@ -22,36 +24,48 @@ const App = () => {
   return (
     <Navbar
       collapseOnSelect
+      expanded={expanded}
+      onToggle={() => setExpanded(!expanded)}
       expand="md"
       bg="light"
       variant="light"
       className="px-3 py-8"
     >
-      <Navbar.Brand href="/">
+      <Link className="navbar-brand" to="/" onClick={() => setExpanded(false)}>
         HIT-POLE🤸🏼‍♀️
-      </Navbar.Brand>
+      </Link>
       <Navbar.Toggle aria-controls="responsive-navbar-na" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto px-2">
           {perm ? <>
           <NavDropdown title='Administration'>
-                  <NavDropdown.Item href="/ajout">Ajouter</NavDropdown.Item>
-                  <NavDropdown.Item href="/duplica">Duplication</NavDropdown.Item>
-                  <NavDropdown.Item href="/dashboard">Dashboard</NavDropdown.Item>
-                  <NavDropdown.Item href="/particip/0">Tcheck !</NavDropdown.Item>
+                  <Link onClick={() => setExpanded(false)}
+                  className="dropdown-item" to="/ajout">Ajouter</Link>
+                  <Link onClick={() => setExpanded(false)} 
+                  className="dropdown-item" to="/duplica">Duplication</Link>
+                  <Link onClick={() => setExpanded(false)} 
+                  className="dropdown-item" to="/dashboard">Dashboard</Link>
+                  <Link onClick={() => setExpanded(false)} 
+                  className="dropdown-item" to="/particip/0">check !</Link>
           </NavDropdown>
           
           </> : <></>}
-          <Nav.Link href="/">Accueil</Nav.Link>
-          <Nav.Link href="/calendrier">Calendrier</Nav.Link>
-          <Nav.Link href="/profile" >Profil</Nav.Link>
-          <Nav.Link href="/contact" >Contact</Nav.Link>
+          <Link onClick={() => setExpanded(false)} 
+          className="nav-link" to="/">Accueil</Link>
+          <Link onClick={() => setExpanded(false)} 
+          className="nav-link" to="/calendrier">Calendrier</Link>
+          <Link onClick={() => setExpanded(false)} 
+          className="nav-link" to="/profile" >Profil</Link>
+          <Link onClick={() => setExpanded(false)} 
+          className="nav-link" to="/contact" >Contact</Link>
         </Nav>
         <Nav>
           {user ? 
-          <Button variant="outline-danger" onClick={logOut} >Log out</Button>
+          <Button onClick={() => {setExpanded(false);logOut();}} 
+          variant="outline-danger">Log out</Button>
           :
-          <Button variant="outline-success" href="/auth/login" >Login</Button>
+          <Button onClick={() => setExpanded(false)}
+          variant="outline-success" href="/auth/login" >Login</Button>
           }
         </Nav>
       </Navbar.Collapse>

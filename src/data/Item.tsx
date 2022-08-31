@@ -95,7 +95,7 @@ export class Item {
             :
             <>
               {user && this.users && this.users.includes(user.uid) ?
-                <Button variant="outline-danger" style={{ "marginRight": "10px" }}
+                <><Button variant="outline-danger" style={{ "marginRight": "10px" }}
                 onClick={async () => {
                   //if the date is less than 24h before now, the cancel is forbiden
                   if(this.date.toDate() < new Date(new Date().getTime() + (24 * 60 * 60 * 1000))) {
@@ -127,6 +127,7 @@ export class Item {
                   }
                   
               }}>Annuler la réservation</Button>
+              {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles</>
                 :
                 <>
 

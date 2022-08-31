@@ -3,9 +3,7 @@ import { auth } from "./../firebase";
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { AppState } from "../Context";
 import { Button, Form, Modal } from "react-bootstrap";
-import { Link } from "@material-ui/core";
-
-
+import {  Link } from "react-router-dom";
 
 
 const Login = () => {
@@ -113,8 +111,8 @@ const Login = () => {
             placeholder="**************" />
         </Form.Group>
 
-        <p>Pas encore inscrit ?<Link href="/auth/signup" > Clic ici !</Link></p>
-        <p>mot de passe oublié ?<Link onClick={handleShow} > Clic ici !</Link></p>
+        <p>Pas encore inscrit ?<Link to="/auth/signup" > Clic ici !</Link></p>
+        <p>mot de passe oublié ?<span onClick={handleShow} > Clic ici !</span></p>
         <Button onClick={handleSubmit} >
           Valider
         </Button>

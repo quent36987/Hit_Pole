@@ -122,7 +122,7 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
                         </InputGroup>
                     </Row>
                     <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
-                        <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Description</Form.Label>
+                        <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Commentaire</Form.Label>
                         <Form.Control as="textarea" value={desc} placeholder="Description" required
                             rows={2}
                             onChange={(e) => setDesc(e.target.value)} />

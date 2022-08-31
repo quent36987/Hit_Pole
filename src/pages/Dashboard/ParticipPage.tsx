@@ -12,7 +12,6 @@ import { AppState } from '../../Context';
 
 const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = props => {
 
-    const [jour,setJour] = useState<Date>(null);
     const [items, setItems] = useState<Item[]>([]);
     const [selected, setSelected] = useState(0);
     const [users, setusers] = useState<User[]>([]);
@@ -162,7 +161,6 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     }
 
     return (<>
-        page pour valider les présences, en version d'essai
         {load && items && items.length > 0 ?
         <div> 
             <select 
@@ -241,8 +239,13 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                     onClick={handleSubmit}>
                         Valider
                     </button>
-
-                   
+                    <div style={{fontSize:"20px",textAlign:"center"}}>
+                         commentaire :
+                    </div>
+                    <div style={{height:"200px",fontSize:"20px",marginBottom:"20px",borderRadius:"5px",border:"1px solid #ccc",backgroundColor:"#fff",color:"#000",marginLeft:"20px",marginRight:"20px",padding:"4px"}}>
+                       
+                        {items[selected].desc}
+                    </div>
                 </div>
        </div> : null }
     </>)

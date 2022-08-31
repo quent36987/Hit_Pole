@@ -7,7 +7,7 @@ import { Item, ItemConverter } from "../../data/Item";
 import { User, UserConverter } from "../../data/User";
 import { db } from "../../firebase";
 import IPage from "../../interfaces/page";
-
+import { useHistory } from 'react-router-dom'
 
 const DashPage: React.FunctionComponent<IPage> = props => {
 
@@ -19,6 +19,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
     const [last, setlast] = useState(null);
     const [last_bis, setlastBis] = useState(null);
     const [update, setUpdate] = useState(false);
+    const history = useHistory()
 
     useEffect(() => {
         logging.info(`Loading ${props.name}`);
@@ -235,6 +236,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                         <th>Date</th>
                         <th>Nombre d'inscrit</th>
                         <th>Temps</th>
+                        <th>Commentaire</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -244,6 +246,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             <td>{item.date.toDate().toLocaleDateString()} - {item.date.toDate().toLocaleTimeString()}</td>
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
+                            <td>{item.desc}</td>
                             <td>
                             <OverlayTrigger trigger="click" placement="left" overlay={popover(item.users.map(u => users.find(user => user.id === u)))}>
                                 <Button variant="success-outline">❔</Button>
@@ -251,11 +254,11 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             </td>
                             <td>
                                 <Button variant="outline-warning"
-                                href={"/modif/" + item.id} >✏️</Button>
+                                onClick={() => {history.push(`/modif/${item.id}`)}}>✏️</Button>
                             </td>
                             <td>
                                 <Button variant="outline-success" 
-                                    href={"/particip/" + item.id} >
+                                   onClick={() => {history.push(`/particip/${item.id}`)}} >
                                     ✔️
                                 </Button>
                             </td>
@@ -295,6 +298,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                         <th>Date</th>
                         <th>Nombre d'inscrit</th>
                         <th>Temps</th>
+                        <th>Commentaire</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -304,6 +308,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             <td>{item.date.toDate().toLocaleDateString()} - {item.date.toDate().toLocaleTimeString()}</td>
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
+                            <td>{item.desc}</td>
                             <td>
                             <OverlayTrigger trigger="click" placement="left" overlay={popover(item.users.map(u => users.find(user => user.id === u)))}>
                                 <Button variant="success-outline">❔</Button>
@@ -311,11 +316,11 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             </td>
                             <td>
                                 <Button variant="success-outline"
-                                href={"/modif/" + item.id} >✏️</Button>
+                                onClick={() => {history.push(`/modif/${item.id}`)}} >✏️</Button>
                             </td>
                             <td>
                                 <Button variant="outline-success" 
-                                    href={"/particip/" + item.id} >
+                                    onClick={() => {history.push(`/particip/${item.id}`)}} >
                                     ✔️
                                 </Button>
                             </td>

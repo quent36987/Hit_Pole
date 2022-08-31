@@ -34,7 +34,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
         const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
         //juste this month
         const queryRef = query(collectionRef, orderBy("date"),
-            where("date", ">", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth(), 1))),
+            where("date", ">", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth(), -7))),
             where("date", "<", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth() + 1, 7))));
         onSnapshot(queryRef, (snapshot) => {
             const list: Item[] = [];

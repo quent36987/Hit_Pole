@@ -5,8 +5,7 @@ import { auth, db } from "../firebase";
 import { AppState } from "../Context";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
-import { Link } from "@material-ui/core";
-
+import {  Link } from "react-router-dom";
 
 
 const Signup = () => {
@@ -172,7 +171,7 @@ const Signup = () => {
           ne doit pas contenir d'espaces, de caractères spéciaux ou d'emoji.
         </Form.Text>
       </Row>
-      <p>Déjà un compte ? <Link href="/auth/login" >Connectez-vous ici !</Link></p>
+      <p>Déjà un compte ? <Link to="/auth/login" >Connectez-vous ici !</Link></p>
       <Button variant="primary" type="submit">Register</Button>
     </Form>
   </>
