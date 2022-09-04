@@ -37,6 +37,7 @@
     "react-audio-player": "^0.17.0",
     "react-bootstrap": "^2.4.0",
     "react-chartjs-2": "^4.1.0",
+    "react-csv": "^2.2.2",
     "react-dom": "^17.0.1",
     "react-google-button": "^0.7.2",
     "react-list-drag-and-drop": "^0.9.2",

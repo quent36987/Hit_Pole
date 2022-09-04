@@ -8,9 +8,17 @@
     text-align: center;
 }
 
-.Titre {
-    font-size: 6vw;
+@media screen and (min-width: 900px) {
+  .Titre {
+    font-size: 3vw;
+    }  
 }
+@media screen and (max-width: 900px) {
+    .Titre {
+      font-size: 6vw;
+      }  
+  }
+
 
 .HomePage-content {
     text-align: left;
