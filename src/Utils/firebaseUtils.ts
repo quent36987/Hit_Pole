@@ -64,6 +64,19 @@ export async function getAllItemMonth(date : Date) : Promise<Item[]> {
         exo.id = doc.id;
         listItem.push(exo);
     })
-    
+
     return listItem;
+}
+
+export async function getAllItems() : Promise<Item[]> {
+    const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
+    const queryRef = query(collectionRef, orderBy("date"));
+    const data = await getDocs(queryRef);
+    const items = [];
+    data.forEach((doc) => {
+        const user = doc.data();
+        user.id = doc.id;
+        items.push(user);
+    })
+    return items;
 }

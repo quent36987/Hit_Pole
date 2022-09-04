@@ -5,6 +5,7 @@ import { AppState } from "../Context";
 import { auth } from "../firebase";
 import {  Link } from "react-router-dom";
 import { useState } from "react";
+import { ExportCSV } from "../Utils/exportCSV";
 //import "./Header.css"
 
 const App = () => {
@@ -46,7 +47,10 @@ const App = () => {
                   <Link onClick={() => setExpanded(false)} 
                   className="dropdown-item" to="/dashboard">📝 Dashboard</Link>
                   <Link onClick={() => setExpanded(false)} 
-                  className="dropdown-item" to="/particip/0">✔️ check !</Link>
+                  className="dropdown-item" to="/particip/0">✔️ Check !</Link>
+                  <Link onClick={() => setExpanded(false)} 
+                  className="dropdown-item" to="/export">📁 Export</Link>
+                 
           </NavDropdown>
           
           </> : <></>}

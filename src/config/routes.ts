@@ -10,6 +10,7 @@ import ModifPage from '../pages/ModifPage';
 import DashPage from '../pages/Dashboard/UserDashPage';
 import ParticipPage from '../pages/Dashboard/ParticipPage';
 import InfoCourPage from '../pages/Dashboard/PageInfoCour';
+import ExportPage from '../pages/ExportPage';
 
 
 
@@ -79,7 +80,13 @@ const routes: IRoute[] = [
         name: 'Cours Info Page',
         component: InfoCourPage,
         exact: true
-    }
+    },
+    {
+        path: '/export',
+        name: 'Export Page',
+        component: ExportPage,
+        exact: true
+    },
 ]
 
 export default routes;
