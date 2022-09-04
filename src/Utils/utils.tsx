@@ -5,6 +5,7 @@ import { db } from "../firebase";
 
 const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 const jours = ["dimanche", "lundi" , "mardi", "mercredi","jeudi","vendredi","samedi"];
+const jours_semaine = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
 
 export function StringSymplify(name : string)
 {
@@ -32,6 +33,10 @@ export function DateFormat(date : Date) {
     return `${jours[date.getDay()]} ${date.getDate()} ${mois[date.getMonth()]} à ${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}h${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`;
 }
 
+export function DateFormatAbv(date : Date) {
+    // format : lun, 4 juillet
+    return  `${jours_semaine[date.getDay()]}, ${date.getDate()} ${mois[date.getMonth()]}`;
+}
    
 export async function Reserver(item : Item,setAlert,user)
 {

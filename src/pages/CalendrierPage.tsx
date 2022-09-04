@@ -1,10 +1,11 @@
-import { collection, onSnapshot, orderBy, query, Timestamp, where,doc, updateDoc, increment, arrayRemove } from 'firebase/firestore';
+import {  Timestamp,doc, updateDoc, increment, arrayRemove } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { AppState } from '../Context';
-import { Item, ItemConverter } from '../data/Item';
+import { Item } from '../data/Item';
 import { db } from '../firebase';
 import IPage from '../interfaces/page';
+import { getAllItemMonth } from '../Utils/firebaseUtils';
 import { Reserver } from '../Utils/utils';
 import './allPage.css';
 
@@ -31,23 +32,12 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
     }, [datenow])
 
     useEffect(() => {
-        const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
-        //juste this month
-        const queryRef = query(collectionRef, orderBy("date"),
-            where("date", ">", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth(), -7))),
-            where("date", "<", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth() + 1, 7))));
-        onSnapshot(queryRef, (snapshot) => {
-            const list: Item[] = [];
-            snapshot.forEach((doc) => {
-                const exo = doc.data();
-                exo.id = doc.id;
-                list.push(exo);
-            });
-            setData(list);
-            console.log("pub", list);
-        });
+            getData();
     }, [datenow.getMonth()])
 
+    async function getData(){
+        setData(await getAllItemMonth(datenow));
+    }
 
     function Datehelp(date: Date) {
         //return DD/MM
@@ -65,14 +55,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
 
     function Calendar(datenow: Date) {
         const firstDay = (new Date(datenow.getFullYear(), datenow.getMonth(), 1).getDay() - 1) % 7 - 1;
-        console.log("firstDay", firstDay);
-        //create a table with the number of days of the month
         const table = [];
-
-        table.push(
-
-        )
-
         for (let i = 0; i < 6; i++) {
             table.push(
                 [0, 1, 2, 3, 4, 5, 6].map(j => {

@@ -9,6 +9,7 @@ import DuplicaPage from '../pages/DuplicaPage';
 import ModifPage from '../pages/ModifPage';
 import DashPage from '../pages/Dashboard/UserDashPage';
 import ParticipPage from '../pages/Dashboard/ParticipPage';
+import InfoCourPage from '../pages/Dashboard/PageInfoCour';
 
 
 
@@ -71,6 +72,12 @@ const routes: IRoute[] = [
         path: '/particip/:id',
         name: 'Tcheck Page',
         component: ParticipPage,
+        exact: true
+    },
+    {
+        path: '/coursinfo/:id',
+        name: 'Cours Info Page',
+        component: InfoCourPage,
         exact: true
     }
 ]

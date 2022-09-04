@@ -1,7 +1,7 @@
 import { arrayRemove, doc, increment, Timestamp, updateDoc } from "firebase/firestore";
 import { Button, Card } from "react-bootstrap";
 import { db } from "../firebase";
-import { DateFormat, Reserver } from '../Utils/utils';
+import { DateFormat, DateFormatAbv, Reserver } from '../Utils/utils';
 
 export const Titres = [
   'Pole',
@@ -78,9 +78,9 @@ export class Item {
   WithHeaderExample(user, setAlert) {
     return (
       <Card style={{ "marginBottom": "1vh", "width": "100%" }}>
-        <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }} className='header'>
-          < div > {DateFormat(this.date.toDate())}</div>
-          <div >⌚ {this.temps} min</div>
+        <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }} >
+          < div > {DateFormatAbv(this.date.toDate())}</div>
+          <div style={{"fontSize":"11px","alignSelf":"center"}}>⌚ {this.temps} min</div>
         </Card.Header>
         <Card.Body>
           <Card.Title>{this.titre}</Card.Title>
@@ -134,7 +134,7 @@ export class Item {
                   {this.place - this.users.length <= 0 ?
                     "Complet"
                     :
-                    <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px"}} className="header"
+                    <div style={{"fontSize":"10px"}}> <Button variant="outline-success" style={{ "marginRight": "10px","fontSize":"12px" }} 
                       onClick={() => Reserver(this, setAlert, user)}>Réserver !</Button>
                       {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
                     </div>

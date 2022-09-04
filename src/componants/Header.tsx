@@ -38,34 +38,34 @@ const App = () => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto px-2">
           {perm ? <>
-          <NavDropdown title='Administration'>
+          <NavDropdown title='👑 Administration'>
                   <Link onClick={() => setExpanded(false)}
-                  className="dropdown-item" to="/ajout">Ajouter</Link>
+                  className="dropdown-item" to="/ajout">➕ Ajouter</Link>
                   <Link onClick={() => setExpanded(false)} 
-                  className="dropdown-item" to="/duplica">Duplication</Link>
+                  className="dropdown-item" to="/duplica">➿ Duplication</Link>
                   <Link onClick={() => setExpanded(false)} 
-                  className="dropdown-item" to="/dashboard">Dashboard</Link>
+                  className="dropdown-item" to="/dashboard">📝 Dashboard</Link>
                   <Link onClick={() => setExpanded(false)} 
-                  className="dropdown-item" to="/particip/0">check !</Link>
+                  className="dropdown-item" to="/particip/0">✔️ check !</Link>
           </NavDropdown>
           
           </> : <></>}
           <Link onClick={() => setExpanded(false)} 
-          className="nav-link" to="/">Accueil</Link>
+          className="nav-link" to="/">🏠 Accueil</Link>
           <Link onClick={() => setExpanded(false)} 
-          className="nav-link" to="/calendrier">Calendrier</Link>
+          className="nav-link" to="/calendrier">🗓️ Calendrier</Link>
           <Link onClick={() => setExpanded(false)} 
-          className="nav-link" to="/profile" >Profil</Link>
+          className="nav-link" to="/profile" >👩 Profil</Link>
           <Link onClick={() => setExpanded(false)} 
-          className="nav-link" to="/contact" >Contact</Link>
+          className="nav-link" to="/contact" >📞 Contact</Link>
         </Nav>
         <Nav>
           {user ? 
           <Button onClick={() => {setExpanded(false);logOut();}} 
-          variant="outline-danger">Log out</Button>
+          variant="outline-danger">Se déconnecter</Button>
           :
           <Button onClick={() => setExpanded(false)}
-          variant="outline-success" href="/auth/login" >Login</Button>
+          variant="outline-success" href="/auth/login" >Se connecter</Button>
           }
         </Nav>
       </Navbar.Collapse>

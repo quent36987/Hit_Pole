@@ -4,10 +4,11 @@ import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from "react-bootstr
 import logging from "../../config/logging";
 import { AppState } from "../../Context";
 import { Item, ItemConverter } from "../../data/Item";
-import { User, UserConverter } from "../../data/User";
+import { User } from "../../data/User";
 import { db } from "../../firebase";
 import IPage from "../../interfaces/page";
 import { useHistory } from 'react-router-dom'
+import { getAllUsersFirebase } from "../../Utils/firebaseUtils";
 //import { CSVLink} from 'react-csv';
 
 const DashPage: React.FunctionComponent<IPage> = props => {
@@ -23,19 +24,10 @@ const DashPage: React.FunctionComponent<IPage> = props => {
     const history = useHistory()
 
     useEffect(() => {
+        getAllUsersFirebase().then((data) => {
+            setusers(data);
+        })
         logging.info(`Loading ${props.name}`);
-        const collectionRef = collection(db, "Users").withConverter<User>(UserConverter);
-        const queryRef = query(collectionRef);
-        onSnapshot(queryRef, (snapshot) => {
-            const list: User[] = [];
-            snapshot.forEach((doc) => {
-                const exo = doc.data();
-                exo.id = doc.id;
-                list.push(exo);
-            });
-            console.log("users", list);
-            setusers(list);
-        });
         VoirPlus();
         VoirPlus_bis();
     }, [props])
@@ -264,6 +256,12 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                                 </Button>
                             </td>
                             <td>
+                                <Button variant="outline-info" 
+                                   onClick={() => {history.push(`/coursinfo/${item.id}`)}} >
+                                   🧑‍🤝‍🧑
+                                </Button>
+                            </td>
+                            <td>
                             <Button variant="outline-danger"
                             onClick={() => {
                                 deleteDoc(doc(db, "calendrier", item.id)).then(() => {
@@ -278,6 +276,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             }}
                             >🗑️</Button>
                             </td>
+                            
                             
                         </tr>
                     ))}
@@ -323,6 +322,12 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                                 <Button variant="outline-success" 
                                     onClick={() => {history.push(`/particip/${item.id}`)}} >
                                     ✔️
+                                </Button>
+                            </td>
+                            <td>
+                                <Button variant="outline-info" 
+                                   onClick={() => {history.push(`/coursinfo/${item.id}`)}} >
+                                   🧑‍🤝‍🧑
                                 </Button>
                             </td>
                             <td>

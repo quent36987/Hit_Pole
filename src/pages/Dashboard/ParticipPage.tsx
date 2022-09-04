@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import '../allPage.css';
-import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Modal, Row } from 'react-bootstrap';
-import { arrayUnion, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc, Timestamp, updateDoc, where } from 'firebase/firestore';
+import { Modal } from 'react-bootstrap';
+import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { RouteComponentProps } from 'react-router-dom';
 import IPage from '../../interfaces/page';
-import { Item, ItemConverter } from '../../data/Item';
+import { Item } from '../../data/Item';
 import { db } from '../../firebase';
 import { DateFormat } from '../../Utils/utils';
-import { User, UserConverter } from '../../data/User';
+import { User } from '../../data/User';
 import { AppState } from '../../Context';
+import { getAllItemToday, getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
 
 const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = props => {
 
@@ -29,7 +30,6 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
 
     useEffect(() => {
         if (items.length > 0 ) {
-            console.log("items sleect", items[selected].participation);
             setUserSelected(items[selected].participation);
             setUpdate(!update);
         }
@@ -40,55 +40,28 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     } , [props.name])
 
     useEffect(() => {
-        const collectionRef = collection(db, "Users").withConverter<User>(UserConverter);
-        const queryRef = query(collectionRef);
-        onSnapshot(queryRef, (snapshot) => {
-            const list: User[] = [];
-            snapshot.forEach((doc) => {
-                const exo = doc.data();
-                exo.id = doc.id;
-                list.push(exo);
-            });
-            console.log("users", list);
-            setusers(list);
-        });
+        getAllUsersFirebase().then((data) => {
+            setusers(data);
+        })
     }, [props])
 
     async function LoadData() {
-        const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
-        const list: Item[] = [];
-       if (props.match.params.id == '0') {
-            //const datenow = new Date(2022, 7, 24);
-            const datenow = new Date();
-            //get the item with date is today
-            const data = await getDocs(query(collectionRef, 
-                where("date", ">", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate()))),
-                where("date","<", Timestamp.fromDate(new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate() + 1)))));
+       let list: Item[] = [];
 
-            data.forEach((doc) => {
-                const exo = doc.data();
-                exo.id = doc.id;
-                list.push(exo);
-            }
-            );
-            
+       if (props.match.params.id == '0') {
+            list = await getAllItemToday();  
        }
        else{
-            const query = doc(db, "calendrier", props.match.params.id).withConverter(ItemConverter);
-            const docsnap = await getDoc(query);
-            const exo = docsnap.data();
-            exo.id = docsnap.id;
-            list.push(exo);
-
+            list.push(await getItemFirebase(props.match.params.id));
        }
-       console.log("items", list);
+
        setItems(list);
        if (list.length > 0 && selected < list.length) {
             setUserSelected(list[selected].participation);
        }
+
        setUpdate(!update);
        setLoad(true);
-        
     }
 
 
