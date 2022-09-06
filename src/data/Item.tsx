@@ -1,7 +1,7 @@
 import { arrayRemove, doc, increment, Timestamp, updateDoc } from "firebase/firestore";
 import { Button, Card } from "react-bootstrap";
 import { db } from "../firebase";
-import { DateFormat, DateFormatAbv, Reserver } from '../Utils/utils';
+import { DateFormat, DateFormatAbv, DateTimeAbv, Reserver } from '../Utils/utils';
 
 export const Titres = [
   'Pole',
@@ -79,7 +79,7 @@ export class Item {
     return (
       <Card style={{ "marginBottom": "1vh", "width": "100%" }}>
         <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }} >
-          < div > {DateFormatAbv(this.date.toDate())}</div>
+          < div > {DateFormatAbv(this.date.toDate())} {DateTimeAbv(this.date.toDate())}</div>
           <div style={{"fontSize":"11px","alignSelf":"center"}}>⌚ {this.temps} min</div>
         </Card.Header>
         <Card.Body>
@@ -115,6 +115,7 @@ export class Item {
                       await Promise.all(
                           [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
                           updateDoc(UserDocRef, {solde: increment(this.unite)})])
+                      this.users = this.users.filter(e => e !== user.uid);  
                       
                       }
                       catch(error){
@@ -135,7 +136,12 @@ export class Item {
                     "Complet"
                     :
                     <div style={{"fontSize":"10px"}}> <Button variant="outline-success" style={{ "marginRight": "10px","fontSize":"12px" }} 
-                      onClick={() => Reserver(this, setAlert, user)}>Réserver !</Button>
+                      onClick={() => 
+                      {
+                        if(Reserver(this, setAlert, user)){
+                          this.users.push(user.uid);
+                        }
+                      }}>Réserver !</Button>
                       {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
                     </div>
                   }</>

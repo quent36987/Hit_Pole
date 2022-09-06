@@ -181,7 +181,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                                 await Promise.all(
                                                                                     [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
                                                                                     updateDoc(UserDocRef, {solde: increment(item2.unite)})])
-                                                                                
+                                                                                getData();
                                                                                 }
                                                                                 catch(error){
                                                                                     setAlert({
@@ -200,7 +200,12 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                             "Complet"
                                                                             :
                                                                             <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px" }} className="header"
-                                                                                onClick={() => Reserver(item2, setAlert, user)}>Réserver</Button>
+                                                                                onClick={() =>{
+                                                                                   if(Reserver(item2, setAlert, user))
+                                                                                   {
+                                                                                        getData();
+                                                                                   }
+                                                                                } }>Réserver</Button>
 
                                                                             </div>
                                                                         }</>
@@ -273,7 +278,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                     await Promise.all(
                                                                         [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
                                                                         updateDoc(UserDocRef, {solde: increment(item2.unite)})])
-                                                                    
+                                                                    getData()
                                                                     }
                                                                     catch(error){
                                                                         setAlert({
@@ -292,7 +297,14 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                     "Complet"
                                                                     :
                                                                     <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px" }} className="header"
-                                                                        onClick={() => Reserver(item2, setAlert, user)}>Réserver !</Button>
+                                                                        onClick={() => {
+                                                                            if(Reserver(item2, setAlert, user))
+                                                                            {
+                                                                                getData();
+                                                                            }
+
+                                                                        }
+                                                                            }>Réserver !</Button>
 
                                                                     </div>
                                                                 }</>

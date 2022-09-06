@@ -37,6 +37,10 @@ export function DateFormatAbv(date : Date) {
     // format : lun, 4 juillet
     return  `${jours_semaine[date.getDay()]}, ${date.getDate()} ${mois[date.getMonth()]}`;
 }
+export function DateTimeAbv(date : Date)
+{
+    return `${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}h${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`;
+}
    
 export async function Reserver(item : Item,setAlert,user)
 {
@@ -47,7 +51,7 @@ export async function Reserver(item : Item,setAlert,user)
             type: "error",
             message: "Vous devez être connecté pour réserver un événement"
         });
-        return;
+        return false;
     }
     try {
         const CaldendarDocRef = doc(db, 'calendrier', item.id);
@@ -56,16 +60,18 @@ export async function Reserver(item : Item,setAlert,user)
             [updateDoc(CaldendarDocRef, { users: arrayUnion(user.uid) }),
             updateDoc(UserDocRef, {solde: increment(-item.unite)})])
 
-
         setAlert({
             open: true,
             type: "success",
             message: "Vous avez réservé l'événement"
         });
+        return true;
     } 
     catch (error) {
         console.log(error);
+        return false;
     }
+    return false;
 }
 
 export async function Annuler(item : Item,setAlert,user)
