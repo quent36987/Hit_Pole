@@ -111,7 +111,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
                     </Spinner>
                 :
                     <>{data.map((data) => (
-                        data.WithHeaderExample(user, setAlert)
+                        data.WithHeaderExample(user, setAlert,LoadItem)
                     ))}</>
                 }
                 {last !== null ? 

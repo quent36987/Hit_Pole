@@ -75,9 +75,9 @@ export class Item {
   }
 
 
-  WithHeaderExample(user, setAlert) {
+  WithHeaderExample(user, setAlert,cb = null) {
     return (
-      <Card style={{ "marginBottom": "1vh", "width": "100%" }}>
+      <Card style={{ "marginBottom": "1vh", "width": "100%" }} key={this.id}>
         <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }} >
           < div > {DateFormatAbv(this.date.toDate())} {DateTimeAbv(this.date.toDate())}</div>
           <div style={{"fontSize":"11px","alignSelf":"center"}}>⌚ {this.temps} min</div>
@@ -115,8 +115,9 @@ export class Item {
                       await Promise.all(
                           [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
                           updateDoc(UserDocRef, {solde: increment(this.unite)})])
-                      this.users = this.users.filter(e => e !== user.uid);  
-                      
+                          this.users = this.users.filter(e => e !== user.uid);
+                          if (cb != null )
+                          {cb();}
                       }
                       catch(error){
                           setAlert({
