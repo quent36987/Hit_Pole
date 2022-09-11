@@ -3,9 +3,9 @@ import { arrayUnion, doc,  increment, updateDoc } from "firebase/firestore";
 import { Item } from "../data/Item";
 import { db } from "../firebase";
 
-const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+export const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 const jours = ["dimanche", "lundi" , "mardi", "mercredi","jeudi","vendredi","samedi"];
-const jours_semaine = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
+const jours_abv = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
 
 export function StringSymplify(name : string)
 {
@@ -35,13 +35,27 @@ export function DateFormat(date : Date) {
 
 export function DateFormatAbv(date : Date) {
     // format : lun, 4 juillet
-    return  `${jours_semaine[date.getDay()]}, ${date.getDate()} ${mois[date.getMonth()]}`;
+    return  `${jours_abv[date.getDay()]}, ${date.getDate()} ${mois[date.getMonth()]}`;
 }
-export function DateTimeAbv(date : Date)
+export function TimeAbv(date : Date)
 {
+    // format : 20h45
     return `${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}h${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`;
 }
-   
+
+export function DateAbv(date : Date)
+{
+    // format 01/05
+    return `${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}/${date.getMonth()+1 < 10 ? "0" + (date.getMonth()+1) : (date.getMonth()+1)}`;
+
+}
+
+export function DateTimeAbv(date : Date)
+{
+    //format  lun, 4/09 15h50
+    return `${jours_abv[date.getDay()]},${DateAbv(date)} - ${TimeAbv(date)}`
+}
+
 export async function Reserver(item : Item,setAlert,user)
 {
     if (user == null)
@@ -66,7 +80,7 @@ export async function Reserver(item : Item,setAlert,user)
             message: "Vous avez réservé l'événement"
         });
         return true;
-    } 
+    }
     catch (error) {
         console.log(error);
         return false;
@@ -98,7 +112,7 @@ export async function Annuler(item : Item,setAlert,user)
             type: "success",
             message: "Vous avez réservé l'événement"
         });
-    } 
+    }
     catch (error) {
         console.log(error);
     }

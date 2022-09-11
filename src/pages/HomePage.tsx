@@ -15,9 +15,6 @@ const HomePage: React.FunctionComponent<IPage> = props => {
 
 
     useEffect(() => {
-        logging.info(`Loading ${props.name}`);
-
-        logging.info(`Loading ${props.name}`);
         const collectionRef = collection(db, "calendrier").withConverter<Item>(ItemConverter);
         const queryRef = query(collectionRef, orderBy("date"), limit(3), where("date", ">", Timestamp.fromDate(new Date())));
 
@@ -29,7 +26,6 @@ const HomePage: React.FunctionComponent<IPage> = props => {
                 list.push(exo);
             });
             setData(list);
-            console.log("pub", data);
         });
     }, [props.name])
 

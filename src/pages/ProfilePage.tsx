@@ -23,12 +23,11 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
     async function LoadItem() {
         var limi = 10;
         if (last) {
-             console.log("last", last);
              const q = query(collection(db, "calendrier").withConverter(ItemConverter),
              where('users', 'array-contains', user.uid),
              where("date", ">", Timestamp.fromDate(new Date())),
              orderBy("date"),
-             startAfter(last), 
+             startAfter(last),
              limit(limi));
             const querySnapshot = await getDocs(q);
             setUpdate(false);
@@ -43,7 +42,6 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
                 list.push(exo);
             });
             setData(list);
-            console.log("pub", data);
              if (list.length > 0) {
                  setlast(list[list.length - 1].date);
              }
@@ -57,7 +55,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
             const q = query(collection(db, "calendrier").withConverter(ItemConverter),
             where('users', 'array-contains', user.uid),
             where("date", ">", Timestamp.fromDate(new Date())),
-            orderBy("date"), 
+            orderBy("date"),
             limit(limi));
            const querySnapshot = await getDocs(q);
         setUpdate(false);
@@ -68,14 +66,13 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
                list.push(exo);
            });
            setData(list);
-           console.log("pub", data);
             if (list.length > 0) {
                 setlast(list[list.length - 1].date);
             }
             if (querySnapshot.size < limi) {
                 setlast(null);
             }
-             
+
          }
      }
 
@@ -102,10 +99,10 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
             {user && dataUser ?
             <div className="HomePage-content">
                 <div style={{"marginBottom" : "15px"}}>
-                    Bonjour {dataUser.prenom}, il te reste {dataUser.solde} unité(s) sur ton compte.
+                    Bonjour {dataUser.prenom},
                 </div>
                 Mes prochains cours réservés:
-                {data.length  === 0 && update ? 
+                {data.length  === 0 && update ?
                     <Spinner animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
@@ -114,9 +111,9 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
                         data.WithHeaderExample(user, setAlert,LoadItem)
                     ))}</>
                 }
-                {last !== null ? 
+                {last !== null ?
                 <div style={{"textAlign":"center"}} onClick={() => LoadItem()}>
-                voir plus.. 
+                voir plus..
                 </div> : null}
             </div>
             :
@@ -125,7 +122,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
                     Connecte toi pour avoir acces au profile !
                 </div>
                 <Button variant="outline-success" href="/auth/login" >Login</Button>
-            </div> 
+            </div>
             }
         </div>
     );

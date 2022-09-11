@@ -6,16 +6,14 @@ import { Item } from '../data/Item';
 import { db } from '../firebase';
 import IPage from '../interfaces/page';
 import { getAllItemMonth } from '../Utils/firebaseUtils';
-import { Reserver } from '../Utils/utils';
+import {DateAbv, DateFormatAbv, mois, Reserver} from '../Utils/utils';
 import './allPage.css';
 
 
 
 const CalendrierPage: React.FunctionComponent<IPage> = props => {
     const { user, setAlert } = AppState();
-    const mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
     const jours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const jours_semaine = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
     const [datenow, setDatenow] = useState(new Date());
     const [datenow_firstweek, setDatenow_firstweek] = useState(new Date());
     const [data, setData] = useState<Item[]>([]);
@@ -39,10 +37,6 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
         setData(await getAllItemMonth(datenow));
     }
 
-    function Datehelp(date: Date) {
-        //return DD/MM
-        return date.getDate() + "/" + (date.getMonth() + 1);
-    }
 
     function getweek(date: Date): Date[] {
         var week = [];
@@ -133,7 +127,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                 <div className="calendar_header_item"
                                     onClick={() => setDatenow(new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate() - 7))}>
                                     {"◀️"}</div>
-                                <div className="calendar_header_item_centre">{Datehelp(datenow_firstweek)} - {Datehelp(new Date(datenow_firstweek.getFullYear(), datenow_firstweek.getMonth(), datenow_firstweek.getDate() + 6))}</div>
+                                <div className="calendar_header_item_centre">{DateAbv(datenow_firstweek)} - {DateAbv(new Date(datenow_firstweek.getFullYear(), datenow_firstweek.getMonth(), datenow_firstweek.getDate() + 6))}</div>
                                 <div className="calendar_header_item"
                                     onClick={() => setDatenow(new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate() + 7))}>
                                     {"▶️"}</div>
@@ -142,7 +136,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
 
                                 {getweek(datenow_firstweek).map(item => (
                                     <>
-                                        <div className='jour'>{jours_semaine[item.getDay()]}, {item.getDate()} {mois[item.getMonth()]}</div>
+                                        <div className='jour'>{DateFormatAbv(item)}</div>
                                         {data.filter(item2 => item2.date.toDate().getDate() === item.getDate() && item2.date.toDate().getMonth() === item.getMonth()).map(item2 => (
                                             <div className='carte'>
                                                 <div className='carte-info' >
@@ -155,7 +149,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
 
 
                                                         {item2.date < Timestamp.fromDate(new Date()) ?
-                                                            <div>
+                                                            <div  style={{ "marginRight": "10px", "fontSize": "12px" }}>
                                                                 Ce cours est passé.
                                                             </div>
                                                             :
@@ -171,7 +165,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                                     message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
                                                                                     });
                                                                                 return;
-                                                                            } 
+                                                                            }
 
                                                                             if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
                                                                                 //remove the user from the item2.users and update on firestore
@@ -191,15 +185,17 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                                     });
                                                                                 }
                                                                             }
-                                                                            
+
                                                                         }}>Annuler la réservation</Button>
                                                                     :
-                                                                    <>
+                                                                    <div >
 
                                                                         {item2.place - item2.users.length <= 0 ?
-                                                                            "Complet"
+                                                                            <div  style={{ "marginRight": "10px", "fontSize": "13px" }}>
+                                                                                Complet
+                                                                            </div>
                                                                             :
-                                                                            <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px" }} className="header"
+                                                                            <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px" }}
                                                                                 onClick={() =>{
                                                                                    if(Reserver(item2, setAlert, user))
                                                                                    {
@@ -208,7 +204,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                                 } }>Réserver</Button>
 
                                                                             </div>
-                                                                        }</>
+                                                                        }</div>
 
 
                                                                 }
@@ -237,7 +233,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                             </div>
 
                             <div className='semaine'>
-                                <div className='jour'>{jours_semaine[datenow.getDay()]}, {datenow.getDate()} {mois[datenow.getMonth()]}</div>
+                                <div className='jour'>{DateFormatAbv(datenow)}</div>
                                 {data.filter(item => item.date.toDate().getDate() === datenow.getDate() && item.date.toDate().getMonth() === datenow.getMonth()).map(item2 => (
 
 
@@ -268,7 +264,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                         message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
                                                                         });
                                                                     return;
-                                                                } 
+                                                                }
 
                                                                 if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
                                                                     //remove the user from the item2.users and update on firestore
@@ -288,7 +284,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                                         });
                                                                     }
                                                                 }
-                                                                
+
                                                             }}>Annuler la réservation</Button>
                                                             :
                                                             <>

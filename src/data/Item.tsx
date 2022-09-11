@@ -1,7 +1,7 @@
 import { arrayRemove, doc, increment, Timestamp, updateDoc } from "firebase/firestore";
 import { Button, Card } from "react-bootstrap";
 import { db } from "../firebase";
-import { DateFormat, DateFormatAbv, DateTimeAbv, Reserver } from '../Utils/utils';
+import { DateFormat, DateFormatAbv, TimeAbv, Reserver } from '../Utils/utils';
 
 export const Titres = [
   'Pole',
@@ -59,7 +59,7 @@ export class Item {
     this.participation = participation ? participation : [];
   }
 
-  
+
   public getHour(): string {
     //returun HH:MM - HH:MM
     var datefin = new Date(this.date.seconds * 1000 + this.temps * 60 * 1000);
@@ -68,7 +68,7 @@ export class Item {
     return (dateDebut.getHours() < 10 ? "0" + dateDebut.getHours() : dateDebut.getHours())
      +":" +
       ( dateDebut.getMinutes() < 10 ? "0" + dateDebut.getMinutes() : dateDebut.getMinutes())
-      +" - " + 
+      +" - " +
       (datefin.getHours() < 10 ? "0" + datefin.getHours() : datefin.getHours())
       +":" +
       (datefin.getMinutes() < 10 ? "0" + datefin.getMinutes() : datefin.getMinutes());
@@ -79,7 +79,7 @@ export class Item {
     return (
       <Card style={{ "marginBottom": "1vh", "width": "100%" }} key={this.id}>
         <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }} >
-          < div > {DateFormatAbv(this.date.toDate())} {DateTimeAbv(this.date.toDate())}</div>
+          < div > {DateFormatAbv(this.date.toDate())} {TimeAbv(this.date.toDate())}</div>
           <div style={{"fontSize":"11px","alignSelf":"center"}}>⌚ {this.temps} min</div>
         </Card.Header>
         <Card.Body>
@@ -105,7 +105,7 @@ export class Item {
                           message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
                           });
                       return;
-                  } 
+                  }
 
                   if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
                       //remove the user from the item2.users and update on firestore
@@ -127,7 +127,7 @@ export class Item {
                           });
                       }
                   }
-                  
+
               }}>Annuler la réservation</Button>
               {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles</>
                 :
@@ -136,8 +136,8 @@ export class Item {
                   {this.place - this.users.length <= 0 ?
                     "Complet"
                     :
-                    <div style={{"fontSize":"10px"}}> <Button variant="outline-success" style={{ "marginRight": "10px","fontSize":"12px" }} 
-                      onClick={() => 
+                    <div style={{"fontSize":"10px"}}> <Button variant="outline-success" style={{ "marginRight": "10px","fontSize":"12px" }}
+                      onClick={() =>
                       {
                         if(Reserver(this, setAlert, user)){
                           this.users.push(user.uid);

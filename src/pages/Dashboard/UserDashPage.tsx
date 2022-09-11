@@ -9,6 +9,7 @@ import { db } from "../../firebase";
 import IPage from "../../interfaces/page";
 import { useHistory } from 'react-router-dom'
 import { getAllUsersFirebase } from "../../Utils/firebaseUtils";
+import {DateTimeAbv} from "../../Utils/utils";
 //import { CSVLink} from 'react-csv';
 
 const DashPage: React.FunctionComponent<IPage> = props => {
@@ -125,7 +126,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
              orderBy("date", "desc"),
              where("date", "<=", Timestamp.fromDate(new Date())),
              limit(limi));
- 
+
              await getDocs(next).then(snapshot => {
                  const list :Item[] = [];
                  snapshot.forEach((doc) => {
@@ -171,7 +172,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 </div>
             ))}
 
-            
+
           </Popover.Body>
         </Popover>
       );
@@ -186,7 +187,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
       className="mb-3"
     >
       <Tab eventKey="users" title="Utilisateurs">
-        
+
       <Table responsive>
                 <thead>
                     <tr>
@@ -221,7 +222,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
 
       </Tab>
       <Tab eventKey="cours" title="Cours">
-        
+
       <Table responsive>
                 <thead>
                     <tr>
@@ -236,7 +237,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                     {data.map((item) => (
                         <tr key={item.id}>
                             <td>{item.titre} - {item.niveau}</td>
-                            <td>{item.date.toDate().toLocaleDateString()} - {item.date.toDate().toLocaleTimeString()}</td>
+                            <td>{DateTimeAbv(item.date.toDate())}</td>
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
                             <td>{item.desc}</td>
@@ -250,13 +251,13 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                                 onClick={() => {history.push(`/modif/${item.id}`)}}>✏️</Button>
                             </td>
                             <td>
-                                <Button variant="outline-success" 
+                                <Button variant="outline-success"
                                    onClick={() => {history.push(`/particip/${item.id}`)}} >
                                     ✔️
                                 </Button>
                             </td>
                             <td>
-                                <Button variant="outline-info" 
+                                <Button variant="outline-info"
                                    onClick={() => {history.push(`/coursinfo/${item.id}`)}} >
                                    🧑‍🤝‍🧑
                                 </Button>
@@ -276,21 +277,21 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             }}
                             >🗑️</Button>
                             </td>
-                            
-                            
+
+
                         </tr>
                     ))}
                 </tbody>
             </Table>
 
-            {last !== null ? 
+            {last !== null ?
                 <div style={{"textAlign":"center"}} onClick={() => VoirPlus()}>
-                voir plus.. 
+                voir plus..
                 </div> : null}
       </Tab>
 
       <Tab eventKey="cours passe" title="Cours passé">
-        
+
       <Table responsive>
                 <thead>
                     <tr>
@@ -305,7 +306,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                     {data_bis.map((item) => (
                         <tr key={item.id}>
                             <td>{item.titre} - {item.niveau}</td>
-                            <td>{item.date.toDate().toLocaleDateString()} - {item.date.toDate().toLocaleTimeString()}</td>
+                            <td>{DateTimeAbv(item.date.toDate())}</td>
                             <td>{item.users.length} / {item.place}</td>
                             <td>{item.temps}</td>
                             <td>{item.desc}</td>
@@ -319,13 +320,13 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                                 onClick={() => {history.push(`/modif/${item.id}`)}} >✏️</Button>
                             </td>
                             <td>
-                                <Button variant="outline-success" 
+                                <Button variant="outline-success"
                                     onClick={() => {history.push(`/particip/${item.id}`)}} >
                                     ✔️
                                 </Button>
                             </td>
                             <td>
-                                <Button variant="outline-info" 
+                                <Button variant="outline-info"
                                    onClick={() => {history.push(`/coursinfo/${item.id}`)}} >
                                    🧑‍🤝‍🧑
                                 </Button>
@@ -350,12 +351,12 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                 </tbody>
             </Table>
 
-            {last_bis !== null ? 
+            {last_bis !== null ?
                 <div style={{"textAlign":"center"}} onClick={() => VoirPlus_bis()}>
-                voir plus.. 
+                voir plus..
                 </div> : null}
       </Tab>
-      
+
     </Tabs>
 
         </>
