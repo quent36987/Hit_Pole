@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDocs, increment, limit, onSnapshot, orderBy, query, startAfter, Timestamp, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, increment, limit, orderBy, query, startAfter, Timestamp, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from "react-bootstrap";
 import logging from "../../config/logging";
@@ -9,7 +9,7 @@ import { db } from "../../firebase";
 import IPage from "../../interfaces/page";
 import { useHistory } from 'react-router-dom'
 import { getAllUsersFirebase } from "../../Utils/firebaseUtils";
-import {DateTimeAbv} from "../../Utils/utils";
+import {DateTimeAbv, getUserName} from "../../Utils/utils";
 //import { CSVLink} from 'react-csv';
 
 const DashPage: React.FunctionComponent<IPage> = props => {
@@ -168,7 +168,7 @@ const DashPage: React.FunctionComponent<IPage> = props => {
           <Popover.Body>
             {list.map((user, index) => (
                 <div key={index}>
-                    <div>{user.prenom} {user.nom}</div>
+                    <div>{user}</div>
                 </div>
             ))}
 
@@ -242,7 +242,8 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             <td>{item.temps}</td>
                             <td>{item.desc}</td>
                             <td>
-                            <OverlayTrigger trigger="click" placement="left" overlay={popover(item.users.map(u => users.find(user => user.id === u)))}>
+                            <OverlayTrigger trigger="click" placement="left" overlay={
+                                popover(item.users.map(u => getUserName(users,u)))}>
                                 <Button variant="success-outline">❔</Button>
                             </OverlayTrigger>
                             </td>

@@ -8,23 +8,24 @@ import { AppState } from '../Context';
 import { db } from '../firebase';
 import { Button, Spinner } from 'react-bootstrap';
 import { User, UserConverter } from '../data/User';
+import { getUserName } from '../Utils/utils';
+
 
 
 
 const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = props => {
 
     const [data, setData] = useState([]);
-    const [dataUser, setdataUser] = useState<User>(null);
-    const { user, setAlert } = AppState();
+    const { user, setAlert,profil } = AppState();
     const [last, setlast] = useState(null);
     const [update, setUpdate] = useState(true);
 
 
-    async function LoadItem() {
+    async function LoadItem() {        
         var limi = 10;
         if (last) {
              const q = query(collection(db, "calendrier").withConverter(ItemConverter),
-             where('users', 'array-contains', user.uid),
+             where('users', 'array-contains-any', [user.uid, ...profil.famille]),
              where("date", ">", Timestamp.fromDate(new Date())),
              orderBy("date"),
              startAfter(last),
@@ -53,7 +54,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
          else
          {
             const q = query(collection(db, "calendrier").withConverter(ItemConverter),
-            where('users', 'array-contains', user.uid),
+            where('users', 'array-contains-any', [user.uid, ...profil.famille]),
             where("date", ">", Timestamp.fromDate(new Date())),
             orderBy("date"),
             limit(limi));
@@ -77,29 +78,41 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
      }
 
 
-    async function LoadProfile() {
-
-        const query = doc(db,"Users",user.uid).withConverter(UserConverter);
-        const docsnap = await getDoc(query);
-        setdataUser(docsnap.data());
+    const family = (elt : Item) => {
+       let list = [];
+       for (let index = 0; index < elt.users.length; index++) {
+           const element = elt.users[index];
+           if (element === user.uid) {
+                
+             
+               list.push(getUserName([profil], element));
+           }
+           else if (profil.famille.includes(getUserName([profil], element))) {
+               list.push(getUserName([], getUserName([profil], element)));
+           }
+       } 
+       return ( <div>Reserver par :{list.map((elt)=> (
+                    <div>{elt}</div>
+                ))}
+            </div>)
+       
     }
 
 
     useEffect(() => {
-        if (user) {
+        if (user && profil) {
             LoadItem();
-            LoadProfile();
         }
-    }, [user])
+    }, [user, profil])
 
 
     return (
         <div className="container" style={{"textAlign":"center", "marginTop" : "5px"}}>
-            <h1 className='Titre' >{dataUser?.genre === "Homme" ? 'Profil 👨' : 'Profil 👩'}</h1>
-            {user && dataUser ?
+            <h1 className='Titre' >{profil?.genre === "Homme" ? 'Profil 👨' : 'Profil 👩'}</h1>
+            {user && profil ?
             <div className="HomePage-content">
                 <div style={{"marginBottom" : "15px"}}>
-                    Bonjour {dataUser.prenom},
+                    Bonjour {profil.prenom},
                 </div>
                 Mes prochains cours réservés:
                 {data.length  === 0 && update ?
@@ -107,8 +120,11 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = p
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 :
-                    <>{data.map((data) => (
-                        data.WithHeaderExample(user, setAlert,LoadItem)
+                    <>{data.map((elt) => ( <>
+                        {profil.famille.length > 0 && family(elt)
+                        }
+                        {elt.WithHeaderExample(user,LoadItem)}
+                        </>
                     ))}</>
                 }
                 {last !== null ?

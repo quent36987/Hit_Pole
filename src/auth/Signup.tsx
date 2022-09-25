@@ -71,7 +71,6 @@ const Signup = () => {
       add();
     }
     setValidated(true);
-    console.log(genre);
   };
 
   return (<>

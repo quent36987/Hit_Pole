@@ -1,7 +1,7 @@
-import { arrayRemove, doc, increment, Timestamp, updateDoc } from "firebase/firestore";
-import { Button, Card } from "react-bootstrap";
-import { db } from "../firebase";
-import { DateFormat, DateFormatAbv, TimeAbv, Reserver } from '../Utils/utils';
+import {  Timestamp } from "firebase/firestore";
+import {  Card } from "react-bootstrap";
+import ReserverButton from "../componants/Reserver";
+import { DateFormatAbv, TimeAbv } from '../Utils/utils';
 
 export const Titres = [
   'Pole',
@@ -39,11 +39,11 @@ export class Item {
   public users: string[] = [];
   public unite: number;
   public niveau: string;
-  public participation : string[] = [];
+  public participation: string[] = [];
 
   constructor(titre: string, desc: string, date: Timestamp,
     temps: number, place: number, id: string,
-    users: string[], type: TYPE_COURS, unite: number, niveau: string, participation : string[]) {
+    users: string[], type: TYPE_COURS, unite: number, niveau: string, participation: string[]) {
     this.titre = titre ? titre : "";
     this.desc = desc ? desc : "";
     this.date = date ? date : new Timestamp(0, 0);
@@ -66,21 +66,21 @@ export class Item {
     var dateDebut = new Date(this.date.seconds * 1000);
 
     return (dateDebut.getHours() < 10 ? "0" + dateDebut.getHours() : dateDebut.getHours())
-     +":" +
-      ( dateDebut.getMinutes() < 10 ? "0" + dateDebut.getMinutes() : dateDebut.getMinutes())
-      +" - " +
+      + ":" +
+      (dateDebut.getMinutes() < 10 ? "0" + dateDebut.getMinutes() : dateDebut.getMinutes())
+      + " - " +
       (datefin.getHours() < 10 ? "0" + datefin.getHours() : datefin.getHours())
-      +":" +
+      + ":" +
       (datefin.getMinutes() < 10 ? "0" + datefin.getMinutes() : datefin.getMinutes());
   }
 
 
-  WithHeaderExample(user, setAlert,cb = null) {
+  WithHeaderExample(user, cb = null) {
     return (
       <Card style={{ "marginBottom": "1vh", "width": "100%" }} key={this.id}>
         <Card.Header style={{ "display": "flex", "justifyContent": "space-between" }} >
           < div > {DateFormatAbv(this.date.toDate())} {TimeAbv(this.date.toDate())}</div>
-          <div style={{"fontSize":"11px","alignSelf":"center"}}>⌚ {this.temps} min</div>
+          <div style={{ "fontSize": "11px", "alignSelf": "center" }}>⌚ {this.temps} min</div>
         </Card.Header>
         <Card.Body>
           <Card.Title>{this.titre}</Card.Title>
@@ -88,70 +88,16 @@ export class Item {
             {this.niveau}
           </Card.Text>
 
-          {this.date < Timestamp.fromDate(new Date()) ?
-            <div>
-              Ce cours est passé.
+          <div style={{ "fontSize": "10px" }}>
+            {user ? 
+            <ReserverButton
+              item={this}
+              userId={user ? user.uid : null}
+              cb={() => {if(cb !== null)cb()}}
+            />
+            :null }
+            {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
             </div>
-            :
-            <>
-              {user && this.users && this.users.includes(user.uid) ?
-                <><Button variant="outline-danger" style={{ "marginRight": "10px" }}
-                onClick={async () => {
-                  //if the date is less than 24h before now, the cancel is forbiden
-                  if(this.date.toDate() < new Date(new Date().getTime() + (24 * 60 * 60 * 1000))) {
-                      setAlert({
-                          open: true,
-                          type: "error",
-                          message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
-                          });
-                      return;
-                  }
-
-                  if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
-                      //remove the user from the item2.users and update on firestore
-                      const CaldendarDocRef = doc(db, 'calendrier', this.id);
-                      const UserDocRef = doc(db,'Users',user.uid)
-                      try{
-                      await Promise.all(
-                          [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
-                          updateDoc(UserDocRef, {solde: increment(this.unite)})])
-                          this.users = this.users.filter(e => e !== user.uid);
-                          if (cb != null )
-                          {cb();}
-                      }
-                      catch(error){
-                          setAlert({
-                          open: true,
-                          type: "error",
-                          message: "Une error est survenue, veuillez réessayer ultérieurement."
-                          });
-                      }
-                  }
-
-              }}>Annuler la réservation</Button>
-              {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles</>
-                :
-                <>
-
-                  {this.place - this.users.length <= 0 ?
-                    "Complet"
-                    :
-                    <div style={{"fontSize":"10px"}}> <Button variant="outline-success" style={{ "marginRight": "10px","fontSize":"12px" }}
-                      onClick={() =>
-                      {
-                        if(Reserver(this, setAlert, user)){
-                          this.users.push(user.uid);
-                        }
-                      }}>Réserver !</Button>
-                      {'('}{this.place - this.users.length}/{this.place}{")"} Places disponibles
-                    </div>
-                  }</>
-
-
-              }
-            </>
-          }
-
         </Card.Body>
       </Card>
     );
@@ -172,7 +118,7 @@ export const ItemConverter =
       users: item.users,
       type: item.type,
       unite: item.unite,
-      participation : item.participation
+      participation: item.participation
     };
   },
   fromFirestore: function (snapshot, options) {

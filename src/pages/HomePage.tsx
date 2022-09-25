@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import IPage from '../interfaces/page';
-import logging from '../config/logging';
 import './allPage.css';
 import { collection, limit, onSnapshot, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -10,7 +9,7 @@ import { AppState } from '../Context';
 
 const HomePage: React.FunctionComponent<IPage> = props => {
     const [data, setData] = useState([]);
-    const { user, setAlert } = AppState();
+    const { user } = AppState();
 
 
 
@@ -35,7 +34,7 @@ const HomePage: React.FunctionComponent<IPage> = props => {
             <h1 className='Titre' >Prochains évenements à venir:</h1>
             <div className="HomePage-content">
                 {data.map((data) => (
-                    data.WithHeaderExample(user, setAlert)
+                    data.WithHeaderExample(user)
                 ))}
             </div>
         </div>

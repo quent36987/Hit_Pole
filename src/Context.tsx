@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { User, UserConverter } from "./data/User";
 
 const App = createContext(null);
 const Context = ({ children }) => {
@@ -13,6 +14,7 @@ const Context = ({ children }) => {
     });
     const [perm, setPerm] = useState(false);
     const [user, setUser] = useState(null);
+    const [profil, setProfil] = useState<User>(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -40,6 +42,22 @@ const Context = ({ children }) => {
         isadm();
     }, [user, perm]);
 
+    
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+        LoadProfile();
+    }, [user]);
+
+    async function LoadProfile() {
+        const query = doc(db, "Users", user.uid).withConverter(UserConverter);
+        const docsnap = await getDoc(query);
+        let pro = docsnap.data();
+        pro.id = docsnap.id;
+        setProfil(pro);
+    }
+
 
     return (
         <App.Provider
@@ -48,6 +66,7 @@ const Context = ({ children }) => {
                 setAlert,
                 user,
                 perm,
+                profil,
             }}
         >
             {children}

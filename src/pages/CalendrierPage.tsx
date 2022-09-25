@@ -1,12 +1,10 @@
-import {  Timestamp,doc, updateDoc, increment, arrayRemove } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import ReserverButton from '../componants/Reserver';
 import { AppState } from '../Context';
 import { Item } from '../data/Item';
-import { db } from '../firebase';
 import IPage from '../interfaces/page';
 import { getAllItemMonth } from '../Utils/firebaseUtils';
-import {DateAbv, DateFormatAbv, mois, Reserver} from '../Utils/utils';
+import { DateAbv, DateFormatAbv, mois } from '../Utils/utils';
 import './allPage.css';
 
 
@@ -30,10 +28,10 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
     }, [datenow])
 
     useEffect(() => {
-            getData();
+        getData();
     }, [datenow.getMonth()])
 
-    async function getData(){
+    async function getData() {
         setData(await getAllItemMonth(datenow));
     }
 
@@ -143,74 +141,14 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                                     <div className='carte-info-1'>
                                                         <div className='carte-info-heure' >{item2.getHour()}</div>
                                                         <div className='carte-info-titre' >{item2.titre} - {item2.niveau}</div>
-                                                        <div className='carte-info-plus'>{item2.place - item2.users.length }/{item2.place} {"place(s) dispo"}</div>
+                                                        <div className='carte-info-plus'>{item2.place - item2.users.length}/{item2.place} {"place(s) dispo"}</div>
                                                     </div>
                                                     <span className='carte-info-2' >
-
-
-                                                        {item2.date < Timestamp.fromDate(new Date()) ?
-                                                            <div  style={{ "marginRight": "10px", "fontSize": "12px" }}>
-                                                                Ce cours est passé.
-                                                            </div>
-                                                            :
-                                                            <>
-                                                                {user && item2.users && item2.users.includes(user.uid) ?
-                                                                    <Button variant="outline-danger" style={{ "marginRight": "10px", "fontSize": "12px" }}
-                                                                        onClick={async () => {
-                                                                            //if the date is less than 24h before now, the cancel is forbiden
-                                                                            if(item2.date.toDate() < new Date(new Date().getTime() + (24 * 60 * 60 * 1000))) {
-                                                                                setAlert({
-                                                                                    open: true,
-                                                                                    type: "error",
-                                                                                    message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
-                                                                                    });
-                                                                                return;
-                                                                            }
-
-                                                                            if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
-                                                                                //remove the user from the item2.users and update on firestore
-                                                                                const CaldendarDocRef = doc(db, 'calendrier', item2.id);
-                                                                                const UserDocRef = doc(db,'Users',user.uid)
-                                                                                try{
-                                                                                await Promise.all(
-                                                                                    [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
-                                                                                    updateDoc(UserDocRef, {solde: increment(item2.unite)})])
-                                                                                getData();
-                                                                                }
-                                                                                catch(error){
-                                                                                    setAlert({
-                                                                                    open: true,
-                                                                                    type: "error",
-                                                                                    message: "Une error est survenue, veuillez réessayer ultérieurement."
-                                                                                    });
-                                                                                }
-                                                                            }
-
-                                                                        }}>Annuler la réservation</Button>
-                                                                    :
-                                                                    <div >
-
-                                                                        {item2.place - item2.users.length <= 0 ?
-                                                                            <div  style={{ "marginRight": "10px", "fontSize": "13px" }}>
-                                                                                Complet
-                                                                            </div>
-                                                                            :
-                                                                            <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px" }}
-                                                                                onClick={() =>{
-                                                                                   if(Reserver(item2, setAlert, user))
-                                                                                   {
-                                                                                        getData();
-                                                                                   }
-                                                                                } }>Réserver</Button>
-
-                                                                            </div>
-                                                                        }</div>
-
-
-                                                                }
-                                                            </>
-                                                        }
-
+                                                        <ReserverButton
+                                                            item={item2}
+                                                            userId={user ? user.uid : null}
+                                                            cb={() => getData()}
+                                                        />
                                                     </span>
                                                 </div>
                                             </div>
@@ -242,74 +180,14 @@ const CalendrierPage: React.FunctionComponent<IPage> = props => {
                                             <div className='carte-info-1'>
                                                 <div className='carte-info-heure' >{item2.getHour()}</div>
                                                 <div className='carte-info-titre' >{item2.titre} - {item2.niveau}</div>
-                                                <div className='carte-info-plus'>{item2.place - item2.users.length }/{item2.place} {"place(s) dispo"}</div>
+                                                <div className='carte-info-plus'>{item2.place - item2.users.length}/{item2.place} {"place(s) dispo"}</div>
                                             </div>
                                             <span className='carte-info-2' >
-
-
-                                                {item2.date < Timestamp.fromDate(new Date()) ?
-                                                    <div>
-                                                        Ce cours est passé.
-                                                    </div>
-                                                    :
-                                                    <>
-                                                        {user && item2.users && item2.users.includes(user.uid) ?
-                                                            <Button variant="outline-danger" style={{ "marginRight": "10px", "fontSize": "12px" }}
-                                                            onClick={async () => {
-                                                                //if the date is less than 24h before now, the cancel is forbiden
-                                                                if(item2.date.toDate() < new Date(new Date().getTime() + (24 * 60 * 60 * 1000))) {
-                                                                    setAlert({
-                                                                        open: true,
-                                                                        type: "error",
-                                                                        message: "Vous ne pouvez pas annuler un cours qui est dans moins de 24h"
-                                                                        });
-                                                                    return;
-                                                                }
-
-                                                                if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
-                                                                    //remove the user from the item2.users and update on firestore
-                                                                    const CaldendarDocRef = doc(db, 'calendrier', item2.id);
-                                                                    const UserDocRef = doc(db,'Users',user.uid)
-                                                                    try{
-                                                                    await Promise.all(
-                                                                        [updateDoc(CaldendarDocRef, { users: arrayRemove(user.uid) }),
-                                                                        updateDoc(UserDocRef, {solde: increment(item2.unite)})])
-                                                                    getData()
-                                                                    }
-                                                                    catch(error){
-                                                                        setAlert({
-                                                                        open: true,
-                                                                        type: "error",
-                                                                        message: "Une error est survenue, veuillez réessayer ultérieurement."
-                                                                        });
-                                                                    }
-                                                                }
-
-                                                            }}>Annuler la réservation</Button>
-                                                            :
-                                                            <>
-
-                                                                {item2.place - item2.users.length <= 0 ?
-                                                                    "Complet"
-                                                                    :
-                                                                    <div className='header'> <Button variant="outline-success" style={{ "marginRight": "10px" }} className="header"
-                                                                        onClick={() => {
-                                                                            if(Reserver(item2, setAlert, user))
-                                                                            {
-                                                                                getData();
-                                                                            }
-
-                                                                        }
-                                                                            }>Réserver !</Button>
-
-                                                                    </div>
-                                                                }</>
-
-
-                                                        }
-                                                    </>
-                                                }
-
+                                                <ReserverButton      
+                                                    item={item2}
+                                                    userId={user ? user.uid : null}
+                                                    cb={() => getData()}
+                                                />
                                             </span>
                                         </div>
                                     </div>

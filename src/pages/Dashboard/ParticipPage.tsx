@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import IPage from '../../interfaces/page';
 import { Item } from '../../data/Item';
 import { db } from '../../firebase';
-import { DateFormat } from '../../Utils/utils';
+import { DateFormat, getUserName } from '../../Utils/utils';
 import { User } from '../../data/User';
 import { AppState } from '../../Context';
 import { getAllItemToday, getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
@@ -168,7 +168,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                             }}
                                             checked={userSelected.includes(item)}
                                         ></input>
-                                        {users.find(x => x.id === item)?.getFullName()}
+                                        {getUserName(users,item)}
                                 </div>
                             ))
                         }
