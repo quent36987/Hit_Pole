@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import IPage from '../interfaces/page';
 import './allPage.css';
+import { AppState } from '../Context';
+import { db } from '../firebase';
+import { IPage } from '../interfaces/page';
 import {
     collection,
     limit,
@@ -10,9 +11,8 @@ import {
     Timestamp,
     where
 } from 'firebase/firestore';
-import { db } from '../firebase';
 import { Item, ItemConverter } from '../data/Item';
-import { AppState } from '../Context';
+import React, { useEffect, useState } from 'react';
 
 const HomePage: React.FunctionComponent<IPage> = (props) => {
     const [data, setData] = useState([]);
@@ -51,4 +51,4 @@ const HomePage: React.FunctionComponent<IPage> = (props) => {
     );
 };
 
-export default HomePage;
+export { HomePage };

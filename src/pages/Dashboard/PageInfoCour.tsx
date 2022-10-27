@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
 import '../allPage.css';
-import { Button, Modal } from 'react-bootstrap';
-import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
-import { RouteComponentProps } from 'react-router-dom';
-import IPage from '../../interfaces/page';
-import { Item } from '../../data/Item';
-import { db } from '../../firebase';
-import { User } from '../../data/User';
 import { AppState } from '../../Context';
-import { getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
-import Forms from '../../componants/Form';
+import { db } from '../../firebase';
+import { Forms } from '../../componants/Form';
 import { getUserName } from '../../Utils/utils';
+import { IPage } from '../../interfaces/page';
+import { Item } from '../../data/Item';
+import { RouteComponentProps } from 'react-router-dom';
+import { User } from '../../data/User';
+import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
+import { Button, Modal } from 'react-bootstrap';
+import { getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
+import React, { useEffect, useState } from 'react';
 
 const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const { setAlert } = AppState();
@@ -246,4 +246,4 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     );
 };
 
-export default InfoCourPage;
+export { InfoCourPage };

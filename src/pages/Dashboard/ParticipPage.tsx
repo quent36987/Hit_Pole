@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import '../allPage.css';
-import { Modal } from 'react-bootstrap';
-import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
-import { RouteComponentProps } from 'react-router-dom';
-import IPage from '../../interfaces/page';
-import { Item } from '../../data/Item';
-import { db } from '../../firebase';
-import { DateFormat, getUserName } from '../../Utils/utils';
-import { User } from '../../data/User';
 import { AppState } from '../../Context';
+import { db } from '../../firebase';
+import { IPage } from '../../interfaces/page';
+import { Item } from '../../data/Item';
+import { Modal } from 'react-bootstrap';
+import { RouteComponentProps } from 'react-router-dom';
+import { User } from '../../data/User';
+import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
+import { DateFormat, getUserName } from '../../Utils/utils';
 import { getAllItemToday, getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
+import React, { useEffect, useState } from 'react';
 
 const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [items, setItems] = useState<Item[]>([]);
@@ -296,4 +296,4 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     );
 };
 
-export default ParticipPage;
+export { ParticipPage };

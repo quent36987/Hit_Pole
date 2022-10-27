@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import firebase from 'firebase/compat';
+import User = firebase.User;
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { User as UserModel, UserConverter } from './data/User';
-import firebase from 'firebase/compat';
-import User = firebase.User;
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { UserConverter, User as UserModel } from './data/User';
 
 const App = createContext(null);
 
@@ -85,8 +85,8 @@ const Context = ({ children }): JSX.Element => {
     );
 };
 
-export default Context;
-
-export const AppState = (): IAppState => {
+const AppState = (): IAppState => {
     return useContext(App);
 };
+
+export { Context, AppState };

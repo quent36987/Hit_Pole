@@ -1,7 +1,7 @@
-import { addDoc, arrayUnion, collection, doc, Timestamp, updateDoc } from 'firebase/firestore';
-import React, { useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
 import { db } from '../firebase';
+import { addDoc, arrayUnion, collection, doc, Timestamp, updateDoc } from 'firebase/firestore';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import React, { useState } from 'react';
 
 const Forms = (Props): JSX.Element => {
     const [validated, setValidated] = useState(false);
@@ -76,4 +76,4 @@ const Forms = (Props): JSX.Element => {
     );
 };
 
-export default Forms;
+export { Forms };

@@ -1,3 +1,10 @@
+import { AppState } from '../../Context';
+import { db } from '../../firebase';
+import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
+import { IPage } from '../../interfaces/page';
+import { useHistory } from 'react-router-dom';
+import { User } from '../../data/User';
+import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from 'react-bootstrap';
 import {
     collection,
     deleteDoc,
@@ -12,16 +19,9 @@ import {
     updateDoc,
     where
 } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from 'react-bootstrap';
-import { AppState } from '../../Context';
-import { Item, ItemConverter } from '../../data/Item';
-import { User } from '../../data/User';
-import { db } from '../../firebase';
-import IPage from '../../interfaces/page';
-import { useHistory } from 'react-router-dom';
-import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
 import { DateTimeAbv, getUserName } from '../../Utils/utils';
+import { Item, ItemConverter } from '../../data/Item';
+import React, { useEffect, useState } from 'react';
 
 const DashPage: React.FunctionComponent<IPage> = (props) => {
     const [data, setData] = useState<Item[]>([]);
@@ -455,4 +455,4 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
     );
 };
 
-export default DashPage;
+export { DashPage };

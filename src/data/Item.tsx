@@ -1,11 +1,12 @@
-import { Timestamp } from 'firebase/firestore';
 import { Card } from 'react-bootstrap';
-import ReserverButton from '../componants/Reserver';
-import { DateFormatAbv, TimeAbv } from '../Utils/utils';
 import React from 'react';
+import { ReserverButton } from '../componants/Reserver';
+import { Timestamp } from 'firebase/firestore';
+import { DateFormatAbv, TimeAbv } from '../Utils/utils';
 
-export const Titres = ['Pole', 'Pole ados', 'Hit Streching', 'Chair et Exotic'];
-export const Niveaux = [
+const Titres = ['Pole', 'Pole ados', 'Hit Streching', 'Chair et Exotic'];
+
+const Niveaux = [
     'Tout niveau',
     'Initiation/débutant',
     'Deb 2/3',
@@ -15,14 +16,14 @@ export const Niveaux = [
     'Inter 2'
 ];
 
-export enum TYPE_COURS {
+enum TYPE_COURS {
     COURS,
     INITIATION,
     STAGE,
     PRACTICE
 }
 
-export class Item {
+class Item {
     public type: TYPE_COURS;
     public titre: string;
     public desc: string;
@@ -109,7 +110,7 @@ export class Item {
     }
 }
 
-export const ItemConverter = {
+const ItemConverter = {
     toFirestore: function (item: Item) {
         return {
             titre: item.titre,
@@ -142,3 +143,5 @@ export const ItemConverter = {
         );
     }
 };
+
+export { Titres, TYPE_COURS, Niveaux, ItemConverter, Item };

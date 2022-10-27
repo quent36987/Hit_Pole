@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import ReserverButton from '../componants/Reserver';
-import { AppState } from '../Context';
-import { Item } from '../data/Item';
-import IPage from '../interfaces/page';
-import { getAllItemMonth } from '../Utils/firebaseUtils';
-import { DateAbv, DateFormatAbv, MOIS } from '../Utils/utils';
 import './allPage.css';
+import { AppState } from '../Context';
+import { getAllItemMonth } from '../Utils/firebaseUtils';
+import { IPage } from '../interfaces/page';
+import { Item } from '../data/Item';
+import { ReserverButton } from '../componants/Reserver';
+import { DateAbv, DateFormatAbv, MOIS } from '../Utils/utils';
+import React, { useEffect, useState } from 'react';
 
 const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
     const { user } = AppState();
@@ -368,4 +368,4 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
     );
 };
 
-export default CalendrierPage;
+export { CalendrierPage };

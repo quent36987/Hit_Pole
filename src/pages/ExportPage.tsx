@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import IPage from '../interfaces/page';
-import { ExportCSV } from '../Utils/exportCSV';
 import { CSVLink } from 'react-csv';
 import { DateFormatAbv } from '../Utils/utils';
+import { ExportCSV } from '../Utils/exportCSV';
+import { IPage } from '../interfaces/page';
+import React, { useEffect, useState } from 'react';
 
 const ExportPage: React.FunctionComponent<IPage> = (props) => {
     const [data, setData] = useState([]);
@@ -34,4 +34,4 @@ const ExportPage: React.FunctionComponent<IPage> = (props) => {
     );
 };
 
-export default ExportPage;
+export { ExportPage };

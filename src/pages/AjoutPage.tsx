@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import IPage from '../interfaces/page';
-import logging from '../config/logging';
 import './allPage.css';
 import { AppState } from '../Context';
-import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
+import { IPage } from '../interfaces/page';
+import logging from '../config/logging';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
 import { Item, ItemConverter, Niveaux, Titres, TYPE_COURS } from '../data/Item';
+import React, { useEffect, useState } from 'react';
 
 const AjoutPage: React.FunctionComponent<IPage> = (props) => {
     const { setAlert } = AppState();
@@ -255,4 +255,4 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
     );
 };
 
-export default AjoutPage;
+export { AjoutPage };

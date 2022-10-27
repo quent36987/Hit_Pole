@@ -1,16 +1,16 @@
-import IRoute from '../interfaces/route';
-import ProfilePage from '../pages/ProfilePage';
-import HomePage from '../pages/HomePage';
-import AuthPage from '../pages/AuthPage';
-import AjoutPage from '../pages/AjoutPage';
-import CalendrierPage from '../pages/CalendrierPage';
-import ContactPage from '../pages/ContactPage';
-import DuplicaPage from '../pages/DuplicaPage';
-import ModifPage from '../pages/ModifPage';
-import DashPage from '../pages/Dashboard/UserDashPage';
-import ParticipPage from '../pages/Dashboard/ParticipPage';
-import InfoCourPage from '../pages/Dashboard/PageInfoCour';
-import ExportPage from '../pages/ExportPage';
+import { AjoutPage } from '../pages/AjoutPage';
+import { AuthPage } from '../pages/AuthPage';
+import { CalendrierPage } from '../pages/CalendrierPage';
+import { ContactPage } from '../pages/ContactPage';
+import { DashPage } from '../pages/Dashboard/UserDashPage';
+import { DuplicaPage } from '../pages/DuplicaPage';
+import { ExportPage } from '../pages/ExportPage';
+import { HomePage } from '../pages/HomePage';
+import { InfoCourPage } from '../pages/Dashboard/PageInfoCour';
+import { IRoute } from '../interfaces/route';
+import { ModifPage } from '../pages/ModifPage';
+import { ParticipPage } from '../pages/Dashboard/ParticipPage';
+import { ProfilePage } from '../pages/ProfilePage';
 
 const routes: IRoute[] = [
     {
@@ -87,4 +87,4 @@ const routes: IRoute[] = [
     }
 ];
 
-export default routes;
+export { routes };

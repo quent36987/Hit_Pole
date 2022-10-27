@@ -1,4 +1,4 @@
-export class User {
+class User {
     public prenom: string;
     public nom: string;
     public solde: number;
@@ -29,7 +29,7 @@ export class User {
     }
 }
 
-export const UserConverter = {
+const UserConverter = {
     toFirestore: function (item: User) {
         return {
             prenom: item.prenom,
@@ -53,3 +53,5 @@ export const UserConverter = {
         );
     }
 };
+
+export { User, UserConverter };

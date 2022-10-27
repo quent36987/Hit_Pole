@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import IPage from '../interfaces/page';
 import './allPage.css';
-import Login from '../auth/Login';
-import Signup from '../auth/Signup';
+import { IPage } from '../interfaces/page';
+import { Login } from '../auth/Login';
 import { RouteComponentProps } from 'react-router-dom';
+import { Signup } from '../auth/Signup';
+import React, { useState } from 'react';
 
 const AuthPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [titre, setTitre] = useState('');
@@ -47,4 +47,4 @@ const AuthPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pro
     );
 };
 
-export default AuthPage;
+export { AuthPage };

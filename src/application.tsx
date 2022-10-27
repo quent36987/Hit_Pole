@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Switch, RouteComponentProps } from 'react-router-dom';
-import Alert from './componants/Alert';
-import HeaderBar from './componants/Header';
+import { Alert } from './componants/Alert';
+import { HeaderBar } from './componants/Header';
 import logging from './config/logging';
-import routes from './config/routes';
+import { routes } from './config/routes';
+import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
 
 const Application: React.FunctionComponent<{}> = (props) => {
     useEffect(() => {

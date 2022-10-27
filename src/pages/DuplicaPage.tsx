@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { addDoc, collection, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
-import { Item, ItemConverter } from '../data/Item';
-import { Button, Form } from 'react-bootstrap';
-import IPage from '../interfaces/page';
 import './allPage.css';
 import { db } from '../firebase';
+import { IPage } from '../interfaces/page';
+import { addDoc, collection, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { Button, Form } from 'react-bootstrap';
+import { Item, ItemConverter } from '../data/Item';
+import React, { useState } from 'react';
 
 const mois = [
     'Janvier',
@@ -193,4 +193,4 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
     );
 };
 
-export default DuplicaPage;
+export { DuplicaPage };

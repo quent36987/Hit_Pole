@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { auth } from '../firebase';
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { AppState } from '../Context';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { auth } from '../firebase';
 import { Link } from 'react-router-dom';
+import { Button, Form, Modal } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = (): JSX.Element => {
     const [email, setEmail] = useState<string>('');
@@ -135,4 +135,4 @@ const Login = (): JSX.Element => {
     );
 };
 
-export default Login;
+export { Login };

@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import IPage from '../interfaces/page';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './allPage.css';
+import { AppState } from '../Context';
+import { db } from '../firebase';
+import { getUserName } from '../Utils/utils';
+import { IPage } from '../interfaces/page';
+import { RouteComponentProps } from 'react-router-dom';
+import { Button, Spinner } from 'react-bootstrap';
 import {
     collection,
     getDocs,
@@ -13,10 +16,7 @@ import {
     where
 } from 'firebase/firestore';
 import { Item, ItemConverter } from '../data/Item';
-import { AppState } from '../Context';
-import { db } from '../firebase';
-import { Button, Spinner } from 'react-bootstrap';
-import { getUserName } from '../Utils/utils';
+import React, { useEffect, useState } from 'react';
 
 const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [data, setData] = useState([]);
@@ -161,4 +161,4 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
     );
 };
 
-export default withRouter(ProfilePage);
+export { ProfilePage };

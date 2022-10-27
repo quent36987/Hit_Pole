@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import IPage from '../interfaces/page';
-import { FormGroup } from '@material-ui/core';
-import { Button, Form } from 'react-bootstrap';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase';
 import { AppState } from '../Context';
+import { db } from '../firebase';
+import { FormGroup } from '@material-ui/core';
+import { IPage } from '../interfaces/page';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { Button, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
 
 const ContactPage: React.FunctionComponent<IPage> = (props) => {
     const [message, Setmessage] = useState('');
@@ -81,4 +81,4 @@ const ContactPage: React.FunctionComponent<IPage> = (props) => {
     );
 };
 
-export default ContactPage;
+export { ContactPage };

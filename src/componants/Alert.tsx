@@ -1,7 +1,7 @@
 import { AppState } from '../Context';
-import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import React from 'react';
+import { Snackbar } from '@material-ui/core';
 
 const Alert = (): JSX.Element => {
     const { alert, setAlert } = AppState();
@@ -27,4 +27,4 @@ const Alert = (): JSX.Element => {
     );
 };
 
-export default Alert;
+export { Alert };

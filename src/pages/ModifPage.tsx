@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import IPage from '../interfaces/page';
 import './allPage.css';
 import { AppState } from '../Context';
+import { db } from '../firebase';
+import { IPage } from '../interfaces/page';
+import { RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
 import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase';
-import { RouteComponentProps } from 'react-router-dom';
 import { Item, ItemConverter, Niveaux, Titres } from '../data/Item';
+import React, { useEffect, useState } from 'react';
 
 const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [item, setItem] = useState<Item>(null);
@@ -223,4 +223,4 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
     );
 };
 
-export default ModifPage;
+export { ModifPage };

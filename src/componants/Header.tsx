@@ -1,11 +1,11 @@
-import { signOut } from 'firebase/auth';
-import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { AppState } from '../Context';
 import { auth } from '../firebase';
 import { Link } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import React, { useState } from 'react';
 
-const App = (): JSX.Element => {
+const HeaderBar = (): JSX.Element => {
     const { user, setAlert, perm } = AppState();
     const [expanded, setExpanded] = useState(false);
 
@@ -109,4 +109,4 @@ const App = (): JSX.Element => {
     );
 };
 
-export default App;
+export { HeaderBar };

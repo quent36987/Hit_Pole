@@ -1,9 +1,9 @@
-import { Timestamp } from 'firebase/firestore';
-import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
 import { AppState } from '../Context';
 import { Item } from '../data/Item';
+import { Timestamp } from 'firebase/firestore';
 import { Annuler, Reserver } from '../Utils/utils';
+import { Button, Modal } from 'react-bootstrap';
+import React, { useState } from 'react';
 
 interface IReserverProps {
     item: Item;
@@ -193,4 +193,4 @@ const ReserverButton = (Props: IReserverProps): JSX.Element => {
     );
 };
 
-export default ReserverButton;
+export { ReserverButton };

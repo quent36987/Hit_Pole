@@ -1,3 +1,4 @@
+import { db } from '../firebase';
 import {
     collection,
     doc,
@@ -10,9 +11,8 @@ import {
 } from 'firebase/firestore';
 import { Item, ItemConverter } from '../data/Item';
 import { User, UserConverter } from '../data/User';
-import { db } from '../firebase';
 
-export async function getAllUsersFirebase(): Promise<User[]> {
+async function getAllUsersFirebase(): Promise<User[]> {
     const users: User[] = [];
     const collectionRef = collection(db, 'Users').withConverter<User>(UserConverter);
     const data = await getDocs(collectionRef);
@@ -26,7 +26,7 @@ export async function getAllUsersFirebase(): Promise<User[]> {
     return users;
 }
 
-export async function getUserFirebase(id: string): Promise<User> {
+async function getUserFirebase(id: string): Promise<User> {
     const userRef = doc(db, 'Users', id).withConverter<User>(UserConverter);
     const data = await getDoc(userRef);
     const user = data.data();
@@ -35,7 +35,7 @@ export async function getUserFirebase(id: string): Promise<User> {
     return user;
 }
 
-export async function getItemFirebase(id: string): Promise<Item> {
+async function getItemFirebase(id: string): Promise<Item> {
     const itemRef = doc(db, 'calendrier', id).withConverter<Item>(ItemConverter);
     const data = await getDoc(itemRef);
     const item = data.data();
@@ -44,7 +44,7 @@ export async function getItemFirebase(id: string): Promise<Item> {
     return item;
 }
 
-export async function getAllItemToday(): Promise<Item[]> {
+async function getAllItemToday(): Promise<Item[]> {
     const collectionRef = collection(db, 'calendrier').withConverter<Item>(ItemConverter);
     const listItem: Item[] = [];
     const datenow = new Date();
@@ -78,7 +78,7 @@ export async function getAllItemToday(): Promise<Item[]> {
     return listItem;
 }
 
-export async function getAllItemMonth(date: Date): Promise<Item[]> {
+async function getAllItemMonth(date: Date): Promise<Item[]> {
     const collectionRef = collection(db, 'calendrier').withConverter<Item>(ItemConverter);
 
     const queryRef = query(
@@ -100,7 +100,7 @@ export async function getAllItemMonth(date: Date): Promise<Item[]> {
     return listItem;
 }
 
-export async function getAllItems(): Promise<Item[]> {
+async function getAllItems(): Promise<Item[]> {
     const collectionRef = collection(db, 'calendrier').withConverter<Item>(ItemConverter);
     const queryRef = query(collectionRef, orderBy('date'));
     const data = await getDocs(queryRef);
@@ -114,3 +114,12 @@ export async function getAllItems(): Promise<Item[]> {
 
     return items;
 }
+
+export {
+    getAllUsersFirebase,
+    getUserFirebase,
+    getItemFirebase,
+    getAllItemToday,
+    getAllItemMonth,
+    getAllItems
+};
