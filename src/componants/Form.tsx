@@ -1,15 +1,14 @@
-/* eslint-disable */
 import { addDoc, arrayUnion, collection, doc, Timestamp, updateDoc } from 'firebase/firestore';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { db } from '../firebase';
 
-const Forms = (Props) => {
+const Forms = (Props): JSX.Element => {
     const [validated, setValidated] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
-    async function add() {
+    async function add(): Promise<void> {
         const collectionRef = collection(db, 'Users');
 
         const docs = await addDoc(collectionRef, {
@@ -26,17 +25,17 @@ const Forms = (Props) => {
         Props.cb();
     }
 
-    const handleSubmit = (event) => {
+    async function handleSubmit(event): Promise<void> {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
 
         if (form.checkValidity() === true) {
-            add();
+            await add();
         }
 
         setValidated(true);
-    };
+    }
 
     return (
         <>

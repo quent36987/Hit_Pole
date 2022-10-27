@@ -1,24 +1,23 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import ReserverButton from '../componants/Reserver';
 import { AppState } from '../Context';
 import { Item } from '../data/Item';
 import IPage from '../interfaces/page';
 import { getAllItemMonth } from '../Utils/firebaseUtils';
-import { DateAbv, DateFormatAbv, mois } from '../Utils/utils';
+import { DateAbv, DateFormatAbv, MOIS } from '../Utils/utils';
 import './allPage.css';
 
 const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
-    const { user, setAlert } = AppState();
+    const { user } = AppState();
     const jours = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
     const [datenow, setDatenow] = useState(new Date());
-    const [datenow_firstweek, setDatenow_firstweek] = useState(new Date());
+    const [datenowFirstweek, setDatenowFirstweek] = useState(new Date());
     const [data, setData] = useState<Item[]>([]);
-    const [type, setType] = useState('semaine'); // mois,semaine,jour
+    const [type, setType] = useState('semaine'); // MOIS,semaine,jour
 
     useEffect(() => {
         if (datenow.getDay() !== 1) {
-            setDatenow_firstweek(
+            setDatenowFirstweek(
                 new Date(
                     datenow.getFullYear(),
                     datenow.getMonth(),
@@ -26,15 +25,15 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                 )
             );
         } else {
-            setDatenow_firstweek(datenow);
+            setDatenowFirstweek(datenow);
         }
     }, [datenow]);
 
     useEffect(() => {
-        getData();
+        getData().catch(console.error);
     }, [datenow.getMonth()]);
 
-    async function getData() {
+    async function getData(): Promise<void> {
         setData(await getAllItemMonth(datenow));
     }
 
@@ -48,7 +47,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
         return week;
     }
 
-    function Calendar(datenow: Date) {
+    function Calendar(datenow: Date): JSX.Element[] {
         const firstDay =
             ((new Date(datenow.getFullYear(), datenow.getMonth(), 1).getDay() - 1) % 7) - 1;
 
@@ -64,11 +63,16 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                     );
 
                     if (date.getMonth() !== datenow.getMonth()) {
-                        return <div className="calendar-table__item_2">{date.getDate()}</div>;
+                        return (
+                            <div key={j} className="calendar-table__item_2">
+                                {date.getDate()}
+                            </div>
+                        );
                     }
 
                     return (
                         <div
+                            key={j}
                             className="calendar-table__item"
                             onClick={() => {
                                 setDatenow(date);
@@ -80,8 +84,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                     date.getMonth() === new Date().getMonth()
                                         ? '#77777749'
                                         : ''
-                            }}
-                        >
+                            }}>
                             {date.getDate()}
                             {data
                                 .filter(
@@ -92,12 +95,12 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                 .map((item) => {
                                     return (
                                         <div
+                                            key={`${j}-${item.titre}`}
                                             className={
                                                 user && item.users.includes(user.uid)
                                                     ? 'calendar-table__item_item'
                                                     : 'calendar-table__item_item2'
-                                            }
-                                        >
+                                            }>
                                             {item.titre}
                                         </div>
                                     );
@@ -124,30 +127,26 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                             style={{
                                 display: 'flex',
                                 justifyContent: 'center'
-                            }}
-                        >
+                            }}>
                             <div
                                 className={
                                     type === 'mois' ? 'calendar-type-choix' : 'calendar-type'
                                 }
-                                onClick={() => setType('mois')}
-                            >
+                                onClick={() => setType('mois')}>
                                 Mois
                             </div>
                             <div
                                 className={
                                     type === 'semaine' ? 'calendar-type-choix' : 'calendar-type'
                                 }
-                                onClick={() => setType('semaine')}
-                            >
+                                onClick={() => setType('semaine')}>
                                 Semaine
                             </div>
                             <div
                                 className={
                                     type === 'jour' ? 'calendar-type-choix' : 'calendar-type'
                                 }
-                                onClick={() => setType('jour')}
-                            >
+                                onClick={() => setType('jour')}>
                                 Jour
                             </div>
                         </div>
@@ -165,12 +164,11 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                     1
                                                 )
                                             )
-                                        }
-                                    >
+                                        }>
                                         {'◀️'}
                                     </div>
                                     <div className="calendar_header_item_centre">
-                                        {mois[datenow.getMonth()]}
+                                        {MOIS[datenow.getMonth()]}
                                     </div>
                                     <div
                                         className="calendar_header_item"
@@ -182,8 +180,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                     1
                                                 )
                                             )
-                                        }
-                                    >
+                                        }>
                                         {'▶️'}
                                     </div>
                                 </div>
@@ -213,17 +210,16 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                     datenow.getDate() - 7
                                                 )
                                             )
-                                        }
-                                    >
+                                        }>
                                         {'◀️'}
                                     </div>
                                     <div className="calendar_header_item_centre">
-                                        {DateAbv(datenow_firstweek)} -{' '}
+                                        {DateAbv(datenowFirstweek)} -{' '}
                                         {DateAbv(
                                             new Date(
-                                                datenow_firstweek.getFullYear(),
-                                                datenow_firstweek.getMonth(),
-                                                datenow_firstweek.getDate() + 6
+                                                datenowFirstweek.getFullYear(),
+                                                datenowFirstweek.getMonth(),
+                                                datenowFirstweek.getDate() + 6
                                             )
                                         )}
                                     </div>
@@ -237,13 +233,12 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                     datenow.getDate() + 7
                                                 )
                                             )
-                                        }
-                                    >
+                                        }>
                                         {'▶️'}
                                     </div>
                                 </div>
                                 <div className="semaine">
-                                    {getweek(datenow_firstweek).map((item) => (
+                                    {getweek(datenowFirstweek).map((item) => (
                                         <>
                                             <div className="jour">{DateFormatAbv(item)}</div>
                                             {data
@@ -254,8 +249,8 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                         item2.date.toDate().getMonth() ===
                                                             item.getMonth()
                                                 )
-                                                .map((item2) => (
-                                                    <div className="carte">
+                                                .map((item2, index) => (
+                                                    <div key={index} className="carte">
                                                         <div className="carte-info">
                                                             <div className="carte-info-1">
                                                                 <div className="carte-info-heure">
@@ -300,8 +295,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                     datenow.getDate() - 1
                                                 )
                                             )
-                                        }
-                                    >
+                                        }>
                                         {'◀️'}
                                     </div>
                                     <div className="calendar_header_item_centre">
@@ -317,8 +311,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                     datenow.getDate() + 1
                                                 )
                                             )
-                                        }
-                                    >
+                                        }>
                                         {'▶️'}
                                     </div>
                                 </div>
@@ -332,8 +325,8 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                     datenow.getDate() &&
                                                 item.date.toDate().getMonth() === datenow.getMonth()
                                         )
-                                        .map((item2) => (
-                                            <div className="carte">
+                                        .map((item2, index) => (
+                                            <div key={index} className="carte">
                                                 <div className="carte-info">
                                                     <div className="carte-info-1">
                                                         <div className="carte-info-heure">

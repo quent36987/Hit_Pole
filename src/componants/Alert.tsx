@@ -1,14 +1,12 @@
-/* eslint-disable */
-// Snack Component - https://material-ui.com/components/snackbars/
 import { AppState } from '../Context';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import React from 'react';
 
-const Alert = () => {
+const Alert = (): JSX.Element => {
     const { alert, setAlert } = AppState();
 
-    const handleCloseAlert = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    const handleCloseAlert = (event?: React.SyntheticEvent | Event, reason?: string): void => {
         if (reason === 'clickaway') {
             return;
         }
@@ -22,8 +20,7 @@ const Alert = () => {
                 onClose={handleCloseAlert}
                 elevation={10}
                 variant="filled"
-                severity={alert.type}
-            >
+                severity={alert.type}>
                 {alert.message}
             </MuiAlert>
         </Snackbar>

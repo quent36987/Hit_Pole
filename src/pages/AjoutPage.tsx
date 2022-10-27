@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import IPage from '../interfaces/page';
 import logging from '../config/logging';
@@ -28,7 +27,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
         logging.info(`Loading ${props.name}`);
     }, [props.name]);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event): Promise<void> => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
@@ -103,8 +102,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                             <DropdownButton
                                 variant="outline-secondary"
                                 title=""
-                                id="input-group-dropdown-1"
-                            >
+                                id="input-group-dropdown-1">
                                 {Titres.map((t, i) => (
                                     <Dropdown.Item key={i} onClick={() => setTitre(t)}>
                                         {t}
@@ -135,8 +133,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                             <DropdownButton
                                 variant="outline-secondary"
                                 title=""
-                                id="input-group-dropdown-1"
-                            >
+                                id="input-group-dropdown-1">
                                 {Niveaux.map((t, i) => (
                                     <Dropdown.Item key={i} onClick={() => setNiveau(t)}>
                                         {t}
@@ -189,8 +186,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                             d.splice(index, 1);
                                             setDates(d);
                                             setUpdate(!update);
-                                        }}
-                                    >
+                                        }}>
                                         🗑️
                                     </Button>
                                 </InputGroup>
@@ -213,8 +209,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                     setDates(d);
                                     console.log(dates);
                                     setUpdate(!update);
-                                }}
-                            >
+                                }}>
                                 Ajouter la date
                             </Button>
                         </InputGroup>

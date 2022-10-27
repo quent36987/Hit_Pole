@@ -1,13 +1,9 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from 'react';
 import IPage from '../interfaces/page';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './allPage.css';
 import {
     collection,
-    doc,
-    getDoc,
     getDocs,
     limit,
     orderBy,
@@ -20,16 +16,15 @@ import { Item, ItemConverter } from '../data/Item';
 import { AppState } from '../Context';
 import { db } from '../firebase';
 import { Button, Spinner } from 'react-bootstrap';
-import { User, UserConverter } from '../data/User';
 import { getUserName } from '../Utils/utils';
 
 const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [data, setData] = useState([]);
-    const { user, setAlert, profil } = AppState();
+    const { user, profil } = AppState();
     const [last, setlast] = useState(null);
     const [update, setUpdate] = useState(true);
 
-    async function LoadItem() {
+    async function LoadItem(): Promise<void> {
         const limi = 10;
 
         if (last) {
@@ -98,7 +93,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
         }
     }
 
-    const family = (elt: Item) => {
+    const family = (elt: Item): JSX.Element => {
         const list = [];
 
         for (let index = 0; index < elt.users.length; index++) {
@@ -114,8 +109,8 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
         return (
             <div>
                 Reserver par :
-                {list.map((elt) => (
-                    <div>{elt}</div>
+                {list.map((elt, index) => (
+                    <div key={index}>{elt}</div>
                 ))}
             </div>
         );
@@ -123,7 +118,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
 
     useEffect(() => {
         if (user && profil) {
-            LoadItem();
+            LoadItem().catch(console.error);
         }
     }, [user, profil]);
 

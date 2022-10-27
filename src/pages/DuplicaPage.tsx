@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 import { addDoc, collection, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import { Item, ItemConverter } from '../data/Item';
@@ -28,7 +27,7 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
     const [dateCL, setDateCL] = useState([]);
     const [annee, setAnnee] = useState(new Date().getFullYear());
 
-    function Option(annee: number) {
+    function Option(annee: number): { semaines: string[]; datefirst: Date[] } {
         const semaines = [];
         const datefirst = [];
         // get the first monday of the year
@@ -69,7 +68,7 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
         return { semaines, datefirst };
     }
 
-    async function SubmitChange() {
+    async function SubmitChange(): Promise<void> {
         const dateweeks = Option(annee).datefirst;
         const datedebut = dateweeks[dateCP];
 
@@ -96,26 +95,23 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
             list.push(exo);
         });
 
-        console.log('list :', list);
-
         const listnewdate = [];
 
         dateCL.forEach(function (date) {
             listnewdate.push(dateweeks[date]);
         });
 
-        console.log('listnewdate :', listnewdate);
-
         // create a new event for each event of the week
-
         for (let c = 0; c < list.length; c++) {
             for (let d = 0; d < listnewdate.length; d++) {
                 const date = new Date(
                     listnewdate[d].getFullYear(),
                     listnewdate[d].getMonth(),
                     list[c].date.toDate().getDay() === 0
-                        ? listnewdate[d].getDate() + 6
-                        : listnewdate[d].getDate() + list[c].date.toDate().getDay() - 1,
+                        ? 6 + Number(listnewdate[d].getDate())
+                        : Number(list[c].date.toDate().getDay()) +
+                          Number(listnewdate[d].getDate()) -
+                          1,
                     list[c].date.toDate().getHours(),
                     list[c].date.toDate().getMinutes()
                 );
@@ -124,12 +120,9 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                 item.date = Timestamp.fromDate(date);
                 item.users = [];
 
-                console.log(item);
                 const collectionRef = collection(db, 'calendrier').withConverter(ItemConverter);
 
-                await addDoc(collectionRef, item).catch((error) => {
-                    console.log(error);
-                });
+                await addDoc(collectionRef, item).catch(console.error);
             }
         }
 
@@ -177,14 +170,12 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                                 type="checkbox"
                                 label={item}
                                 onChange={(e) => {
-                                    console.log(e.target.checked);
+                                    const datecl = dateCL;
 
                                     if (e.target.checked) {
-                                        var datecl = dateCL;
                                         datecl.push(index);
                                         setDateCL(datecl);
                                     } else {
-                                        var datecl = dateCL;
                                         const index2 = datecl.indexOf(index);
                                         datecl.splice(index2, 1);
                                         setDateCL(datecl);

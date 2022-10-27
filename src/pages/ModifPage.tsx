@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import IPage from '../interfaces/page';
 import './allPage.css';
@@ -25,10 +24,10 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
     const [place, setPlace] = useState('');
 
     useEffect(() => {
-        LoadData();
+        LoadData().catch(console.error);
     }, [props.name]);
 
-    async function LoadData() {
+    async function LoadData(): Promise<void> {
         const query = doc(db, 'calendrier', props.match.params.id).withConverter(ItemConverter);
         const docsnap = await getDoc(query);
 
@@ -39,16 +38,11 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
         const date = docsnap.data().date.toDate();
 
         // date to YYYY-MM-DDTHH:MM
-        const dateString =
-            date.getFullYear() +
-            '-' +
-            (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) +
-            '-' +
-            (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) +
-            'T' +
-            (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) +
-            ':' +
-            (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+        const dateString = `${date.getFullYear()}-${
+            date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+        }-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}T${
+            date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
+        }:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()}`;
 
         setDate(dateString);
 
@@ -58,7 +52,7 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
         setUpdate(!update);
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event): Promise<void> => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
@@ -118,8 +112,7 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
                             <DropdownButton
                                 variant="outline-secondary"
                                 title=""
-                                id="input-group-dropdown-1"
-                            >
+                                id="input-group-dropdown-1">
                                 {Titres.map((t, i) => (
                                     <Dropdown.Item key={i} onClick={() => setTitre(t)}>
                                         {t}
@@ -150,8 +143,7 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
                             <DropdownButton
                                 variant="outline-secondary"
                                 title=""
-                                id="input-group-dropdown-1"
-                            >
+                                id="input-group-dropdown-1">
                                 {Niveaux.map((t, i) => (
                                     <Dropdown.Item key={i} onClick={() => setNiveau(t)}>
                                         {t}

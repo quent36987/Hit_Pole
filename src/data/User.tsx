@@ -1,4 +1,3 @@
-/* eslint-disable */
 export class User {
     public prenom: string;
     public nom: string;

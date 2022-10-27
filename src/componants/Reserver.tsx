@@ -1,6 +1,5 @@
-/* eslint-disable */
 import { Timestamp } from 'firebase/firestore';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { AppState } from '../Context';
 import { Item } from '../data/Item';
@@ -16,17 +15,17 @@ interface IReserverProps {
     item.users.include me or famille => annuler la reservation
     item.users.lenght = place => ce court est complet
     sinon => reserver (attention pour les familles au niveau des places) */
-const ReserverButton = (Props: IReserverProps) => {
+const ReserverButton = (Props: IReserverProps): JSX.Element => {
     const [show, setShow] = useState(false);
     const [userSelected, setUserSelected] = useState<string[]>([]);
     const [update, setUpdate] = useState(true);
 
     const { profil, user, setAlert } = AppState();
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = (): void => setShow(false);
+    const handleShow = (): void => setShow(true);
 
-    const onFamilleClick = async () => {
+    const onFamilleClick = async (): Promise<void> => {
         if (userSelected.length > Props.item.place - Props.item.users.length) {
             setAlert({
                 open: true,
@@ -41,7 +40,7 @@ const ReserverButton = (Props: IReserverProps) => {
             await Reserver(Props.item, setAlert, Props.userId);
         }
 
-        const famille = userSelected.filter((value) => value != 'moi');
+        const famille = userSelected.filter((value) => value !== 'moi');
 
         for (let i = 0; i < famille.length; i++) {
             await Reserver(Props.item, setAlert, `F_${user.uid}_${famille[i]}`);
@@ -51,7 +50,7 @@ const ReserverButton = (Props: IReserverProps) => {
         Props.cb();
     };
 
-    const onReservation = async () => {
+    const onReservation = async (): Promise<void> => {
         if (!user) {
             setAlert({
                 open: true,
@@ -70,7 +69,7 @@ const ReserverButton = (Props: IReserverProps) => {
         }
     };
 
-    const onAnnulation = async () => {
+    const onAnnulation = async (): Promise<void> => {
         if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
             if (profil.famille.length > 0) {
                 for (let i = 0; i < Props.item.users.length; i++) {
@@ -100,7 +99,7 @@ const ReserverButton = (Props: IReserverProps) => {
         return false;
     }
 
-    const button = () => {
+    const button = (): JSX.Element => {
         if (Props.item.date < Timestamp.fromDate(new Date())) {
             return <div style={{ marginRight: '10px', fontSize: '12px' }}>Ce cours est passé.</div>;
         }
@@ -110,8 +109,7 @@ const ReserverButton = (Props: IReserverProps) => {
                 <Button
                     variant="outline-danger"
                     style={{ marginRight: '10px', fontSize: '12px' }}
-                    onClick={onAnnulation}
-                >
+                    onClick={onAnnulation}>
                     Annuler la réservation
                 </Button>
             );
@@ -125,8 +123,7 @@ const ReserverButton = (Props: IReserverProps) => {
             <Button
                 variant="outline-success"
                 style={{ marginRight: '10px' }}
-                onClick={onReservation}
-            >
+                onClick={onReservation}>
                 Réserver
             </Button>
         );
@@ -148,8 +145,7 @@ const ReserverButton = (Props: IReserverProps) => {
                                     fontSize: '25px',
                                     marginBottom: '5px',
                                     overflow: 'hidden'
-                                }}
-                            >
+                                }}>
                                 <input
                                     type="checkbox"
                                     style={{
@@ -170,8 +166,7 @@ const ReserverButton = (Props: IReserverProps) => {
                                         setUserSelected(list);
                                         setUpdate(!update);
                                     }}
-                                    checked={userSelected.includes(item)}
-                                ></input>
+                                    checked={userSelected.includes(item)}></input>
                                 {item}
                             </div>
                         ))}
@@ -188,8 +183,7 @@ const ReserverButton = (Props: IReserverProps) => {
                             marginLeft: '20px',
                             marginTop: '20px'
                         }}
-                        onClick={onFamilleClick}
-                    >
+                        onClick={onFamilleClick}>
                         Réserver
                     </button>
                 </Modal.Body>

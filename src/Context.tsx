@@ -1,33 +1,44 @@
-/* eslint-disable */
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { User, UserConverter } from './data/User';
+import { User as UserModel, UserConverter } from './data/User';
+import firebase from 'firebase/compat';
+import User = firebase.User;
 
 const App = createContext(null);
 
-const Context = ({ children }) => {
+interface IAppState {
+    alert: any;
+    setAlert: any;
+    user: User;
+    perm: boolean;
+    profil: UserModel;
+}
+
+// eslint-disable-next-line react/prop-types
+const Context = ({ children }): JSX.Element => {
     const [alert, setAlert] = useState({
         open: false,
         message: '',
         type: 'success'
     });
 
-    const [perm, setPerm] = useState(false);
-    const [user, setUser] = useState(null);
-    const [profil, setProfil] = useState<User>(null);
+    const [perm, setPerm] = useState<boolean>(false);
+    const [user, setUser] = useState<User>(null);
+    const [profil, setProfil] = useState<UserModel>(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                // @ts-expect-error
                 setUser(user);
             } else setUser(null);
         });
     }, []);
 
     useEffect(() => {
-        async function isadm() {
+        async function isadm(): Promise<void> {
             if (!user || perm) {
                 return;
             }
@@ -41,7 +52,7 @@ const Context = ({ children }) => {
             }
         }
 
-        isadm();
+        void isadm();
     }, [user, perm]);
 
     useEffect(() => {
@@ -49,10 +60,10 @@ const Context = ({ children }) => {
             return;
         }
 
-        LoadProfile();
+        void LoadProfile();
     }, [user]);
 
-    async function LoadProfile() {
+    async function LoadProfile(): Promise<void> {
         const query = doc(db, 'Users', user.uid).withConverter(UserConverter);
         const docsnap = await getDoc(query);
         const pro = docsnap.data();
@@ -68,8 +79,7 @@ const Context = ({ children }) => {
                 user,
                 perm,
                 profil
-            }}
-        >
+            }}>
             {children}
         </App.Provider>
     );
@@ -77,6 +87,6 @@ const Context = ({ children }) => {
 
 export default Context;
 
-export const AppState = () => {
+export const AppState = (): IAppState => {
     return useContext(App);
 };

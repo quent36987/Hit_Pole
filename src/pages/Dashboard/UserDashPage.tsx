@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
     collection,
     deleteDoc,
@@ -13,9 +12,8 @@ import {
     updateDoc,
     where
 } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from 'react-bootstrap';
-import logging from '../../config/logging';
 import { AppState } from '../../Context';
 import { Item, ItemConverter } from '../../data/Item';
 import { User } from '../../data/User';
@@ -24,30 +22,30 @@ import IPage from '../../interfaces/page';
 import { useHistory } from 'react-router-dom';
 import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
 import { DateTimeAbv, getUserName } from '../../Utils/utils';
-// import { CSVLink} from 'react-csv';
 
 const DashPage: React.FunctionComponent<IPage> = (props) => {
     const [data, setData] = useState<Item[]>([]);
-    const [data_bis, setDataBis] = useState<Item[]>([]);
+    const [dataBis, setDataBis] = useState<Item[]>([]);
     const [key, setKey] = useState('users');
     const { setAlert } = AppState();
     const [users, setusers] = useState<User[]>([]);
     const [last, setlast] = useState(null);
-    const [last_bis, setlastBis] = useState(null);
+    const [lastBis, setlastBis] = useState(null);
     const [update, setUpdate] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
-        getAllUsersFirebase().then((data) => {
-            setusers(data);
-        });
+        getAllUsersFirebase()
+            .then((data) => {
+                setusers(data);
+            })
+            .catch(console.error);
 
-        logging.info(`Loading ${props.name}`);
-        VoirPlus();
-        VoirPlus_bis();
+        VoirPlus().catch(console.error);
+        VoirPlusBis().catch(console.error);
     }, [props]);
 
-    async function VoirPlus() {
+    async function VoirPlus(): Promise<void> {
         const limi = 10;
 
         if (last) {
@@ -118,22 +116,22 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         }
     }
 
-    async function VoirPlus_bis() {
+    async function VoirPlusBis(): Promise<void> {
         const limi = 10;
 
-        if (last_bis) {
-            console.log('last', last_bis);
+        if (lastBis) {
+            console.log('last', lastBis);
 
             const next = query(
                 collection(db, 'calendrier').withConverter<Item>(ItemConverter),
                 orderBy('date', 'desc'),
                 where('date', '<=', Timestamp.fromDate(new Date())),
-                startAfter(last_bis),
+                startAfter(lastBis),
                 limit(limi)
             );
 
             await getDocs(next).then((snapshot) => {
-                const list = data_bis;
+                const list = dataBis;
 
                 if (snapshot.size === 0) {
                     setlastBis(null);
@@ -189,7 +187,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         }
     }
 
-    async function AddSolde(user: User, solde: number) {
+    async function AddSolde(user: User, solde: number): Promise<void> {
         try {
             const UserDocRef = doc(db, 'Users', user.id);
             await updateDoc(UserDocRef, { solde: increment(solde) });
@@ -202,7 +200,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         }
     }
 
-    const popover = (list) => (
+    const popover = (list): JSX.Element => (
         <Popover id="popover-basic">
             <Popover.Header as="h3">Inscrits :</Popover.Header>
             <Popover.Body>
@@ -221,8 +219,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 id="controlled-tab-example"
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
-                className="mb-3"
-            >
+                className="mb-3">
                 <Tab eventKey="users" title="Utilisateurs">
                     <Table responsive>
                         <thead>
@@ -243,14 +240,12 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                     <td>
                                         <Button
                                             onClick={async () => await AddSolde(user, 1)}
-                                            variant="success-outline"
-                                        >
+                                            variant="success-outline">
                                             ➕
                                         </Button>
                                         <Button
                                             onClick={async () => await AddSolde(user, -1)}
-                                            variant="success-outline"
-                                        >
+                                            variant="success-outline">
                                             ➖
                                         </Button>
                                         <Button disabled variant="success-outline">
@@ -272,7 +267,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                             <tr>
                                 <th>Titre</th>
                                 <th>Date</th>
-                                <th>Nombre d'inscrit</th>
+                                <th>Nombre inscription</th>
                                 <th>Temps</th>
                                 <th>Commentaire</th>
                             </tr>
@@ -295,8 +290,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                             placement="left"
                                             overlay={popover(
                                                 item.users.map((u) => getUserName(users, u))
-                                            )}
-                                        >
+                                            )}>
                                             <Button variant="success-outline">❔</Button>
                                         </OverlayTrigger>
                                     </td>
@@ -305,8 +299,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                             variant="outline-warning"
                                             onClick={() => {
                                                 history.push(`/modif/${item.id}`);
-                                            }}
-                                        >
+                                            }}>
                                             ✏️
                                         </Button>
                                     </td>
@@ -315,8 +308,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                             variant="outline-success"
                                             onClick={() => {
                                                 history.push(`/particip/${item.id}`);
-                                            }}
-                                        >
+                                            }}>
                                             ✔️
                                         </Button>
                                     </td>
@@ -325,8 +317,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                             variant="outline-info"
                                             onClick={() => {
                                                 history.push(`/coursinfo/${item.id}`);
-                                            }}
-                                        >
+                                            }}>
                                             🧑‍🤝‍🧑
                                         </Button>
                                     </td>
@@ -334,8 +325,8 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                         <Button
                                             variant="outline-danger"
                                             onClick={() => {
-                                                deleteDoc(doc(db, 'calendrier', item.id)).then(
-                                                    () => {
+                                                deleteDoc(doc(db, 'calendrier', item.id))
+                                                    .then(() => {
                                                         const list = data;
                                                         list.splice(list.indexOf(item), 1);
                                                         setData(list);
@@ -345,10 +336,9 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                                         }
 
                                                         setUpdate(!update);
-                                                    }
-                                                );
-                                            }}
-                                        >
+                                                    })
+                                                    .catch(console.error);
+                                            }}>
                                             🗑️
                                         </Button>
                                     </td>
@@ -370,13 +360,13 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                             <tr>
                                 <th>Titre</th>
                                 <th>Date</th>
-                                <th>Nombre d'inscrit</th>
+                                <th>Nombre inscription</th>
                                 <th>Temps</th>
                                 <th>Commentaire</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {data_bis.map((item) => (
+                            {dataBis.map((item) => (
                                 <tr key={item.id}>
                                     <td>
                                         {item.titre} - {item.niveau}
@@ -395,8 +385,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                                 item.users.map((u) =>
                                                     users.find((user) => user.id === u)
                                                 )
-                                            )}
-                                        >
+                                            )}>
                                             <Button variant="success-outline">❔</Button>
                                         </OverlayTrigger>
                                     </td>
@@ -405,8 +394,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                             variant="success-outline"
                                             onClick={() => {
                                                 history.push(`/modif/${item.id}`);
-                                            }}
-                                        >
+                                            }}>
                                             ✏️
                                         </Button>
                                     </td>
@@ -415,8 +403,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                             variant="outline-success"
                                             onClick={() => {
                                                 history.push(`/particip/${item.id}`);
-                                            }}
-                                        >
+                                            }}>
                                             ✔️
                                         </Button>
                                     </td>
@@ -425,8 +412,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                             variant="outline-info"
                                             onClick={() => {
                                                 history.push(`/coursinfo/${item.id}`);
-                                            }}
-                                        >
+                                            }}>
                                             🧑‍🤝‍🧑
                                         </Button>
                                     </td>
@@ -434,9 +420,9 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                         <Button
                                             variant="outline-danger"
                                             onClick={() => {
-                                                deleteDoc(doc(db, 'calendrier', item.id)).then(
-                                                    () => {
-                                                        const list = data_bis;
+                                                deleteDoc(doc(db, 'calendrier', item.id))
+                                                    .then(() => {
+                                                        const list = dataBis;
                                                         list.splice(list.indexOf(item), 1);
                                                         setDataBis(list);
 
@@ -445,10 +431,9 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                                         }
 
                                                         setUpdate(!update);
-                                                    }
-                                                );
-                                            }}
-                                        >
+                                                    })
+                                                    .catch(console.error);
+                                            }}>
                                             🗑️
                                         </Button>
                                     </td>
@@ -457,11 +442,10 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                         </tbody>
                     </Table>
 
-                    {last_bis !== null ? (
+                    {lastBis !== null ? (
                         <div
                             style={{ textAlign: 'center' }}
-                            onClick={async () => await VoirPlus_bis()}
-                        >
+                            onClick={async () => await VoirPlusBis()}>
                             voir plus..
                         </div>
                     ) : null}

@@ -1,8 +1,8 @@
-/* eslint-disable */
 import { Timestamp } from 'firebase/firestore';
 import { Card } from 'react-bootstrap';
 import ReserverButton from '../componants/Reserver';
 import { DateFormatAbv, TimeAbv } from '../Utils/utils';
+import React from 'react';
 
 export const Titres = ['Pole', 'Pole ados', 'Hit Streching', 'Chair et Exotic'];
 export const Niveaux = [
@@ -68,18 +68,14 @@ export class Item {
         const datefin = new Date(this.date.seconds * 1000 + this.temps * 60 * 1000);
         const dateDebut = new Date(this.date.seconds * 1000);
 
-        return (
-            (dateDebut.getHours() < 10 ? '0' + dateDebut.getHours() : dateDebut.getHours()) +
-            ':' +
-            (dateDebut.getMinutes() < 10 ? '0' + dateDebut.getMinutes() : dateDebut.getMinutes()) +
-            ' - ' +
-            (datefin.getHours() < 10 ? '0' + datefin.getHours() : datefin.getHours()) +
-            ':' +
-            (datefin.getMinutes() < 10 ? '0' + datefin.getMinutes() : datefin.getMinutes())
-        );
+        return `${dateDebut.getHours() < 10 ? `0${dateDebut.getHours()}` : dateDebut.getHours()}:${
+            dateDebut.getMinutes() < 10 ? `0${dateDebut.getMinutes()}` : dateDebut.getMinutes()
+        } - ${datefin.getHours() < 10 ? `0${datefin.getHours()}` : datefin.getHours()}:${
+            datefin.getMinutes() < 10 ? `0${datefin.getMinutes()}` : datefin.getMinutes()
+        }`;
     }
 
-    WithHeaderExample(user, cb = null) {
+    WithHeaderExample(user, cb = null): JSX.Element {
         return (
             <Card style={{ marginBottom: '1vh', width: '100%' }} key={this.id}>
                 <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>

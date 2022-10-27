@@ -1,5 +1,4 @@
-/* eslint-disable */
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import IPage from '../interfaces/page';
 import { ExportCSV } from '../Utils/exportCSV';
 import { CSVLink } from 'react-csv';
@@ -9,10 +8,10 @@ const ExportPage: React.FunctionComponent<IPage> = (props) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        loadData();
+        loadData().catch(console.error);
     }, [props.name]);
 
-    const loadData = async () => {
+    const loadData = async (): Promise<void> => {
         const data = await ExportCSV();
         setData(data);
     };

@@ -1,30 +1,49 @@
-/* eslint-disable */
-import { useState } from 'react';
-import { auth } from './../firebase';
+import React, { useState } from 'react';
+import { auth } from '../firebase';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { AppState } from '../Context';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const Login = (): JSX.Element => {
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const { setAlert } = AppState();
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = (): void => setShow(false);
+    const handleShow = (): void => setShow(true);
 
-    async function forgotPassword(email) {
+    async function forgotPassword(email): Promise<void> {
         return await sendPasswordResetEmail(auth, email, {
             url: 'https://hit-pole.web.app/'
         });
     }
 
-    const handleSubmit = async () => {
-        if (!email || !password) {
-            console.log('email or password is empty');
+    async function sendNewMdp(e): Promise<void> {
+        e.preventDefault();
 
+        try {
+            await forgotPassword(email);
+
+            setAlert({
+                open: true,
+                message: `Un email a été envoyé à ${email}`,
+                type: 'success'
+            });
+        } catch (error) {
+            setAlert({
+                open: true,
+                message: error.message,
+                type: 'error'
+            });
+        }
+
+        handleClose();
+    }
+
+    const handleSubmit = async (): Promise<void> => {
+        if (email === '' || password === '') {
             setAlert({
                 open: true,
                 message: 'Veuillez remplir tous les champs',
@@ -36,17 +55,14 @@ const Login = () => {
 
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
-            console.log('Sign Up Successful. Welcome' + result.user.email);
             window.location.href = '/';
 
             setAlert({
                 open: true,
-                message: `Inscription réussie. Bonjour ${result.user.email}`,
+                message: `Inscription réussie. Bonjour ${result?.user.email ?? ''}`,
                 type: 'success'
             });
         } catch (error) {
-            console.log(error.message);
-
             setAlert({
                 open: true,
                 message: error.message,
@@ -68,8 +84,7 @@ const Login = () => {
                     autoComplete="email"
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="email"
-                    value={email}
-                ></input>
+                    value={email}></input>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
@@ -77,27 +92,8 @@ const Login = () => {
                     <Button
                         variant="primary"
                         onClick={async (e) => {
-                            e.preventDefault();
-
-                            try {
-                                await forgotPassword(email);
-
-                                setAlert({
-                                    open: true,
-                                    message: `Un email a été envoyé à ${email}`,
-                                    type: 'success'
-                                });
-                            } catch (error) {
-                                setAlert({
-                                    open: true,
-                                    message: error.message,
-                                    type: 'error'
-                                });
-                            }
-
-                            handleClose();
-                        }}
-                    >
+                            await sendNewMdp(e);
+                        }}>
                         Envoyer un nouveau mot de passe
                     </Button>
                 </Modal.Footer>

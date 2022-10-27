@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 import IPage from '../interfaces/page';
 import { FormGroup } from '@material-ui/core';
@@ -9,10 +8,10 @@ import { AppState } from '../Context';
 
 const ContactPage: React.FunctionComponent<IPage> = (props) => {
     const [message, Setmessage] = useState('');
-    const [is_send, SetisSend] = useState(false);
+    const [isSend, SetisSend] = useState(false);
     const { user, setAlert } = AppState();
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event): Promise<void> => {
         event.preventDefault();
         event.stopPropagation();
         console.log(message);
@@ -52,7 +51,7 @@ const ContactPage: React.FunctionComponent<IPage> = (props) => {
             </div>
 
             <div className="mt-4" style={{ textAlign: 'center' }}>
-                {is_send ? (
+                {isSend ? (
                     <div>Merci pour votre retour</div>
                 ) : (
                     <Form onSubmit={handleSubmit} className="m-3">

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import '../allPage.css';
 import { Modal } from 'react-bootstrap';
@@ -23,8 +22,8 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     const [load, setLoad] = useState(false);
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = (): void => setShow(false);
+    const handleShow = (): void => setShow(true);
 
     const { setAlert } = AppState();
 
@@ -36,19 +35,21 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     }, [selected]);
 
     useEffect(() => {
-        LoadData();
+        LoadData().catch(console.error);
     }, [props.name]);
 
     useEffect(() => {
-        getAllUsersFirebase().then((data) => {
-            setusers(data);
-        });
+        getAllUsersFirebase()
+            .then((data) => {
+                setusers(data);
+            })
+            .catch(console.error);
     }, [props]);
 
-    async function LoadData() {
+    async function LoadData(): Promise<void> {
         let list: Item[] = [];
 
-        if (props.match.params.id == '0') {
+        if (props.match.params.id === '0') {
             list = await getAllItemToday();
         } else {
             list.push(await getItemFirebase(props.match.params.id));
@@ -64,7 +65,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
         setLoad(true);
     }
 
-    const addPartcipant = async (event, id: string) => {
+    const addPartcipant = async (event, id: string): Promise<void> => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -79,7 +80,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
         }
 
         const CaldendarDocRef1 = doc(db, 'calendrier', items[selected].id);
-        updateDoc(CaldendarDocRef1, { users: arrayUnion(id) });
+        await updateDoc(CaldendarDocRef1, { users: arrayUnion(id) });
 
         const usersSelect = userSelected;
         usersSelect.push(id);
@@ -93,7 +94,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                     type: 'success'
                 });
             })
-            .catch((error) => {
+            .catch(() => {
                 setAlert({
                     open: true,
                     message: 'Erreur lors de la modification',
@@ -101,10 +102,10 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                 });
             });
 
-        LoadData();
+        LoadData().catch(console.error);
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event): Promise<void> => {
         event.preventDefault();
         event.stopPropagation();
         console.log(userSelected);
@@ -119,7 +120,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                     type: 'success'
                 });
             })
-            .catch((error) => {
+            .catch(() => {
                 setAlert({
                     open: true,
                     message: 'Erreur lors de la modification',
@@ -147,8 +148,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                         onChange={(e) => {
                             setSelected(parseInt(e.target.value));
                             console.log(selected);
-                        }}
-                    >
+                        }}>
                         {items.map((item, index) => (
                             <option key={index} value={index}>
                                 {DateFormat(item.date.toDate())}
@@ -165,8 +165,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         fontSize: '25px',
                                         marginBottom: '5px',
                                         overflow: 'hidden'
-                                    }}
-                                >
+                                    }}>
                                     <input
                                         type="checkbox"
                                         style={{
@@ -187,8 +186,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                             setUserSelected(list);
                                             setUpdate(!update);
                                         }}
-                                        checked={userSelected.includes(item)}
-                                    ></input>
+                                        checked={userSelected.includes(item)}></input>
                                     {getUserName(users, item)}
                                 </div>
                             ))}
@@ -207,8 +205,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                 marginLeft: '20px',
                                 marginTop: '20px'
                             }}
-                            onClick={handleShow}
-                        >
+                            onClick={handleShow}>
                             Ajouter un participant
                         </button>
                         <Modal show={show} onHide={handleClose}>
@@ -231,8 +228,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         }}
                                         onChange={(e) => {
                                             setUserAdd(e.target.value);
-                                        }}
-                                    >
+                                        }}>
                                         {users.map((item, index) => (
                                             <option key={index} value={item.id}>
                                                 {item.getFullName()}
@@ -254,10 +250,9 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         marginTop: '20px'
                                     }}
                                     onClick={(e) => {
-                                        addPartcipant(e, userAdd);
+                                        addPartcipant(e, userAdd).catch(console.error);
                                         handleClose();
-                                    }}
-                                >
+                                    }}>
                                     Ajouter
                                 </button>
                             </Modal.Body>
@@ -275,8 +270,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                 margin: '20px',
                                 width: '85vw'
                             }}
-                            onClick={handleSubmit}
-                        >
+                            onClick={handleSubmit}>
                             Valider
                         </button>
                         <div style={{ fontSize: '20px', textAlign: 'center' }}>commentaire :</div>
@@ -292,8 +286,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                 marginLeft: '20px',
                                 marginRight: '20px',
                                 padding: '4px'
-                            }}
-                        >
+                            }}>
                             {items[selected].desc}
                         </div>
                     </div>

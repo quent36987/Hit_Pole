@@ -1,7 +1,5 @@
-/* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import IPage from '../interfaces/page';
-import logging from '../config/logging';
 import './allPage.css';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
@@ -10,11 +8,8 @@ import { RouteComponentProps } from 'react-router-dom';
 const AuthPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [titre, setTitre] = useState('');
 
-    useEffect(() => {
-        logging.info(`Loading ${props.name}`);
-    }, [props.name]);
-
-    function PageRender() {
+    function PageRender(): JSX.Element {
+        // eslint-disable-next-line react/prop-types
         const type = props.match.params.type;
 
         if (type === 'login') {

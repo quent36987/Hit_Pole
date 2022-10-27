@@ -1,10 +1,9 @@
-/* eslint-disable */
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { Item } from '../data/Item';
 import { User } from '../data/User';
 import { db } from '../firebase';
 
-export const mois = [
+export const MOIS = [
     'Janvier',
     'Février',
     'Mars',
@@ -18,11 +17,11 @@ export const mois = [
     'Novembre',
     'Décembre'
 ];
-const jours = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-const jours_abv = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
+const JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+const JOURS_ABV = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
 
-export function StringSymplify(name: string) {
-    let name_modif = name
+export function StringSymplify(name: string): string {
+    let nameModif = name
         .replace(/\((.)*\)/g, '')
         .replace(/([0-9]+[\s]*([àaou]|ou)[\s]*[0-9]+)*/g, '')
         .replace(/[\s\d-+'*]/g, '')
@@ -30,14 +29,14 @@ export function StringSymplify(name: string) {
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
 
-    if (name_modif.endsWith('s')) {
-        name_modif = name_modif.substring(0, name_modif.length - 1);
+    if (nameModif.endsWith('s')) {
+        nameModif = nameModif.substring(0, nameModif.length - 1);
     }
 
-    return name_modif;
+    return nameModif;
 }
 
-export function formatTime(time: number) {
+export function formatTime(time: number): string {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
 
@@ -48,38 +47,38 @@ export function formatTime(time: number) {
     return `${minutes}:${seconds}`;
 }
 
-export function DateFormat(date: Date) {
+export function DateFormat(date: Date): string {
     // format : lundi 4 juillet à 20h30
-    return `${jours[date.getDay()]} ${date.getDate()} ${mois[date.getMonth()]} à ${
-        date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-    }h${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`;
+    return `${JOURS[date.getDay()]} ${date.getDate()} ${MOIS[date.getMonth()]} à ${
+        date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
+    }h${date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()}`;
 }
 
-export function DateFormatAbv(date: Date) {
+export function DateFormatAbv(date: Date): string {
     // format : lun, 4 juillet
-    return `${jours_abv[date.getDay()]}, ${date.getDate()} ${mois[date.getMonth()]}`;
+    return `${JOURS_ABV[date.getDay()]}, ${date.getDate()} ${MOIS[date.getMonth()]}`;
 }
 
-export function TimeAbv(date: Date) {
+export function TimeAbv(date: Date): string {
     // format : 20h45
-    return `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}h${
-        date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+    return `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}h${
+        date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
     }`;
 }
 
-export function DateAbv(date: Date) {
+export function DateAbv(date: Date): string {
     // format 01/05
-    return `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${
-        date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+    return `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
+        date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
     }`;
 }
 
-export function DateTimeAbv(date: Date) {
+export function DateTimeAbv(date: Date): string {
     // format  lun, 4/09 15h50
-    return `${jours_abv[date.getDay()]},${DateAbv(date)} - ${TimeAbv(date)}`;
+    return `${JOURS_ABV[date.getDay()]},${DateAbv(date)} - ${TimeAbv(date)}`;
 }
 
-export async function Annuler(item: Item, setAlert, userId) {
+export async function Annuler(item: Item, setAlert, userId): Promise<boolean> {
     if (
         userId == null ||
         item.date.toDate() < new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
@@ -106,7 +105,7 @@ export async function Annuler(item: Item, setAlert, userId) {
     }
 }
 
-export async function Reserver(item: Item, setAlert, userId) {
+export async function Reserver(item: Item, setAlert, userId): Promise<boolean> {
     if (userId == null) {
         setAlert({
             open: true,
@@ -138,7 +137,7 @@ export async function Reserver(item: Item, setAlert, userId) {
 
 // list
 export function getUserName(users: User[], userId: string): string {
-    const user = users.find((user) => user.id == userId);
+    const user = users.find((user) => user.id === userId);
 
     if (user != null) {
         return user.getFullName();

@@ -23,7 +23,8 @@ module.exports = {
     plugins: ['react'],
     rules: {
         '@typescript-eslint/ban-ts-ignore': 'off',
-        strictNullChecks: 'off',
+        '@typescript-eslint/no-misused-promises': 'off',
+        '@typescript-eslint/strict-boolean-expressions': 'off',
         'padding-line-between-statements': [
             'error',
             {

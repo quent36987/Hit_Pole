@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import '../allPage.css';
 import { Button, Modal } from 'react-bootstrap';
@@ -24,36 +23,36 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
 
     const [show, setShow] = useState(false);
     const [modalNewUser, setModalNewUser] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = (): void => setShow(false);
 
-    const handleShow1 = () => {
+    const handleShow1 = (): void => {
         setModalNewUser(true);
         setShow(true);
     };
 
-    const handleShow = () => {
+    const handleShow = (): void => {
         setModalNewUser(false);
         setShow(true);
     };
 
     useEffect(() => {
-        LoadData();
+        LoadData().catch(console.error);
     }, [props.name]);
 
     useEffect(() => {
-        getAllUsersFirebase().then((data) => {
+        void getAllUsersFirebase().then((data) => {
             setusers(data);
         });
     }, [props]);
 
-    async function LoadData() {
+    async function LoadData(): Promise<void> {
         const item = await getItemFirebase(props.match.params.id);
         setItems(item);
         setUpdate(!update);
         setLoad(true);
     }
 
-    const addPartcipant = async (event, id: string) => {
+    const addPartcipant = async (event, id: string): Promise<void> => {
         if (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -70,10 +69,27 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
         }
 
         const CaldendarDocRef1 = doc(db, 'calendrier', items.id);
-        updateDoc(CaldendarDocRef1, { users: arrayUnion(id) });
 
-        LoadData();
+        await updateDoc(CaldendarDocRef1, {
+            users: arrayUnion(id)
+        });
+
+        await LoadData();
     };
+
+    async function deleteParticipant(item: string): Promise<void> {
+        if (window.confirm('Voulez-vous vraiment supprimer cette personne ?')) {
+            const CaldendarDocRef1 = doc(db, 'calendrier', items.id);
+
+            const list = items.users.filter((e) => e !== item);
+
+            await updateDoc(CaldendarDocRef1, {
+                users: list
+            });
+
+            await LoadData();
+        }
+    }
 
     return (
         <>
@@ -91,8 +107,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         fontSize: '25px',
                                         marginBottom: '5px',
                                         overflow: 'hidden'
-                                    }}
-                                >
+                                    }}>
                                     <Button
                                         variant="outline-danger"
                                         style={{
@@ -100,29 +115,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                             marginRight: '10px',
                                             marginBottom: '5px'
                                         }}
-                                        onClick={() => {
-                                            // are your sure ?
-                                            if (
-                                                window.confirm(
-                                                    'Voulez-vous vraiment supprimer cette personne ?'
-                                                )
-                                            ) {
-                                                const CaldendarDocRef1 = doc(
-                                                    db,
-                                                    'calendrier',
-                                                    items.id
-                                                );
-
-                                                const list = items.users.filter((e) => e !== item);
-
-                                                updateDoc(CaldendarDocRef1, {
-                                                    users: list
-                                                });
-
-                                                LoadData();
-                                            }
-                                        }}
-                                    >
+                                        onClick={async () => await deleteParticipant(item)}>
                                         🗑️
                                     </Button>
                                     {getUserName(users, item)}
@@ -144,8 +137,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                             marginLeft: '20px',
                             marginTop: '20px'
                         }}
-                        onClick={handleShow}
-                    >
+                        onClick={handleShow}>
                         Ajouter un participant
                     </button>
 
@@ -161,8 +153,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                             marginLeft: '20px',
                             marginTop: '10px'
                         }}
-                        onClick={handleShow1}
-                    >
+                        onClick={handleShow1}>
                         Ajouter un utilisateur sans compte
                     </button>
 
@@ -178,10 +169,12 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                     cb={() => {
                                         handleClose();
 
-                                        getAllUsersFirebase().then((data) => {
-                                            setusers(data);
-                                            LoadData();
-                                        });
+                                        getAllUsersFirebase()
+                                            .then((data) => {
+                                                setusers(data);
+                                                LoadData().catch(console.error);
+                                            })
+                                            .catch(console.error);
                                     }}
                                 />
                             ) : (
@@ -200,8 +193,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         }}
                                         onChange={(e) => {
                                             setUserAdd(e.target.value);
-                                        }}
-                                    >
+                                        }}>
                                         {users.map((item, index) => (
                                             <option key={index} value={item.id}>
                                                 {item.getFullName()}
@@ -222,10 +214,9 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                             marginTop: '20px'
                                         }}
                                         onClick={(e) => {
-                                            addPartcipant(e, userAdd);
+                                            addPartcipant(e, userAdd).catch(console.error);
                                             handleClose();
-                                        }}
-                                    >
+                                        }}>
                                         Ajouter
                                     </button>{' '}
                                 </>
@@ -246,8 +237,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                             marginLeft: '20px',
                             marginRight: '20px',
                             padding: '4px'
-                        }}
-                    >
+                        }}>
                         {items.desc}
                     </div>
                 </div>
