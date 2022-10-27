@@ -1,29 +1,30 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { User, UserConverter } from "./data/User";
+/* eslint-disable */
+import { createContext, useContext, useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { User, UserConverter } from './data/User';
 
 const App = createContext(null);
-const Context = ({ children }) => {
 
+const Context = ({ children }) => {
     const [alert, setAlert] = useState({
         open: false,
-        message: "",
-        type: "success",
+        message: '',
+        type: 'success'
     });
+
     const [perm, setPerm] = useState(false);
     const [user, setUser] = useState(null);
     const [profil, setProfil] = useState<User>(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
-            if (user) setUser(user);
-            else setUser(null);
+            if (user) {
+                setUser(user);
+            } else setUser(null);
         });
     }, []);
-
-
 
     useEffect(() => {
         async function isadm() {
@@ -31,33 +32,33 @@ const Context = ({ children }) => {
                 return;
             }
 
-            console.log("setperm !",user.uid);
-            const ref = doc(db, "ADM", user.uid);
+            console.log('setperm !', user.uid);
+            const ref = doc(db, 'ADM', user.uid);
             const docSnap = await getDoc(ref);
+
             if (docSnap.exists()) {
-               
                 setPerm(docSnap.data().perm);
             }
-        };
+        }
+
         isadm();
     }, [user, perm]);
 
-    
     useEffect(() => {
         if (!user) {
             return;
         }
+
         LoadProfile();
     }, [user]);
 
     async function LoadProfile() {
-        const query = doc(db, "Users", user.uid).withConverter(UserConverter);
+        const query = doc(db, 'Users', user.uid).withConverter(UserConverter);
         const docsnap = await getDoc(query);
-        let pro = docsnap.data();
+        const pro = docsnap.data();
         pro.id = docsnap.id;
         setProfil(pro);
     }
-
 
     return (
         <App.Provider
@@ -66,7 +67,7 @@ const Context = ({ children }) => {
                 setAlert,
                 user,
                 perm,
-                profil,
+                profil
             }}
         >
             {children}

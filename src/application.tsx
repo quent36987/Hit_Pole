@@ -5,16 +5,15 @@ import HeaderBar from './componants/Header';
 import logging from './config/logging';
 import routes from './config/routes';
 
-
-const Application: React.FunctionComponent<{}> = props => {
+const Application: React.FunctionComponent<{}> = (props) => {
     useEffect(() => {
         logging.info('Loading application.');
-    }, [])
+    }, []);
 
     return (
         <div>
             <BrowserRouter>
-            <HeaderBar/>
+                <HeaderBar />
                 <Switch>
                     {routes.map((route, index) => {
                         return (
@@ -37,6 +36,6 @@ const Application: React.FunctionComponent<{}> = props => {
             </BrowserRouter>
         </div>
     );
-}
+};
 
 export default Application;

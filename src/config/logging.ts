@@ -1,3 +1,4 @@
+/* eslint-disable */
 import config from './config';
 
 const DEFAULT_NAMESPACE = config.defaults.namespace;
@@ -34,6 +35,6 @@ const logging = {
     info,
     warn,
     error
-}
+};
 
 export default logging;

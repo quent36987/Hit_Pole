@@ -12,8 +12,6 @@ import ParticipPage from '../pages/Dashboard/ParticipPage';
 import InfoCourPage from '../pages/Dashboard/PageInfoCour';
 import ExportPage from '../pages/ExportPage';
 
-
-
 const routes: IRoute[] = [
     {
         path: '/',
@@ -61,7 +59,7 @@ const routes: IRoute[] = [
         path: '/dashboard',
         name: 'Dashboard Page',
         component: DashPage,
-        exact: true 
+        exact: true
     },
     {
         path: '/modif/:id',
@@ -86,7 +84,7 @@ const routes: IRoute[] = [
         name: 'Export Page',
         component: ExportPage,
         exact: true
-    },
-]
+    }
+];
 
 export default routes;

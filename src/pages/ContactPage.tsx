@@ -1,4 +1,5 @@
-import React, {  useState } from 'react';
+/* eslint-disable */
+import React, { useState } from 'react';
 import IPage from '../interfaces/page';
 import { FormGroup } from '@material-ui/core';
 import { Button, Form } from 'react-bootstrap';
@@ -6,46 +7,43 @@ import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { AppState } from '../Context';
 
-
-const ContactPage: React.FunctionComponent<IPage> = props => {
-
-    const [message,Setmessage] = useState("");
-    const [is_send,SetisSend] = useState(false);
+const ContactPage: React.FunctionComponent<IPage> = (props) => {
+    const [message, Setmessage] = useState('');
+    const [is_send, SetisSend] = useState(false);
     const { user, setAlert } = AppState();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        event.stopPropagation()
-        console.log(message)
-
+        event.stopPropagation();
+        console.log(message);
 
         const payload = {
-            user: user ? user.uid : "anonyme",
-            message: message,
-            date: Timestamp.now(),
-        }
+            user: user ? user.uid : 'anonyme',
+            message,
+            date: Timestamp.now()
+        };
+
         try {
-            const collectionRef = collection(db, "contact");
+            const collectionRef = collection(db, 'contact');
             await addDoc(collectionRef, payload);
-            Setmessage("");
+            Setmessage('');
             SetisSend(true);
-        }
-        catch (error)
-        {
+        } catch (error) {
             setAlert({
                 open: true,
                 message: error.message,
-                type: "error",
+                type: 'error'
             });
         }
-    }
-
+    };
 
     return (
         <div>
-            <h1 className='Titre' style={{"textAlign":"center"}}>Contact</h1>
+            <h1 className="Titre" style={{ textAlign: 'center' }}>
+                Contact
+            </h1>
 
-            <div style={{"textAlign":"center"}}>
+            <div style={{ textAlign: 'center' }}>
                 <div>Hit Forme</div>
                 <div>5 rue Albert Thomas</div>
                 <div>42300 Roanne</div>
@@ -53,27 +51,35 @@ const ContactPage: React.FunctionComponent<IPage> = props => {
                 <div>hitform@gmail.com</div>
             </div>
 
-            <div className='mt-4' style={{"textAlign":"center"}}>
-                {is_send ? 
+            <div className="mt-4" style={{ textAlign: 'center' }}>
+                {is_send ? (
                     <div>Merci pour votre retour</div>
-                :
-                <Form onSubmit={handleSubmit} className='m-3'>
-                    <FormGroup className='m-1'>
-                        <Form.Label>Signaler un problème ou une amélioration ? {"(pour l'application)"}</Form.Label>
-                        <Form.Control as="textarea" placeholder='message..'
-                        required value={message} 
-                        rows={4}
-                        onChange={(e) => Setmessage(e.target.value)}/>
-                        <Form.Text>Le message sera envoyé et traité dans les jours suivant.</Form.Text>
-                    </FormGroup>
-                    <Button type="submit" variant="outline-success">ENVOYER</Button>
-                </Form>
-                }
+                ) : (
+                    <Form onSubmit={handleSubmit} className="m-3">
+                        <FormGroup className="m-1">
+                            <Form.Label>
+                                Signaler un problème ou une amélioration ? {"(pour l'application)"}
+                            </Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                placeholder="message.."
+                                required
+                                value={message}
+                                rows={4}
+                                onChange={(e) => Setmessage(e.target.value)}
+                            />
+                            <Form.Text>
+                                Le message sera envoyé et traité dans les jours suivant.
+                            </Form.Text>
+                        </FormGroup>
+                        <Button type="submit" variant="outline-success">
+                            ENVOYER
+                        </Button>
+                    </Form>
+                )}
             </div>
-
-
         </div>
-    )
-}
+    );
+};
 
 export default ContactPage;
