@@ -1,6 +1,6 @@
 import { CSVLink } from 'react-csv';
-import { DateFormatAbv } from '../Utils/utils';
-import { ExportCSV } from '../Utils/exportCSV';
+import { dateFormatAbv } from '../Utils/utils';
+import { exportCSV } from '../Utils/exportCSV';
 import { IPage } from '../interfaces/page';
 import React, { useEffect, useState } from 'react';
 
@@ -12,11 +12,11 @@ const ExportPage: React.FunctionComponent<IPage> = (props) => {
     }, [props.name]);
 
     const loadData = async (): Promise<void> => {
-        const data = await ExportCSV();
+        const data = await exportCSV();
         setData(data);
     };
 
-    const filename = `export_${DateFormatAbv(new Date())
+    const filename = `export_${dateFormatAbv(new Date())
         .replaceAll(' ', '_')
         .replaceAll(',', '_')}.csv`;
 

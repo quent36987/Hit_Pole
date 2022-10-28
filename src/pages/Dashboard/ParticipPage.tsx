@@ -7,7 +7,7 @@ import { Modal } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { User } from '../../data/User';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
-import { DateFormat, getUserName } from '../../Utils/utils';
+import { dateFormat, getUserName } from '../../Utils/utils';
 import { getAllItemToday, getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
 import React, { useEffect, useState } from 'react';
 
@@ -16,26 +16,26 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     const [selected, setSelected] = useState(0);
     const [users, setusers] = useState<User[]>([]);
     const [userSelected, setUserSelected] = useState<string[]>([]);
-    const [update, setUpdate] = useState(true);
+    const [isUpdate, setIsUpdate] = useState(true);
     const [userAdd, setUserAdd] = useState(null);
 
-    const [load, setLoad] = useState(false);
+    const [isLoad, setIsLoad] = useState(false);
 
-    const [show, setShow] = useState(false);
-    const handleClose = (): void => setShow(false);
-    const handleShow = (): void => setShow(true);
+    const [isShow, setIsShow] = useState(false);
+    const handleClose = (): void => setIsShow(false);
+    const handleShow = (): void => setIsShow(true);
 
     const { setAlert } = AppState();
 
     useEffect(() => {
         if (items.length > 0) {
             setUserSelected(items[selected].participation);
-            setUpdate(!update);
+            setIsUpdate(!isUpdate);
         }
     }, [selected]);
 
     useEffect(() => {
-        LoadData().catch(console.error);
+        loadData().catch(console.error);
     }, [props.name]);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
             .catch(console.error);
     }, [props]);
 
-    async function LoadData(): Promise<void> {
+    async function loadData(): Promise<void> {
         let list: Item[] = [];
 
         if (props.match.params.id === '0') {
@@ -61,8 +61,8 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
             setUserSelected(list[selected].participation);
         }
 
-        setUpdate(!update);
-        setLoad(true);
+        setIsUpdate(!isUpdate);
+        setIsLoad(true);
     }
 
     const addPartcipant = async (event, id: string): Promise<void> => {
@@ -79,14 +79,14 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
             return;
         }
 
-        const CaldendarDocRef1 = doc(db, 'calendrier', items[selected].id);
-        await updateDoc(CaldendarDocRef1, { users: arrayUnion(id) });
+        const caldendarDocRef1 = doc(db, 'calendrier', items[selected].id);
+        await updateDoc(caldendarDocRef1, { users: arrayUnion(id) });
 
         const usersSelect = userSelected;
         usersSelect.push(id);
-        const CaldendarDocRef = doc(db, 'calendrier', items[selected].id);
+        const caldendarDocRef = doc(db, 'calendrier', items[selected].id);
 
-        updateDoc(CaldendarDocRef, { participation: usersSelect })
+        updateDoc(caldendarDocRef, { participation: usersSelect })
             .then(() => {
                 setAlert({
                     open: true,
@@ -102,7 +102,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                 });
             });
 
-        LoadData().catch(console.error);
+        loadData().catch(console.error);
     };
 
     const handleSubmit = async (event): Promise<void> => {
@@ -110,9 +110,9 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
         event.stopPropagation();
         console.log(userSelected);
 
-        const CaldendarDocRef = doc(db, 'calendrier', items[selected].id);
+        const caldendarDocRef = doc(db, 'calendrier', items[selected].id);
 
-        updateDoc(CaldendarDocRef, { participation: userSelected })
+        updateDoc(caldendarDocRef, { participation: userSelected })
             .then(() => {
                 setAlert({
                     open: true,
@@ -131,7 +131,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
 
     return (
         <>
-            {load && items && items.length > 0 ? (
+            {isLoad && items && items.length > 0 ? (
                 <div>
                     <select
                         style={{
@@ -151,7 +151,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                         }}>
                         {items.map((item, index) => (
                             <option key={index} value={index}>
-                                {DateFormat(item.date.toDate())}
+                                {dateFormat(item.date.toDate())}
                             </option>
                         ))}
                     </select>
@@ -184,7 +184,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                             }
 
                                             setUserSelected(list);
-                                            setUpdate(!update);
+                                            setIsUpdate(!isUpdate);
                                         }}
                                         checked={userSelected.includes(item)}></input>
                                     {getUserName(users, item)}
@@ -208,7 +208,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                             onClick={handleShow}>
                             Ajouter un participant
                         </button>
-                        <Modal show={show} onHide={handleClose}>
+                        <Modal show={isShow} onHide={handleClose}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Ajouter un participant</Modal.Title>
                             </Modal.Header>

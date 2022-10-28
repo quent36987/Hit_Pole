@@ -2,7 +2,7 @@ import { Card } from 'react-bootstrap';
 import React from 'react';
 import { ReserverButton } from '../componants/Reserver';
 import { Timestamp } from 'firebase/firestore';
-import { DateFormatAbv, TimeAbv } from '../Utils/utils';
+import { dateFormatAbv, timeAbv } from '../Utils/utils';
 
 const Titres = ['Pole', 'Pole ados', 'Hit Streching', 'Chair et Exotic'];
 
@@ -16,7 +16,7 @@ const Niveaux = [
     'Inter 2'
 ];
 
-enum TYPE_COURS {
+enum ETypeCour {
     COURS,
     INITIATION,
     STAGE,
@@ -24,7 +24,7 @@ enum TYPE_COURS {
 }
 
 class Item {
-    public type: TYPE_COURS;
+    public type: ETypeCour;
     public titre: string;
     public desc: string;
     public date: Timestamp;
@@ -44,7 +44,7 @@ class Item {
         place: number,
         id: string,
         users: string[],
-        type: TYPE_COURS,
+        type: ETypeCour,
         unite: number,
         niveau: string,
         participation: string[]
@@ -56,7 +56,7 @@ class Item {
         this.place = place || 0;
         this.id = id || '';
         this.users = users || [];
-        this.type = type || TYPE_COURS.COURS;
+        this.type = type || ETypeCour.COURS;
         this.unite = unite || 0;
 
         this.users = users || [];
@@ -76,13 +76,14 @@ class Item {
         }`;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     WithHeaderExample(user, cb = null): JSX.Element {
         return (
             <Card style={{ marginBottom: '1vh', width: '100%' }} key={this.id}>
                 <Card.Header style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
                         {' '}
-                        {DateFormatAbv(this.date.toDate())} {TimeAbv(this.date.toDate())}
+                        {dateFormatAbv(this.date.toDate())} {timeAbv(this.date.toDate())}
                     </div>
                     <div style={{ fontSize: '11px', alignSelf: 'center' }}>⌚ {this.temps} min</div>
                 </Card.Header>
@@ -144,4 +145,4 @@ const ItemConverter = {
     }
 };
 
-export { Titres, TYPE_COURS, Niveaux, ItemConverter, Item };
+export { Titres, ETypeCour, Niveaux, ItemConverter, Item };

@@ -5,13 +5,13 @@ import { IPage } from '../interfaces/page';
 import logging from '../config/logging';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
-import { Item, ItemConverter, Niveaux, Titres, TYPE_COURS } from '../data/Item';
+import { ETypeCour, Item, ItemConverter, Niveaux, Titres } from '../data/Item';
 import React, { useEffect, useState } from 'react';
 
 const AjoutPage: React.FunctionComponent<IPage> = (props) => {
     const { setAlert } = AppState();
-    const [validated, setValidated] = useState(false);
-    const [update, setUpdate] = useState(false);
+    const [isValidated, setIsValidated] = useState(false);
+    const [isUpdate, setIsUpdate] = useState(false);
 
     const [titre, setTitre] = useState('');
     const [niveau, setNiveau] = useState('');
@@ -53,7 +53,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                         Number(place),
                         '',
                         [],
-                        TYPE_COURS.COURS,
+                        ETypeCour.COURS,
                         1,
                         niveau,
                         []
@@ -77,12 +77,12 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
             }
         }
 
-        setValidated(true);
+        setIsValidated(true);
     };
 
     return (
         <div>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                     <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
                         <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
@@ -176,7 +176,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                             d[index] = e.target.value;
                                             setDates(d);
                                             console.log(dates);
-                                            setUpdate(!update);
+                                            setIsUpdate(!isUpdate);
                                         }}
                                     />
                                     <Button
@@ -185,7 +185,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                             const d = dates;
                                             d.splice(index, 1);
                                             setDates(d);
-                                            setUpdate(!update);
+                                            setIsUpdate(!isUpdate);
                                         }}>
                                         🗑️
                                     </Button>
@@ -208,7 +208,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                     d.push(date);
                                     setDates(d);
                                     console.log(dates);
-                                    setUpdate(!update);
+                                    setIsUpdate(!isUpdate);
                                 }}>
                                 Ajouter la date
                             </Button>

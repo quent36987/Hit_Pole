@@ -3,7 +3,7 @@ import Application from './application';
 import { Context } from './Context';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals';
+import ReportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -14,4 +14,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-reportWebVitals();
+ReportWebVitals();

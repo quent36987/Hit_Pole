@@ -6,13 +6,13 @@ import { doc, getDoc } from 'firebase/firestore';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UserConverter, User as UserModel } from './data/User';
 
-const App = createContext(null);
+const app = createContext(null);
 
 interface IAppState {
     alert: any;
     setAlert: any;
     user: User;
-    perm: boolean;
+    hasPerm: boolean;
     profil: UserModel;
 }
 
@@ -24,7 +24,7 @@ const Context = ({ children }): JSX.Element => {
         type: 'success'
     });
 
-    const [perm, setPerm] = useState<boolean>(false);
+    const [hasPerm, setHasPerm] = useState<boolean>(false);
     const [user, setUser] = useState<User>(null);
     const [profil, setProfil] = useState<UserModel>(null);
 
@@ -39,7 +39,7 @@ const Context = ({ children }): JSX.Element => {
 
     useEffect(() => {
         async function isadm(): Promise<void> {
-            if (!user || perm) {
+            if (!user || hasPerm) {
                 return;
             }
 
@@ -48,22 +48,22 @@ const Context = ({ children }): JSX.Element => {
             const docSnap = await getDoc(ref);
 
             if (docSnap.exists()) {
-                setPerm(docSnap.data().perm);
+                setHasPerm(docSnap.data().perm);
             }
         }
 
         void isadm();
-    }, [user, perm]);
+    }, [user, hasPerm]);
 
     useEffect(() => {
         if (!user) {
             return;
         }
 
-        void LoadProfile();
+        void loadProfile();
     }, [user]);
 
-    async function LoadProfile(): Promise<void> {
+    async function loadProfile(): Promise<void> {
         const query = doc(db, 'Users', user.uid).withConverter(UserConverter);
         const docsnap = await getDoc(query);
         const pro = docsnap.data();
@@ -72,21 +72,21 @@ const Context = ({ children }): JSX.Element => {
     }
 
     return (
-        <App.Provider
+        <app.Provider
             value={{
                 alert,
                 setAlert,
                 user,
-                perm,
+                hasPerm,
                 profil
             }}>
             {children}
-        </App.Provider>
+        </app.Provider>
     );
 };
 
 const AppState = (): IAppState => {
-    return useContext(App);
+    return useContext(app);
 };
 
 export { Context, AppState };

@@ -22,9 +22,9 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
     const [data, setData] = useState([]);
     const { user, profil } = AppState();
     const [last, setlast] = useState(null);
-    const [update, setUpdate] = useState(true);
+    const [isUpdate, setIsUpdate] = useState(true);
 
-    async function LoadItem(): Promise<void> {
+    async function loadItem(): Promise<void> {
         const limi = 10;
 
         if (last) {
@@ -38,7 +38,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
             );
 
             const querySnapshot = await getDocs(q);
-            setUpdate(false);
+            setIsUpdate(false);
             const list = data;
 
             if (querySnapshot.size === 0) {
@@ -72,7 +72,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
             );
 
             const querySnapshot = await getDocs(q);
-            setUpdate(false);
+            setIsUpdate(false);
             const list: Item[] = [];
 
             querySnapshot.forEach((doc) => {
@@ -118,7 +118,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
 
     useEffect(() => {
         if (user && profil) {
-            LoadItem().catch(console.error);
+            loadItem().catch(console.error);
         }
     }, [user, profil]);
 
@@ -129,7 +129,7 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
                 <div className="HomePage-content">
                     <div style={{ marginBottom: '15px' }}>Bonjour {profil.prenom},</div>
                     Mes prochains cours réservés:
-                    {data.length === 0 && update ? (
+                    {data.length === 0 && isUpdate ? (
                         <Spinner animation="border" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </Spinner>
@@ -138,13 +138,13 @@ const ProfilePage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
                             {data.map((elt) => (
                                 <>
                                     {profil.famille.length > 0 && family(elt)}
-                                    {elt.WithHeaderExample(user, LoadItem)}
+                                    {elt.WithHeaderExample(user, loadItem)}
                                 </>
                             ))}
                         </>
                     )}
                     {last !== null ? (
-                        <div style={{ textAlign: 'center' }} onClick={async () => await LoadItem()}>
+                        <div style={{ textAlign: 'center' }} onClick={async () => await loadItem()}>
                             voir plus..
                         </div>
                     ) : null}

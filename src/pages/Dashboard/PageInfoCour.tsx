@@ -16,27 +16,27 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
     const { setAlert } = AppState();
     const [items, setItems] = useState<Item>(null);
     const [users, setusers] = useState<User[]>([]);
-    const [update, setUpdate] = useState(true);
+    const [isUpdate, setIsUpdate] = useState(true);
     const [userAdd, setUserAdd] = useState(null);
 
-    const [load, setLoad] = useState(false);
+    const [isLoad, setIsLoad] = useState(false);
 
-    const [show, setShow] = useState(false);
-    const [modalNewUser, setModalNewUser] = useState(false);
-    const handleClose = (): void => setShow(false);
+    const [isShow, setIsShow] = useState(false);
+    const [isModalNewUser, setIsModalNewUser] = useState(false);
+    const handleClose = (): void => setIsShow(false);
 
     const handleShow1 = (): void => {
-        setModalNewUser(true);
-        setShow(true);
+        setIsModalNewUser(true);
+        setIsShow(true);
     };
 
     const handleShow = (): void => {
-        setModalNewUser(false);
-        setShow(true);
+        setIsModalNewUser(false);
+        setIsShow(true);
     };
 
     useEffect(() => {
-        LoadData().catch(console.error);
+        loadData().catch(console.error);
     }, [props.name]);
 
     useEffect(() => {
@@ -45,11 +45,11 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
         });
     }, [props]);
 
-    async function LoadData(): Promise<void> {
+    async function loadData(): Promise<void> {
         const item = await getItemFirebase(props.match.params.id);
         setItems(item);
-        setUpdate(!update);
-        setLoad(true);
+        setIsUpdate(!isUpdate);
+        setIsLoad(true);
     }
 
     const addPartcipant = async (event, id: string): Promise<void> => {
@@ -68,32 +68,32 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
             return;
         }
 
-        const CaldendarDocRef1 = doc(db, 'calendrier', items.id);
+        const caldendarDocRef1 = doc(db, 'calendrier', items.id);
 
-        await updateDoc(CaldendarDocRef1, {
+        await updateDoc(caldendarDocRef1, {
             users: arrayUnion(id)
         });
 
-        await LoadData();
+        await loadData();
     };
 
     async function deleteParticipant(item: string): Promise<void> {
         if (window.confirm('Voulez-vous vraiment supprimer cette personne ?')) {
-            const CaldendarDocRef1 = doc(db, 'calendrier', items.id);
+            const caldendarDocRef1 = doc(db, 'calendrier', items.id);
 
             const list = items.users.filter((e) => e !== item);
 
-            await updateDoc(CaldendarDocRef1, {
+            await updateDoc(caldendarDocRef1, {
                 users: list
             });
 
-            await LoadData();
+            await loadData();
         }
     }
 
     return (
         <>
-            {load && items ? (
+            {isLoad && items ? (
                 <div>
                     <div style={{ marginLeft: '17px' }}>
                         Participants :
@@ -157,13 +157,13 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                         Ajouter un utilisateur sans compte
                     </button>
 
-                    <Modal show={show} onHide={handleClose}>
+                    <Modal show={isShow} onHide={handleClose}>
                         <Modal.Header closeButton>
                             <Modal.Title>Ajouter un participant</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             {' '}
-                            {modalNewUser ? (
+                            {isModalNewUser ? (
                                 <Forms
                                     calendrierID={items.id}
                                     cb={() => {
@@ -172,7 +172,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         getAllUsersFirebase()
                                             .then((data) => {
                                                 setusers(data);
-                                                LoadData().catch(console.error);
+                                                loadData().catch(console.error);
                                             })
                                             .catch(console.error);
                                     }}

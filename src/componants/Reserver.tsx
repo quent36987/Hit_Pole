@@ -1,7 +1,7 @@
 import { AppState } from '../Context';
 import { Item } from '../data/Item';
 import { Timestamp } from 'firebase/firestore';
-import { Annuler, Reserver } from '../Utils/utils';
+import { annuler, reserver } from '../Utils/utils';
 import { Button, Modal } from 'react-bootstrap';
 import React, { useState } from 'react';
 
@@ -15,18 +15,18 @@ interface IReserverProps {
     item.users.include me or famille => annuler la reservation
     item.users.lenght = place => ce court est complet
     sinon => reserver (attention pour les familles au niveau des places) */
-const ReserverButton = (Props: IReserverProps): JSX.Element => {
-    const [show, setShow] = useState(false);
+const ReserverButton = (props: IReserverProps): JSX.Element => {
+    const [isShow, setIsShow] = useState(false);
     const [userSelected, setUserSelected] = useState<string[]>([]);
-    const [update, setUpdate] = useState(true);
+    const [isUpdate, setIsUpdate] = useState(true);
 
     const { profil, user, setAlert } = AppState();
 
-    const handleClose = (): void => setShow(false);
-    const handleShow = (): void => setShow(true);
+    const handleClose = (): void => setIsShow(false);
+    const handleShow = (): void => setIsShow(true);
 
     const onFamilleClick = async (): Promise<void> => {
-        if (userSelected.length > Props.item.place - Props.item.users.length) {
+        if (userSelected.length > props.item.place - props.item.users.length) {
             setAlert({
                 open: true,
                 type: 'error',
@@ -37,17 +37,17 @@ const ReserverButton = (Props: IReserverProps): JSX.Element => {
         }
 
         if (userSelected.includes('moi')) {
-            await Reserver(Props.item, setAlert, Props.userId);
+            await reserver(props.item, setAlert, props.userId);
         }
 
         const famille = userSelected.filter((value) => value !== 'moi');
 
         for (let i = 0; i < famille.length; i++) {
-            await Reserver(Props.item, setAlert, `F_${user.uid}_${famille[i]}`);
+            await reserver(props.item, setAlert, `F_${user.uid}_${famille[i]}`);
         }
 
         handleClose();
-        Props.cb();
+        props.cb();
     };
 
     const onReservation = async (): Promise<void> => {
@@ -64,34 +64,34 @@ const ReserverButton = (Props: IReserverProps): JSX.Element => {
         if (profil.famille.length > 0) {
             handleShow();
         } else {
-            await Reserver(Props.item, setAlert, Props.userId);
-            Props.cb();
+            await reserver(props.item, setAlert, props.userId);
+            props.cb();
         }
     };
 
     const onAnnulation = async (): Promise<void> => {
         if (window.confirm('Voulez-vous vraiment annuler ce cours ?')) {
             if (profil.famille.length > 0) {
-                for (let i = 0; i < Props.item.users.length; i++) {
-                    if (Props.item.users[i].startsWith(`F_${user.uid}`)) {
-                        await Annuler(Props.item, setAlert, Props.item.users[i]);
+                for (let i = 0; i < props.item.users.length; i++) {
+                    if (props.item.users[i].startsWith(`F_${user.uid}`)) {
+                        await annuler(props.item, setAlert, props.item.users[i]);
                     }
                 }
 
-                if (Props.item.users.includes(Props.userId)) {
-                    await Annuler(Props.item, setAlert, Props.userId);
+                if (props.item.users.includes(props.userId)) {
+                    await annuler(props.item, setAlert, props.userId);
                 }
             } else {
-                await Annuler(Props.item, setAlert, Props.userId);
+                await annuler(props.item, setAlert, props.userId);
             }
 
-            Props.cb();
+            props.cb();
         }
     };
 
     function hasFamille(): boolean {
-        for (let i = 0; i < Props.item.users.length; i++) {
-            if (Props.item.users[i].startsWith(`F_${user?.uid}`)) {
+        for (let i = 0; i < props.item.users.length; i++) {
+            if (props.item.users[i].startsWith(`F_${user?.uid}`)) {
                 return true;
             }
         }
@@ -100,11 +100,11 @@ const ReserverButton = (Props: IReserverProps): JSX.Element => {
     }
 
     const button = (): JSX.Element => {
-        if (Props.item.date < Timestamp.fromDate(new Date())) {
+        if (props.item.date < Timestamp.fromDate(new Date())) {
             return <div style={{ marginRight: '10px', fontSize: '12px' }}>Ce cours est passé.</div>;
         }
 
-        if (Props.item.users.includes(Props.userId) || hasFamille()) {
+        if (props.item.users.includes(props.userId) || hasFamille()) {
             return (
                 <Button
                     variant="outline-danger"
@@ -115,7 +115,7 @@ const ReserverButton = (Props: IReserverProps): JSX.Element => {
             );
         }
 
-        if (Props.item.users.length >= Props.item.place) {
+        if (props.item.users.length >= props.item.place) {
             return <div style={{ marginRight: '10px', fontSize: '13px' }}>Complet</div>;
         }
 
@@ -131,7 +131,7 @@ const ReserverButton = (Props: IReserverProps): JSX.Element => {
 
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={isShow} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Votre famille</Modal.Title>
                 </Modal.Header>
@@ -164,7 +164,7 @@ const ReserverButton = (Props: IReserverProps): JSX.Element => {
                                         }
 
                                         setUserSelected(list);
-                                        setUpdate(!update);
+                                        setIsUpdate(!isUpdate);
                                     }}
                                     checked={userSelected.includes(item)}></input>
                                 {item}

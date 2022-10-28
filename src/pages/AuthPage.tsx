@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 const AuthPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [titre, setTitre] = useState('');
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     function PageRender(): JSX.Element {
         // eslint-disable-next-line react/prop-types
         const type = props.match.params.type;

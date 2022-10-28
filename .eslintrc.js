@@ -11,7 +11,53 @@ module.exports = {
         'standard-with-typescript',
         'plugin:prettier/recommended'
     ],
-    overrides: [],
+    overrides: [
+        {
+            parser: `@typescript-eslint/parser`,
+            parserOptions: {
+                project: `./tsconfig.json`
+            },
+            files: ['*.tsx', '*.ts'],
+            rules: {
+                '@typescript-eslint/naming-convention': [
+                    'error',
+                    { format: ['camelCase'], selector: 'default' },
+                    {
+                        format: ['camelCase'],
+                        leadingUnderscore: 'require',
+                        modifiers: ['private'],
+                        selector: 'property'
+                    },
+                    {
+                        format: ['PascalCase'],
+                        prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
+                        selector: 'variable',
+                        types: ['boolean']
+                    },
+                    {
+                        format: ['PascalCase', 'camelCase', 'UPPER_CASE'],
+                        modifiers: ['const'],
+                        selector: 'variable'
+                    },
+                    {
+                        format: ['UPPER_CASE'],
+                        modifiers: ['const', 'exported'],
+                        selector: 'variable',
+                        types: ['boolean', 'string', 'number']
+                    },
+                    {
+                        format: ['PascalCase'],
+                        prefix: ['I'],
+                        selector: 'interface'
+                    },
+                    { format: ['PascalCase'], selector: 'class' },
+                    { format: ['PascalCase'], selector: 'typeParameter' },
+                    { format: ['PascalCase'], prefix: ['E'], selector: 'enum' },
+                    { format: ['PascalCase'], selector: 'enumMember' }
+                ]
+            }
+        }
+    ],
     parserOptions: {
         project: './tsconfig.json',
         ecmaVersion: 'latest',

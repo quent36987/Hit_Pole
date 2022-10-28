@@ -4,7 +4,7 @@ import { getAllItemMonth } from '../Utils/firebaseUtils';
 import { IPage } from '../interfaces/page';
 import { Item } from '../data/Item';
 import { ReserverButton } from '../componants/Reserver';
-import { DateAbv, DateFormatAbv, MOIS } from '../Utils/utils';
+import { dateAbv, dateFormatAbv, MOIS } from '../Utils/utils';
 import React, { useEffect, useState } from 'react';
 
 const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
@@ -47,7 +47,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
         return week;
     }
 
-    function Calendar(datenow: Date): JSX.Element[] {
+    function calendar(datenow: Date): JSX.Element[] {
         const firstDay =
             ((new Date(datenow.getFullYear(), datenow.getMonth(), 1).getDay() - 1) % 7) - 1;
 
@@ -193,7 +193,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                     <div className="calendar-table__col">S</div>
                                     <div className="calendar-table__col">S</div>
                                 </div>
-                                <div className="calendar-table">{Calendar(datenow)}</div>
+                                <div className="calendar-table">{calendar(datenow)}</div>
                             </>
                         ) : null}
 
@@ -214,8 +214,8 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                         {'◀️'}
                                     </div>
                                     <div className="calendar_header_item_centre">
-                                        {DateAbv(datenowFirstweek)} -{' '}
-                                        {DateAbv(
+                                        {dateAbv(datenowFirstweek)} -{' '}
+                                        {dateAbv(
                                             new Date(
                                                 datenowFirstweek.getFullYear(),
                                                 datenowFirstweek.getMonth(),
@@ -240,7 +240,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                 <div className="semaine">
                                     {getweek(datenowFirstweek).map((item) => (
                                         <>
-                                            <div className="jour">{DateFormatAbv(item)}</div>
+                                            <div className="jour">{dateFormatAbv(item)}</div>
                                             {data
                                                 .filter(
                                                     (item2) =>
@@ -317,7 +317,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                 </div>
 
                                 <div className="semaine">
-                                    <div className="jour">{DateFormatAbv(datenow)}</div>
+                                    <div className="jour">{dateFormatAbv(datenow)}</div>
                                     {data
                                         .filter(
                                             (item) =>

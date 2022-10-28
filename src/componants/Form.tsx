@@ -1,10 +1,11 @@
 import { db } from '../firebase';
+import PropTypes from 'prop-types';
 import { addDoc, arrayUnion, collection, doc, Timestamp, updateDoc } from 'firebase/firestore';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import React, { useState } from 'react';
 
-const Forms = (Props): JSX.Element => {
-    const [validated, setValidated] = useState(false);
+const Forms = (props): JSX.Element => {
+    const [isValidated, setIsValidated] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
@@ -14,15 +15,14 @@ const Forms = (Props): JSX.Element => {
         const docs = await addDoc(collectionRef, {
             firstName,
             lastName,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             date_inscription: Timestamp.now()
         });
 
-        console.log(docs, Props);
-
-        const CaldendarDocRef1 = doc(db, 'calendrier', Props.calendrierID);
+        const CaldendarDocRef1 = doc(db, 'calendrier', props.calendrierID);
         await updateDoc(CaldendarDocRef1, { users: arrayUnion(docs.id) });
 
-        Props.cb();
+        props.cb();
     }
 
     async function handleSubmit(event): Promise<void> {
@@ -34,12 +34,12 @@ const Forms = (Props): JSX.Element => {
             await add();
         }
 
-        setValidated(true);
+        setIsValidated(true);
     }
 
     return (
         <>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md="4" controlId="validationCustom01">
                         <Form.Label>Prénom</Form.Label>
@@ -74,6 +74,11 @@ const Forms = (Props): JSX.Element => {
             </Form>
         </>
     );
+};
+
+Forms.propTypes = {
+    calendrierID: PropTypes.string.isRequired,
+    cb: PropTypes.func
 };
 
 export { Forms };

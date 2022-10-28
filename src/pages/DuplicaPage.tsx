@@ -27,7 +27,7 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
     const [dateCL, setDateCL] = useState([]);
     const [annee, setAnnee] = useState(new Date().getFullYear());
 
-    function Option(annee: number): { semaines: string[]; datefirst: Date[] } {
+    function option(annee: number): { semaines: string[]; datefirst: Date[] } {
         const semaines = [];
         const datefirst = [];
         // get the first monday of the year
@@ -68,8 +68,8 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
         return { semaines, datefirst };
     }
 
-    async function SubmitChange(): Promise<void> {
-        const dateweeks = Option(annee).datefirst;
+    async function submitChange(): Promise<void> {
+        const dateweeks = option(annee).datefirst;
         const datedebut = dateweeks[dateCP];
 
         // get all the events of the week (dateCP)
@@ -154,7 +154,7 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                 </Form.Select>
 
                 <Form.Select value={dateCP} onChange={(e) => setDateCP(Number(e.target.value))}>
-                    {Option(annee).semaines.map((item, index) => {
+                    {option(annee).semaines.map((item, index) => {
                         return (
                             <option key={index} value={index}>
                                 {item}
@@ -163,7 +163,7 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                     })}
                 </Form.Select>
                 <Form.Group>
-                    {Option(annee).semaines.map((item, index) => {
+                    {option(annee).semaines.map((item, index) => {
                         return (
                             <Form.Check
                                 key={index}
@@ -185,7 +185,7 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                         );
                     })}
                 </Form.Group>
-                <Button variant="primary" onClick={async () => await SubmitChange()}>
+                <Button variant="primary" onClick={async () => await submitChange()}>
                     Submit
                 </Button>
             </Form>

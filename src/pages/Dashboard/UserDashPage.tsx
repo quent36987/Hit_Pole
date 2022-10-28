@@ -19,7 +19,7 @@ import {
     updateDoc,
     where
 } from 'firebase/firestore';
-import { DateTimeAbv, getUserName } from '../../Utils/utils';
+import { dateTimeAbv, getUserName } from '../../Utils/utils';
 import { Item, ItemConverter } from '../../data/Item';
 import React, { useEffect, useState } from 'react';
 
@@ -31,7 +31,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
     const [users, setusers] = useState<User[]>([]);
     const [last, setlast] = useState(null);
     const [lastBis, setlastBis] = useState(null);
-    const [update, setUpdate] = useState(false);
+    const [isUpdate, setIsUpdate] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
@@ -41,11 +41,11 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
             })
             .catch(console.error);
 
-        VoirPlus().catch(console.error);
-        VoirPlusBis().catch(console.error);
+        voirPlus().catch(console.error);
+        voirPlusBis().catch(console.error);
     }, [props]);
 
-    async function VoirPlus(): Promise<void> {
+    async function voirPlus(): Promise<void> {
         const limi = 10;
 
         if (last) {
@@ -116,7 +116,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         }
     }
 
-    async function VoirPlusBis(): Promise<void> {
+    async function voirPlusBis(): Promise<void> {
         const limi = 10;
 
         if (lastBis) {
@@ -187,10 +187,10 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         }
     }
 
-    async function AddSolde(user: User, solde: number): Promise<void> {
+    async function addSolde(user: User, solde: number): Promise<void> {
         try {
-            const UserDocRef = doc(db, 'Users', user.id);
-            await updateDoc(UserDocRef, { solde: increment(solde) });
+            const userDocRef = doc(db, 'Users', user.id);
+            await updateDoc(userDocRef, { solde: increment(solde) });
         } catch (error) {
             setAlert({
                 open: true,
@@ -239,12 +239,12 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                     <td>{user.solde}</td>
                                     <td>
                                         <Button
-                                            onClick={async () => await AddSolde(user, 1)}
+                                            onClick={async () => await addSolde(user, 1)}
                                             variant="success-outline">
                                             ➕
                                         </Button>
                                         <Button
-                                            onClick={async () => await AddSolde(user, -1)}
+                                            onClick={async () => await addSolde(user, -1)}
                                             variant="success-outline">
                                             ➖
                                         </Button>
@@ -278,7 +278,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                     <td>
                                         {item.titre} - {item.niveau}
                                     </td>
-                                    <td>{DateTimeAbv(item.date.toDate())}</td>
+                                    <td>{dateTimeAbv(item.date.toDate())}</td>
                                     <td>
                                         {item.users.length} / {item.place}
                                     </td>
@@ -335,7 +335,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                                             setlast(null);
                                                         }
 
-                                                        setUpdate(!update);
+                                                        setIsUpdate(!isUpdate);
                                                     })
                                                     .catch(console.error);
                                             }}>
@@ -348,7 +348,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                     </Table>
 
                     {last !== null ? (
-                        <div style={{ textAlign: 'center' }} onClick={async () => await VoirPlus()}>
+                        <div style={{ textAlign: 'center' }} onClick={async () => await voirPlus()}>
                             voir plus..
                         </div>
                     ) : null}
@@ -371,7 +371,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                     <td>
                                         {item.titre} - {item.niveau}
                                     </td>
-                                    <td>{DateTimeAbv(item.date.toDate())}</td>
+                                    <td>{dateTimeAbv(item.date.toDate())}</td>
                                     <td>
                                         {item.users.length} / {item.place}
                                     </td>
@@ -430,7 +430,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                                             setlastBis(null);
                                                         }
 
-                                                        setUpdate(!update);
+                                                        setIsUpdate(!isUpdate);
                                                     })
                                                     .catch(console.error);
                                             }}>
@@ -445,7 +445,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                     {lastBis !== null ? (
                         <div
                             style={{ textAlign: 'center' }}
-                            onClick={async () => await VoirPlusBis()}>
+                            onClick={async () => await voirPlusBis()}>
                             voir plus..
                         </div>
                     ) : null}

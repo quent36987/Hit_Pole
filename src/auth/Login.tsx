@@ -9,10 +9,10 @@ const Login = (): JSX.Element => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const { setAlert } = AppState();
-    const [show, setShow] = useState(false);
+    const [isShow, setIsShow] = useState(false);
 
-    const handleClose = (): void => setShow(false);
-    const handleShow = (): void => setShow(true);
+    const handleClose = (): void => setIsShow(false);
+    const handleShow = (): void => setIsShow(true);
 
     async function forgotPassword(email): Promise<void> {
         return await sendPasswordResetEmail(auth, email, {
@@ -73,7 +73,7 @@ const Login = (): JSX.Element => {
 
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={isShow} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Mot de passe oublié ?</Modal.Title>
                 </Modal.Header>
@@ -84,7 +84,8 @@ const Login = (): JSX.Element => {
                     autoComplete="email"
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="email"
-                    value={email}></input>
+                    value={email}
+                />
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close

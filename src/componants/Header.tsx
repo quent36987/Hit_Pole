@@ -6,8 +6,8 @@ import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 const HeaderBar = (): JSX.Element => {
-    const { user, setAlert, perm } = AppState();
-    const [expanded, setExpanded] = useState(false);
+    const { user, setAlert, hasPerm } = AppState();
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const logOut = (): void => {
         void signOut(auth);
@@ -22,47 +22,47 @@ const HeaderBar = (): JSX.Element => {
     return (
         <Navbar
             collapseOnSelect
-            expanded={expanded}
-            onToggle={() => setExpanded(!expanded)}
+            expanded={isExpanded}
+            onToggle={() => setIsExpanded(!isExpanded)}
             expand="md"
             bg="light"
             variant="light"
             className="px-3 py-8">
-            <Link className="navbar-brand" to="/" onClick={() => setExpanded(false)}>
+            <Link className="navbar-brand" to="/" onClick={() => setIsExpanded(false)}>
                 HIT-POLE🤸🏼‍♀️
             </Link>
             <Navbar.Toggle aria-controls="responsive-navbar-na" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto px-2">
-                    {perm ? (
+                    {hasPerm ? (
                         <>
                             <NavDropdown title="👑 Administration">
                                 <Link
-                                    onClick={() => setExpanded(false)}
+                                    onClick={() => setIsExpanded(false)}
                                     className="dropdown-item"
                                     to="/ajout">
                                     ➕ Ajouter
                                 </Link>
                                 <Link
-                                    onClick={() => setExpanded(false)}
+                                    onClick={() => setIsExpanded(false)}
                                     className="dropdown-item"
                                     to="/duplica">
                                     ➿ Duplication
                                 </Link>
                                 <Link
-                                    onClick={() => setExpanded(false)}
+                                    onClick={() => setIsExpanded(false)}
                                     className="dropdown-item"
                                     to="/dashboard">
                                     📝 Dashboard
                                 </Link>
                                 <Link
-                                    onClick={() => setExpanded(false)}
+                                    onClick={() => setIsExpanded(false)}
                                     className="dropdown-item"
                                     to="/particip/0">
                                     ✔️ Check !
                                 </Link>
                                 <Link
-                                    onClick={() => setExpanded(false)}
+                                    onClick={() => setIsExpanded(false)}
                                     className="dropdown-item"
                                     to="/export">
                                     📁 Export
@@ -72,16 +72,19 @@ const HeaderBar = (): JSX.Element => {
                     ) : (
                         <></>
                     )}
-                    <Link onClick={() => setExpanded(false)} className="nav-link" to="/">
+                    <Link onClick={() => setIsExpanded(false)} className="nav-link" to="/">
                         🏠 Accueil
                     </Link>
-                    <Link onClick={() => setExpanded(false)} className="nav-link" to="/calendrier">
+                    <Link
+                        onClick={() => setIsExpanded(false)}
+                        className="nav-link"
+                        to="/calendrier">
                         🗓️ Calendrier
                     </Link>
-                    <Link onClick={() => setExpanded(false)} className="nav-link" to="/profile">
+                    <Link onClick={() => setIsExpanded(false)} className="nav-link" to="/profile">
                         👩 Profil
                     </Link>
-                    <Link onClick={() => setExpanded(false)} className="nav-link" to="/contact">
+                    <Link onClick={() => setIsExpanded(false)} className="nav-link" to="/contact">
                         📞 Contact
                     </Link>
                 </Nav>
@@ -89,7 +92,7 @@ const HeaderBar = (): JSX.Element => {
                     {user ? (
                         <Button
                             onClick={() => {
-                                setExpanded(false);
+                                setIsExpanded(false);
                                 logOut();
                             }}
                             variant="outline-danger">
@@ -97,7 +100,7 @@ const HeaderBar = (): JSX.Element => {
                         </Button>
                     ) : (
                         <Button
-                            onClick={() => setExpanded(false)}
+                            onClick={() => setIsExpanded(false)}
                             variant="outline-success"
                             href="/auth/login">
                             Se connecter

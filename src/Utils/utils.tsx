@@ -20,38 +20,38 @@ export const MOIS = [
 const JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 const JOURS_ABV = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
 
-function DateFormat(date: Date): string {
+function dateFormat(date: Date): string {
     // format : lundi 4 juillet à 20h30
     return `${JOURS[date.getDay()]} ${date.getDate()} ${MOIS[date.getMonth()]} à ${
         date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
     }h${date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()}`;
 }
 
-function DateFormatAbv(date: Date): string {
+function dateFormatAbv(date: Date): string {
     // format : lun, 4 juillet
     return `${JOURS_ABV[date.getDay()]}, ${date.getDate()} ${MOIS[date.getMonth()]}`;
 }
 
-function TimeAbv(date: Date): string {
+function timeAbv(date: Date): string {
     // format : 20h45
     return `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}h${
         date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
     }`;
 }
 
-function DateAbv(date: Date): string {
+function dateAbv(date: Date): string {
     // format 01/05
     return `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
         date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
     }`;
 }
 
-function DateTimeAbv(date: Date): string {
+function dateTimeAbv(date: Date): string {
     // format  lun, 4/09 15h50
-    return `${JOURS_ABV[date.getDay()]},${DateAbv(date)} - ${TimeAbv(date)}`;
+    return `${JOURS_ABV[date.getDay()]},${dateAbv(date)} - ${timeAbv(date)}`;
 }
 
-async function Annuler(item: Item, setAlert, userId): Promise<boolean> {
+async function annuler(item: Item, setAlert, userId): Promise<boolean> {
     if (
         userId == null ||
         item.date.toDate() < new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
@@ -78,7 +78,7 @@ async function Annuler(item: Item, setAlert, userId): Promise<boolean> {
     }
 }
 
-async function Reserver(item: Item, setAlert, userId): Promise<boolean> {
+async function reserver(item: Item, setAlert, userId): Promise<boolean> {
     if (userId == null) {
         setAlert({
             open: true,
@@ -123,4 +123,4 @@ function getUserName(users: User[], userId: string): string {
     return userId;
 }
 
-export { DateFormat, DateFormatAbv, DateAbv, TimeAbv, DateTimeAbv, Annuler, Reserver, getUserName };
+export { dateFormat, dateFormatAbv, dateAbv, timeAbv, dateTimeAbv, annuler, reserver, getUserName };

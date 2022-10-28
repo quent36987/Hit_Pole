@@ -7,8 +7,8 @@ import { Button, Form } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 const ContactPage: React.FunctionComponent<IPage> = (props) => {
-    const [message, Setmessage] = useState('');
-    const [isSend, SetisSend] = useState(false);
+    const [message, setMessage] = useState('');
+    const [isSend, setIsSend] = useState(false);
     const { user, setAlert } = AppState();
 
     const handleSubmit = async (event): Promise<void> => {
@@ -25,8 +25,8 @@ const ContactPage: React.FunctionComponent<IPage> = (props) => {
         try {
             const collectionRef = collection(db, 'contact');
             await addDoc(collectionRef, payload);
-            Setmessage('');
-            SetisSend(true);
+            setMessage('');
+            setIsSend(true);
         } catch (error) {
             setAlert({
                 open: true,
@@ -65,7 +65,7 @@ const ContactPage: React.FunctionComponent<IPage> = (props) => {
                                 required
                                 value={message}
                                 rows={4}
-                                onChange={(e) => Setmessage(e.target.value)}
+                                onChange={(e) => setMessage(e.target.value)}
                             />
                             <Form.Text>
                                 Le message sera envoyé et traité dans les jours suivant.

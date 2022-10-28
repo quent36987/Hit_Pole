@@ -11,8 +11,8 @@ import React, { useEffect, useState } from 'react';
 const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [item, setItem] = useState<Item>(null);
     const { setAlert } = AppState();
-    const [validated, setValidated] = useState(false);
-    const [update, setUpdate] = useState(false);
+    const [isValidated, setIsValidated] = useState(false);
+    const [isUpdate, setIsUpdate] = useState(false);
 
     const [titre, setTitre] = useState('');
     const [niveau, setNiveau] = useState('');
@@ -24,10 +24,10 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
     const [place, setPlace] = useState('');
 
     useEffect(() => {
-        LoadData().catch(console.error);
+        loadData().catch(console.error);
     }, [props.name]);
 
-    async function LoadData(): Promise<void> {
+    async function loadData(): Promise<void> {
         const query = doc(db, 'calendrier', props.match.params.id).withConverter(ItemConverter);
         const docsnap = await getDoc(query);
 
@@ -49,7 +49,7 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
         setTemps(docsnap.data().temps.toString());
         setPlace(docsnap.data().place.toString());
         setItem(docsnap.data());
-        setUpdate(!update);
+        setIsUpdate(!isUpdate);
     }
 
     const handleSubmit = async (event): Promise<void> => {
@@ -89,12 +89,12 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
             }
         }
 
-        setValidated(true);
+        setIsValidated(true);
     };
 
     return (
         <div>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                     <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
                         <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>

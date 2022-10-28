@@ -1,7 +1,7 @@
 import { getAllItems, getAllUsersFirebase } from './firebaseUtils';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export async function ExportCSV() {
+export async function exportCSV() {
     // titre_niveau - date - temps - nombre inscrit/place  - desc - users - participation
     const allItems = await getAllItems();
     const allUsers = await getAllUsersFirebase();
