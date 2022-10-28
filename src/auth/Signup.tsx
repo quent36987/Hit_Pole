@@ -1,14 +1,13 @@
-/* eslint-disable */
-import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../firebase';
 import { AppState } from '../Context';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
-import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
+import { auth, db } from '../firebase';
+import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
+import React, { useState } from 'react';
 
-const Signup = () => {
-    const [validated, setValidated] = useState(false);
+const Signup = (): JSX.Element => {
+    const [isValidated, setIsValidated] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -17,16 +16,16 @@ const Signup = () => {
     const [genre, setGenre] = useState('');
     const { setAlert } = AppState();
 
-    async function add() {
+    async function add(): Promise<void> {
         try {
             const result = await createUserWithEmailAndPassword(auth, email, password);
-            console.log('Sign Up Successful. Welcome' + result.user.email);
 
             try {
                 await setDoc(doc(db, 'Users', result.user.uid), {
                     firstName,
                     lastName,
                     genre,
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     date_inscription: Timestamp.now(),
                     solde: 0,
                     tel
@@ -40,8 +39,6 @@ const Signup = () => {
 
                 window.location.href = '/';
             } catch (error) {
-                console.log(error);
-
                 setAlert({
                     open: true,
                     type: 'error',
@@ -49,8 +46,6 @@ const Signup = () => {
                 });
             }
         } catch (error) {
-            console.log('error' + error.message);
-
             setAlert({
                 open: true,
                 message: error.message,
@@ -59,21 +54,21 @@ const Signup = () => {
         }
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event): void => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
 
         if (form.checkValidity() === true) {
-            add();
+            add().catch(console.error);
         }
 
-        setValidated(true);
+        setIsValidated(true);
     };
 
     return (
         <>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md="4" controlId="validationCustom0">
                         <Form.Label>Genre</Form.Label>
@@ -83,8 +78,7 @@ const Signup = () => {
                             onChange={(e) => {
                                 setGenre(e.target.value);
                             }}
-                            required
-                        >
+                            required>
                             <option value="no">Select</option>
                             <option value="Homme">Homme</option>
                             <option value="Femme">Femme</option>
@@ -169,9 +163,9 @@ const Signup = () => {
                         </InputGroup>
                     </Form.Group>
                     <Form.Text id="passwordHelpBlock" muted>
-                        Votre mot de passe doit comporter entre 8 et 20 caractères, contenir des
-                        lettres et des chiffres, et ne doit pas contenir d'espaces, de caractères
-                        spéciaux ou d'emoji.
+                        Votre mot de passe doit comporter entre 8 et 20 caractères, contenir des
+                        lettres et des chiffres, et ne doit pas contenir spaces, de caractères
+                        spéciaux ou emoji.
                     </Form.Text>
                 </Row>
                 <p>

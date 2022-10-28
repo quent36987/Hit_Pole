@@ -55,7 +55,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
 
         for (let i = 0; i < 6; i++) {
             table.push(
-                [0, 1, 2, 3, 4, 5, 6].map((j) => {
+                [0, 1, 2, 3, 4, 5, 6].map((j, index) => {
                     const date = new Date(
                         datenow.getFullYear(),
                         datenow.getMonth(),
@@ -64,7 +64,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
 
                     if (date.getMonth() !== datenow.getMonth()) {
                         return (
-                            <div key={j} className="calendar-table__item_2">
+                            <div key={index} className="calendar-table__item_2">
                                 {date.getDate()}
                             </div>
                         );
@@ -72,7 +72,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
 
                     return (
                         <div
-                            key={j}
+                            key={index}
                             className="calendar-table__item"
                             onClick={() => {
                                 setDatenow(date);
@@ -92,10 +92,10 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                         item.date.toDate().getDate() === date.getDate() &&
                                         item.date.toDate().getMonth() === date.getMonth()
                                 )
-                                .map((item) => {
+                                .map((item, index) => {
                                     return (
                                         <div
-                                            key={`${j}-${item.titre}`}
+                                            key={`${index}-${item.titre}`}
                                             className={
                                                 user && item.users.includes(user.uid)
                                                     ? 'calendar-table__item_item'
