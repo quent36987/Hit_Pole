@@ -185,13 +185,13 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                     </div>
                                 </div>
                                 <div className="calendar-table__header">
+                                    <div className="calendar-table__col">L</div>
                                     <div className="calendar-table__col">M</div>
-                                    <div className="calendar-table__col">T</div>
-                                    <div className="calendar-table__col">W</div>
-                                    <div className="calendar-table__col">T</div>
-                                    <div className="calendar-table__col">F</div>
+                                    <div className="calendar-table__col">M</div>
+                                    <div className="calendar-table__col">J</div>
+                                    <div className="calendar-table__col">V</div>
                                     <div className="calendar-table__col">S</div>
-                                    <div className="calendar-table__col">S</div>
+                                    <div className="calendar-table__col">D</div>
                                 </div>
                                 <div className="calendar-table">{calendar(datenow)}</div>
                             </>

@@ -1,4 +1,3 @@
-import { AppState } from '../../Context';
 import { db } from '../../firebase';
 import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
 import { IPage } from '../../interfaces/page';
@@ -10,13 +9,11 @@ import {
     deleteDoc,
     doc,
     getDocs,
-    increment,
     limit,
     orderBy,
     query,
     startAfter,
     Timestamp,
-    updateDoc,
     where
 } from 'firebase/firestore';
 import { dateTimeAbv, getUserName } from '../../Utils/utils';
@@ -27,7 +24,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
     const [data, setData] = useState<Item[]>([]);
     const [dataBis, setDataBis] = useState<Item[]>([]);
     const [key, setKey] = useState('users');
-    const { setAlert } = AppState();
     const [users, setusers] = useState<User[]>([]);
     const [last, setlast] = useState(null);
     const [lastBis, setlastBis] = useState(null);
@@ -187,19 +183,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         }
     }
 
-    async function addSolde(user: User, solde: number): Promise<void> {
-        try {
-            const userDocRef = doc(db, 'Users', user.id);
-            await updateDoc(userDocRef, { solde: increment(solde) });
-        } catch (error) {
-            setAlert({
-                open: true,
-                message: error.message,
-                type: 'error'
-            });
-        }
-    }
-
     const popover = (list): JSX.Element => (
         <Popover id="popover-basic">
             <Popover.Header as="h3">Inscrits :</Popover.Header>
@@ -226,8 +209,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                             <tr>
                                 <th>Prenom</th>
                                 <th>Nom</th>
-                                <th>Solde</th>
-                                <th>Modifier le solde</th>
                                 <th>Tel</th>
                             </tr>
                         </thead>
@@ -236,26 +217,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                 <tr key={user.id}>
                                     <td>{user.prenom}</td>
                                     <td>{user.nom}</td>
-                                    <td>{user.solde}</td>
-                                    <td>
-                                        <Button
-                                            onClick={async () => await addSolde(user, 1)}
-                                            variant="success-outline">
-                                            ➕
-                                        </Button>
-                                        <Button
-                                            onClick={async () => await addSolde(user, -1)}
-                                            variant="success-outline">
-                                            ➖
-                                        </Button>
-                                        <Button disabled variant="success-outline">
-                                            ✏️
-                                        </Button>
-                                    </td>
                                     <td>{user.tel}</td>
-                                    <td>
-                                        <Button variant="success-outline">❔</Button>
-                                    </td>
                                 </tr>
                             ))}
                         </tbody>

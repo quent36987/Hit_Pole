@@ -2,7 +2,7 @@
 
 Création d'une WebApp pour réserver des cours de pole dance en ligne. Avec un système de comptes et de solde.
 
-hosting et bd: Firebase
+hosting et bdd: Firebase
 
 site : https://hit-pole.web.app/
 

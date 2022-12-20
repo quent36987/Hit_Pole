@@ -83,7 +83,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
     return (
         <div>
             <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicEmail">
+                <Form.Group>
                     <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
                         <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
                             Titre
@@ -133,7 +133,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                             <DropdownButton
                                 variant="outline-secondary"
                                 title=""
-                                id="input-group-dropdown-1">
+                                id="input-group-dropdown-2">
                                 {Niveaux.map((t, i) => (
                                     <Dropdown.Item key={i} onClick={() => setNiveau(t)}>
                                         {t}
@@ -146,17 +146,19 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                         <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
                             Commentaire
                         </Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            value={desc}
-                            placeholder="Description"
-                            required
-                            rows={2}
-                            onChange={(e) => setDesc(e.target.value)}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Veuillez entrer un Titre.
-                        </Form.Control.Feedback>
+                        <InputGroup>
+                            <Form.Control
+                                as="textarea"
+                                value={desc}
+                                placeholder="Description"
+                                required
+                                rows={2}
+                                onChange={(e) => setDesc(e.target.value)}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Veuillez entrer un Titre.
+                            </Form.Control.Feedback>
+                        </InputGroup>
                     </Row>
 
                     <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
@@ -175,7 +177,6 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                             const d = dates;
                                             d[index] = e.target.value;
                                             setDates(d);
-                                            console.log(dates);
                                             setIsUpdate(!isUpdate);
                                         }}
                                     />
@@ -198,6 +199,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                             <Form.Control
                                 type="datetime-local"
                                 placeholder="date"
+                                value={date}
                                 onChange={(e) => setDate(e.target.value)}
                             />
                             <Button
@@ -207,7 +209,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                     const d = dates;
                                     d.push(date);
                                     setDates(d);
-                                    console.log(dates);
+                                    setDate('');
                                     setIsUpdate(!isUpdate);
                                 }}>
                                 Ajouter la date
@@ -246,9 +248,13 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                             </Form.Control.Feedback>
                         </Col>
                     </Row>
-                    <Button variant="btn btn-outline-success" type="submit">
-                        Submit
-                    </Button>
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
+                        <InputGroup>
+                            <Button variant="btn btn-outline-success" type="submit">
+                                Submit
+                            </Button>
+                        </InputGroup>
+                    </Row>
                 </Form.Group>
             </Form>
         </div>

@@ -4,7 +4,7 @@ import { ReserverButton } from '../componants/Reserver';
 import { Timestamp } from 'firebase/firestore';
 import { dateFormatAbv, timeAbv } from '../Utils/utils';
 
-const Titres = ['Pole', 'Pole ados', 'Hit Streching', 'Chair et Exotic'];
+const Titres = ['Pole', 'Pole ados', 'Hit Streching', 'Chair et Exotic', 'Pole Ados/Adultes'];
 
 const Niveaux = [
     'Tout niveau',
