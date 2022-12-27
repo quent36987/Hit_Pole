@@ -151,7 +151,6 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                                 as="textarea"
                                 value={desc}
                                 placeholder="Description"
-                                required
                                 rows={2}
                                 onChange={(e) => setDesc(e.target.value)}
                             />

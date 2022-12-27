@@ -1,10 +1,9 @@
 import { db } from '../../firebase';
 import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
 import { IPage } from '../../interfaces/page';
-import { useHistory } from 'react-router-dom';
+import { TabCours } from './TabCours';
+import { TabUsers } from './TabUsers';
 import { User } from '../../data/User';
-import { UserForm } from '../../componants/UserForm';
-import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from 'react-bootstrap';
 import {
     collection,
     deleteDoc,
@@ -17,9 +16,9 @@ import {
     Timestamp,
     where
 } from 'firebase/firestore';
-import { dateTimeAbv, getUserName } from '../../Utils/utils';
 import { Item, ItemConverter } from '../../data/Item';
 import React, { useEffect, useState } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 
 const DashPage: React.FunctionComponent<IPage> = (props) => {
     const [data, setData] = useState<Item[]>([]);
@@ -29,7 +28,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
     const [last, setlast] = useState(null);
     const [lastBis, setlastBis] = useState(null);
     const [isUpdate, setIsUpdate] = useState(false);
-    const history = useHistory();
 
     useEffect(() => {
         getAllUser().catch(console.error);
@@ -42,6 +40,24 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         getAllUsersFirebase()
             .then((data) => {
                 setusers(data);
+            })
+            .catch(console.error);
+    }
+
+    async function deleteItem(item: Item): Promise<void> {
+        deleteDoc(doc(db, 'calendrier', item.id))
+            .then(() => {
+                const list = data;
+                list.splice(list.indexOf(item), 1);
+                setData(list);
+
+                if (list.length === 0) {
+                    setlast(null);
+                }
+
+                setIsUpdate(!isUpdate);
+
+                console.log('item DELETE');
             })
             .catch(console.error);
     }
@@ -180,28 +196,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         }
     }
 
-    const popover = (list): JSX.Element => (
-        <Popover id="popover-basic">
-            <Popover.Header as="h3">Inscrits :</Popover.Header>
-            <Popover.Body>
-                {list.map((user, index) => (
-                    <div key={index}>
-                        <div>{user}</div>
-                    </div>
-                ))}
-            </Popover.Body>
-        </Popover>
-    );
-
-    const PopoverUser = (user: User): JSX.Element => (
-        <Popover id="popover-basic">
-            <Popover.Header as="h3">Modification {user.getFullName}</Popover.Header>
-            <Popover.Body>
-                <UserForm user={user} cb={getAllUser} />
-            </Popover.Body>
-        </Popover>
-    );
-
     return (
         <>
             <Tabs
@@ -210,121 +204,11 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 onSelect={(k) => setKey(k)}
                 className="mb-3">
                 <Tab eventKey="users" title="Utilisateurs">
-                    <Table responsive>
-                        <thead>
-                            <tr>
-                                <th>Prenom</th>
-                                <th>Nom</th>
-                                <th>Tel</th>
-                                <th>Commentaire</th>
-                                <th>Modifier</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((user) => (
-                                <tr key={user.id}>
-                                    <td>{user.prenom}</td>
-                                    <td>{user.nom}</td>
-                                    <td>{user.tel}</td>
-                                    <td>{user.commentaire} </td>
-                                    <td>
-                                        <OverlayTrigger
-                                            trigger="click"
-                                            placement="left"
-                                            overlay={PopoverUser(user)}>
-                                            <Button variant="success-outline"> ✏️</Button>
-                                        </OverlayTrigger>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                    <TabUsers users={users} getAllUser={getAllUser} />
                 </Tab>
+
                 <Tab eventKey="cours" title="Cours">
-                    <Table responsive>
-                        <thead>
-                            <tr>
-                                <th>Titre</th>
-                                <th>Date</th>
-                                <th>Nombre inscription</th>
-                                <th>Temps</th>
-                                <th>Commentaire</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.map((item) => (
-                                <tr key={item.id}>
-                                    <td>
-                                        {item.titre} - {item.niveau}
-                                    </td>
-                                    <td>{dateTimeAbv(item.date.toDate())}</td>
-                                    <td>
-                                        {item.users.length} / {item.place}
-                                    </td>
-                                    <td>{item.temps}</td>
-                                    <td>{item.desc}</td>
-                                    <td>
-                                        <OverlayTrigger
-                                            trigger="click"
-                                            placement="left"
-                                            overlay={popover(
-                                                item.users.map((u) => getUserName(users, u))
-                                            )}>
-                                            <Button variant="success-outline">❔</Button>
-                                        </OverlayTrigger>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="outline-warning"
-                                            onClick={() => {
-                                                history.push(`/modif/${item.id}`);
-                                            }}>
-                                            ✏️
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="outline-success"
-                                            onClick={() => {
-                                                history.push(`/particip/${item.id}`);
-                                            }}>
-                                            ✔️
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="outline-info"
-                                            onClick={() => {
-                                                history.push(`/coursinfo/${item.id}`);
-                                            }}>
-                                            🧑‍🤝‍🧑
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="outline-danger"
-                                            onClick={() => {
-                                                deleteDoc(doc(db, 'calendrier', item.id))
-                                                    .then(() => {
-                                                        const list = data;
-                                                        list.splice(list.indexOf(item), 1);
-                                                        setData(list);
-
-                                                        if (list.length === 0) {
-                                                            setlast(null);
-                                                        }
-
-                                                        setIsUpdate(!isUpdate);
-                                                    })
-                                                    .catch(console.error);
-                                            }}>
-                                            🗑️
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                    <TabCours users={users} data={data} deleteItem={deleteItem} />
 
                     {last !== null ? (
                         <div style={{ textAlign: 'center' }} onClick={async () => await voirPlus()}>
@@ -334,92 +218,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 </Tab>
 
                 <Tab eventKey="cours passe" title="Cours passé">
-                    <Table responsive>
-                        <thead>
-                            <tr>
-                                <th>Titre</th>
-                                <th>Date</th>
-                                <th>Nombre inscription</th>
-                                <th>Temps</th>
-                                <th>Commentaire</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {dataBis.map((item) => (
-                                <tr key={item.id}>
-                                    <td>
-                                        {item.titre} - {item.niveau}
-                                    </td>
-                                    <td>{dateTimeAbv(item.date.toDate())}</td>
-                                    <td>
-                                        {item.users.length} / {item.place}
-                                    </td>
-                                    <td>{item.temps}</td>
-                                    <td>{item.desc}</td>
-                                    <td>
-                                        <OverlayTrigger
-                                            trigger="click"
-                                            placement="left"
-                                            overlay={popover(
-                                                item.users.map((u) =>
-                                                    users.find((user) => user.id === u)
-                                                )
-                                            )}>
-                                            <Button variant="success-outline">❔</Button>
-                                        </OverlayTrigger>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="success-outline"
-                                            onClick={() => {
-                                                history.push(`/modif/${item.id}`);
-                                            }}>
-                                            ✏️
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="outline-success"
-                                            onClick={() => {
-                                                history.push(`/particip/${item.id}`);
-                                            }}>
-                                            ✔️
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="outline-info"
-                                            onClick={() => {
-                                                history.push(`/coursinfo/${item.id}`);
-                                            }}>
-                                            🧑‍🤝‍🧑
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="outline-danger"
-                                            onClick={() => {
-                                                deleteDoc(doc(db, 'calendrier', item.id))
-                                                    .then(() => {
-                                                        const list = dataBis;
-                                                        list.splice(list.indexOf(item), 1);
-                                                        setDataBis(list);
-
-                                                        if (list.length === 0) {
-                                                            setlastBis(null);
-                                                        }
-
-                                                        setIsUpdate(!isUpdate);
-                                                    })
-                                                    .catch(console.error);
-                                            }}>
-                                            🗑️
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                    <TabCours users={users} data={dataBis} deleteItem={deleteItem} />
 
                     {lastBis !== null ? (
                         <div

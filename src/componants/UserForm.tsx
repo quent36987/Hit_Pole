@@ -52,7 +52,6 @@ const UserForm = (props): JSX.Element => {
                             required
                             type="text"
                             placeholder="Commemtaire"
-                            defaultValue=""
                             as="textarea"
                             value={commentaire}
                             onChange={(e) => setCommentaire(e.target.value)}
