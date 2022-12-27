@@ -1,6 +1,6 @@
 {
-    "name": "react-typescript-quickstart",
-    "version": "0.1.0",
+    "name": "hit-pole",
+    "version": "0.2.0",
     "private": true,
     "dependencies": {
         "@emotion/core": "^11.0.0",

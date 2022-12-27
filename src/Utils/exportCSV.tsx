@@ -22,11 +22,12 @@ export async function exportCSV() {
         return {
             titre: item.titre,
             niveau: item.niveau,
-            date: item.date.toDate().toLocaleDateString(),
+            date: item.date.toDate().toString(),
             temps: item.temps,
-            place: `${item.users.length} sur ${item.place}`,
+            place: item.place,
             desc: item.desc,
             users: users.join(', '),
+            usersId: item.users,
             participation: participation.join(', ')
         };
     });

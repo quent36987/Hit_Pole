@@ -14,8 +14,12 @@ import { User, UserConverter } from '../data/User';
 
 async function getAllUsersFirebase(): Promise<User[]> {
     const users: User[] = [];
+
     const collectionRef = collection(db, 'Users').withConverter<User>(UserConverter);
-    const data = await getDocs(collectionRef);
+
+    const queryRef = await query(collectionRef, orderBy('firstName'));
+
+    const data = await getDocs(queryRef);
 
     data.forEach((doc) => {
         const user = doc.data();
