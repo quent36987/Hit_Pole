@@ -51,6 +51,11 @@ function dateTimeAbv(date: Date): string {
     return `${JOURS_ABV[date.getDay()]},${dateAbv(date)} - ${timeAbv(date)}`;
 }
 
+function dateCompletAbv(date: Date): string {
+    // format  4/09 - 15h50
+    return `${dateAbv(date)} - ${timeAbv(date)}`;
+}
+
 async function annuler(item: Item, setAlert, userId): Promise<boolean> {
     if (
         userId == null ||
@@ -123,4 +128,14 @@ function getUserName(users: User[], userId: string): string {
     return userId;
 }
 
-export { dateFormat, dateFormatAbv, dateAbv, timeAbv, dateTimeAbv, annuler, reserver, getUserName };
+export {
+    dateFormat,
+    dateCompletAbv,
+    dateFormatAbv,
+    dateAbv,
+    timeAbv,
+    dateTimeAbv,
+    annuler,
+    reserver,
+    getUserName
+};

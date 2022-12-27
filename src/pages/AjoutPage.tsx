@@ -5,11 +5,12 @@ import { IPage } from '../interfaces/page';
 import logging from '../config/logging';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
+import { ELogAction, Log } from '../data/Log';
 import { ETypeCour, Item, ItemConverter, Niveaux, Titres } from '../data/Item';
 import React, { useEffect, useState } from 'react';
 
 const AjoutPage: React.FunctionComponent<IPage> = (props) => {
-    const { setAlert } = AppState();
+    const { setAlert, user } = AppState();
     const [isValidated, setIsValidated] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
 
@@ -61,6 +62,13 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
 
                     const collectionRef = collection(db, 'calendrier').withConverter(ItemConverter);
                     await addDoc(collectionRef, item);
+
+                    await new Log(
+                        Timestamp.fromDate(new Date()),
+                        user.uid,
+                        ELogAction.AjoutItem,
+                        JSON.stringify(ItemConverter.toFirestore(item))
+                    ).submit();
                 }
 
                 setAlert({

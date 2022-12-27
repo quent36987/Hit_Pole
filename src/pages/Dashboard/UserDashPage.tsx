@@ -1,3 +1,4 @@
+import { AppState } from '../../Context';
 import { db } from '../../firebase';
 import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
 import { IPage } from '../../interfaces/page';
@@ -16,6 +17,7 @@ import {
     Timestamp,
     where
 } from 'firebase/firestore';
+import { ELogAction, Log } from '../../data/Log';
 import { Item, ItemConverter } from '../../data/Item';
 import React, { useEffect, useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
@@ -28,6 +30,8 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
     const [last, setlast] = useState(null);
     const [lastBis, setlastBis] = useState(null);
     const [isUpdate, setIsUpdate] = useState(false);
+
+    const { user } = AppState();
 
     useEffect(() => {
         getAllUser().catch(console.error);
@@ -47,12 +51,29 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
     async function deleteItem(item: Item): Promise<void> {
         deleteDoc(doc(db, 'calendrier', item.id))
             .then(() => {
+                new Log(
+                    Timestamp.fromDate(new Date()),
+                    user.uid,
+                    ELogAction.AjoutItem,
+                    JSON.stringify(ItemConverter.toFirestore(item))
+                )
+                    .submit()
+                    .catch(console.error);
+
                 const list = data;
                 list.splice(list.indexOf(item), 1);
                 setData(list);
 
                 if (list.length === 0) {
                     setlast(null);
+                }
+
+                const list2 = dataBis;
+                list2.splice(list2.indexOf(item), 1);
+                setDataBis(list2);
+
+                if (list2.length === 0) {
+                    setlastBis(null);
                 }
 
                 setIsUpdate(!isUpdate);

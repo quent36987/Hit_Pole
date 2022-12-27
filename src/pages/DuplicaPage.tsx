@@ -1,8 +1,10 @@
 import './allPage.css';
+import { AppState } from '../Context';
 import { db } from '../firebase';
 import { IPage } from '../interfaces/page';
 import { addDoc, collection, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import { Button, Form } from 'react-bootstrap';
+import { ELogAction, Log } from '../data/Log';
 import { Item, ItemConverter } from '../data/Item';
 import React, { useState } from 'react';
 
@@ -26,6 +28,8 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
     const [dateCP, setDateCP] = useState(0);
     const [dateCL, setDateCL] = useState([]);
     const [annee, setAnnee] = useState(new Date().getFullYear());
+
+    const { user } = AppState();
 
     function option(annee: number): { semaines: string[]; datefirst: Date[] } {
         const semaines = [];
@@ -125,6 +129,10 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                 await addDoc(collectionRef, item).catch(console.error);
             }
         }
+
+        new Log(Timestamp.fromDate(new Date()), user.uid, ELogAction.DuplicationItem, '')
+            .submit()
+            .catch(console.error);
 
         // refesh the page
         window.location.reload();

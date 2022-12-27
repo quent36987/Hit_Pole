@@ -64,7 +64,9 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
 
                     if (date.getMonth() !== datenow.getMonth()) {
                         return (
-                            <div key={index} className="calendar-table__item_2">
+                            <div
+                                key={`calendar-table__item_2-${index}`}
+                                className="calendar-table__item_2">
                                 {date.getDate()}
                             </div>
                         );
@@ -72,7 +74,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
 
                     return (
                         <div
-                            key={index}
+                            key={`calendar-table__item-${index}`}
                             className="calendar-table__item"
                             onClick={() => {
                                 setDatenow(date);
@@ -250,7 +252,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                             item.getMonth()
                                                 )
                                                 .map((item2, index) => (
-                                                    <div key={index} className="carte">
+                                                    <div key={`carte-${index}`} className="carte">
                                                         <div className="carte-info">
                                                             <div className="carte-info-1">
                                                                 <div className="carte-info-heure">
@@ -326,7 +328,7 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                 item.date.toDate().getMonth() === datenow.getMonth()
                                         )
                                         .map((item2, index) => (
-                                            <div key={index} className="carte">
+                                            <div key={`carte2-${index}`} className="carte">
                                                 <div className="carte-info">
                                                     <div className="carte-info-1">
                                                         <div className="carte-info-heure">
