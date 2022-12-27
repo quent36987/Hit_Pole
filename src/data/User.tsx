@@ -6,6 +6,7 @@ class User {
     public id: string;
     public tel: string;
     public famille: string[] = [];
+    public commentaire: string;
 
     constructor(
         prenom: string,
@@ -13,7 +14,8 @@ class User {
         solde: number,
         genre: string,
         tel: string,
-        famille: string[]
+        famille: string[],
+        commentaire: string
     ) {
         this.prenom = prenom || '';
         this.nom = nom || '';
@@ -22,9 +24,10 @@ class User {
         this.id = '';
         this.tel = tel || '';
         this.famille = famille || [];
+        this.commentaire = commentaire || '';
     }
 
-    public getFullName(): string {
+    public get getFullName(): string {
         return this.prenom + ' ' + this.nom;
     }
 }
@@ -37,7 +40,8 @@ const UserConverter = {
             solde: item.solde,
             genre: item.genre,
             tel: item.tel,
-            famille: item.famille
+            famille: item.famille,
+            commentaire: item.commentaire
         };
     },
     fromFirestore: function (snapshot, options) {
@@ -49,7 +53,8 @@ const UserConverter = {
             item.solde,
             item.genre,
             item.tel,
-            item.famille
+            item.famille,
+            item.commentaire
         );
     }
 };

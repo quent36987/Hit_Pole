@@ -147,7 +147,6 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                         }}
                         onChange={(e) => {
                             setSelected(parseInt(e.target.value));
-                            console.log(selected);
                         }}>
                         {items.map((item, index) => (
                             <option key={index} value={index}>
@@ -231,7 +230,7 @@ const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         }}>
                                         {users.map((item, index) => (
                                             <option key={index} value={item.id}>
-                                                {item.getFullName()}
+                                                {item.getFullName}
                                             </option>
                                         ))}
                                     </select>

@@ -3,6 +3,7 @@ import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
 import { IPage } from '../../interfaces/page';
 import { useHistory } from 'react-router-dom';
 import { User } from '../../data/User';
+import { UserForm } from '../../componants/UserForm';
 import { Button, OverlayTrigger, Popover, Tab, Table, Tabs } from 'react-bootstrap';
 import {
     collection,
@@ -31,22 +32,24 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
     const history = useHistory();
 
     useEffect(() => {
-        getAllUsersFirebase()
-            .then((data) => {
-                setusers(data);
-            })
-            .catch(console.error);
+        getAllUser().catch(console.error);
 
         voirPlus().catch(console.error);
         voirPlusBis().catch(console.error);
     }, [props]);
 
+    async function getAllUser(): Promise<void> {
+        getAllUsersFirebase()
+            .then((data) => {
+                setusers(data);
+            })
+            .catch(console.error);
+    }
+
     async function voirPlus(): Promise<void> {
         const limi = 10;
 
         if (last) {
-            console.log('last', last);
-
             const next = query(
                 collection(db, 'calendrier').withConverter<Item>(ItemConverter),
                 orderBy('date'),
@@ -71,7 +74,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 });
 
                 setData(list);
-                console.log('pub', data);
 
                 if (list.length > 0) {
                     setlast(list[list.length - 1].date);
@@ -99,7 +101,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 });
 
                 setData(list);
-                console.log('pub', data);
 
                 if (list.length > 0) {
                     setlast(list[list.length - 1].date);
@@ -116,8 +117,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         const limi = 10;
 
         if (lastBis) {
-            console.log('last', lastBis);
-
             const next = query(
                 collection(db, 'calendrier').withConverter<Item>(ItemConverter),
                 orderBy('date', 'desc'),
@@ -142,7 +141,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 });
 
                 setDataBis(list);
-                console.log('pub', list);
 
                 if (list.length > 0) {
                     setlastBis(list[list.length - 1].date);
@@ -170,7 +168,6 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 });
 
                 setDataBis(list);
-                console.log('pub', list);
 
                 if (list.length > 0) {
                     setlastBis(list[list.length - 1].date);
@@ -196,6 +193,15 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
         </Popover>
     );
 
+    const PopoverUser = (user: User): JSX.Element => (
+        <Popover id="popover-basic">
+            <Popover.Header as="h3">Modification {user.getFullName}</Popover.Header>
+            <Popover.Body>
+                <UserForm user={user} cb={getAllUser} />
+            </Popover.Body>
+        </Popover>
+    );
+
     return (
         <>
             <Tabs
@@ -210,6 +216,8 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                 <th>Prenom</th>
                                 <th>Nom</th>
                                 <th>Tel</th>
+                                <th>Commentaire</th>
+                                <th>Modifier</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -218,6 +226,15 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                                     <td>{user.prenom}</td>
                                     <td>{user.nom}</td>
                                     <td>{user.tel}</td>
+                                    <td>{user.commentaire} </td>
+                                    <td>
+                                        <OverlayTrigger
+                                            trigger="click"
+                                            placement="left"
+                                            overlay={PopoverUser(user)}>
+                                            <Button variant="success-outline"> ✏️</Button>
+                                        </OverlayTrigger>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

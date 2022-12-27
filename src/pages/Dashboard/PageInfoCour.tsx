@@ -196,7 +196,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
                                         }}>
                                         {users.map((item, index) => (
                                             <option key={index} value={item.id}>
-                                                {item.getFullName()}
+                                                {item.getFullName}
                                             </option>
                                         ))}
                                     </select>

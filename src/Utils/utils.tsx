@@ -113,7 +113,7 @@ function getUserName(users: User[], userId: string): string {
     const user = users.find((user) => user.id === userId);
 
     if (user != null) {
-        return user.getFullName();
+        return user.getFullName;
     }
 
     if (userId.startsWith('F_')) {
