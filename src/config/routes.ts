@@ -8,6 +8,7 @@ import { ExportPage } from '../pages/ExportPage';
 import { HomePage } from '../pages/HomePage';
 import { InfoCourPage } from '../pages/Dashboard/PageInfoCour';
 import { IRoute } from '../interfaces/route';
+import { LogPage } from '../pages/Dashboard/LogPage';
 import { ModifPage } from '../pages/ModifPage';
 import { ParticipPage } from '../pages/Dashboard/ParticipPage';
 import { ProfilePage } from '../pages/ProfilePage';
@@ -83,6 +84,12 @@ const routes: IRoute[] = [
         path: '/export',
         name: 'Export Page',
         component: ExportPage,
+        exact: true
+    },
+    {
+        path: '/logs',
+        name: 'Logs Page',
+        component: LogPage,
         exact: true
     }
 ];

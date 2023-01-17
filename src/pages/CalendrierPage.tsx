@@ -1,14 +1,17 @@
 import './allPage.css';
 import { AppState } from '../Context';
+import { Button } from 'react-bootstrap';
 import { getAllItemMonth } from '../Utils/firebaseUtils';
 import { IPage } from '../interfaces/page';
 import { Item } from '../data/Item';
 import { ReserverButton } from '../componants/Reserver';
+import { useHistory } from 'react-router-dom';
 import { dateAbv, dateFormatAbv, MOIS } from '../Utils/utils';
 import React, { useEffect, useState } from 'react';
 
 const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
-    const { user } = AppState();
+    const history = useHistory();
+    const { user, hasPerm } = AppState();
     const jours = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
     const [datenow, setDatenow] = useState(new Date());
     const [datenowFirstweek, setDatenowFirstweek] = useState(new Date());
@@ -268,13 +271,25 @@ const CalendrierPage: React.FunctionComponent<IPage> = (props) => {
                                                                     {'place(s) dispo'}
                                                                 </div>
                                                             </div>
-                                                            <span className="carte-info-2">
+                                                            <div className="flex-row">
                                                                 <ReserverButton
                                                                     item={item2}
                                                                     userId={user ? user.uid : null}
                                                                     cb={async () => await getData()}
                                                                 />
-                                                            </span>
+
+                                                                {hasPerm ? (
+                                                                    <Button
+                                                                        variant="outline-warning"
+                                                                        onClick={() => {
+                                                                            history.push(
+                                                                                `/modif/${item2.id}`
+                                                                            );
+                                                                        }}>
+                                                                        ✏️
+                                                                    </Button>
+                                                                ) : null}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 ))}

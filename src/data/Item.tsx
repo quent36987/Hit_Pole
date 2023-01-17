@@ -2,7 +2,7 @@ import { Card } from 'react-bootstrap';
 import React from 'react';
 import { ReserverButton } from '../componants/Reserver';
 import { Timestamp } from 'firebase/firestore';
-import { dateFormatAbv, timeAbv } from '../Utils/utils';
+import { dateCompletAbv, dateFormatAbv, timeAbv } from '../Utils/utils';
 
 const Titres = ['Pole', 'Pole ados', 'Hit Streching', 'Chair et Exotic', 'Pole Ados/Adultes'];
 
@@ -76,6 +76,10 @@ class Item {
         }`;
     }
 
+    public get dateAbv(): string {
+        return dateCompletAbv(this.date.toDate());
+    }
+
     // eslint-disable-next-line @typescript-eslint/naming-convention
     WithHeaderExample(user, cb = null): JSX.Element {
         return (
@@ -145,4 +149,20 @@ const ItemConverter = {
     }
 };
 
-export { Titres, ETypeCour, Niveaux, ItemConverter, Item };
+function getItem(object: any): Item {
+    return new Item(
+        object.titre,
+        object.desc,
+        new Timestamp(object.date?.seconds ?? 0, 0),
+        object.temps,
+        object.place,
+        object.id,
+        object.users,
+        object.type,
+        object.unite,
+        object.niveau,
+        object.participation
+    );
+}
+
+export { getItem, Titres, ETypeCour, Niveaux, ItemConverter, Item };

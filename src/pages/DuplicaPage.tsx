@@ -127,10 +127,22 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                 const collectionRef = collection(db, 'calendrier').withConverter(ItemConverter);
 
                 await addDoc(collectionRef, item).catch(console.error);
+
+                await new Log(
+                    Timestamp.fromDate(new Date()),
+                    user.uid,
+                    ELogAction.AjoutItem,
+                    JSON.stringify(ItemConverter.toFirestore(item))
+                ).submit();
             }
         }
 
-        new Log(Timestamp.fromDate(new Date()), user.uid, ELogAction.DuplicationItem, '')
+        new Log(
+            Timestamp.fromDate(new Date()),
+            user.uid,
+            ELogAction.DuplicationItem,
+            JSON.stringify({ list: list.length })
+        )
             .submit()
             .catch(console.error);
 

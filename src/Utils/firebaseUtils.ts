@@ -4,13 +4,33 @@ import {
     doc,
     getDoc,
     getDocs,
+    limit,
     orderBy,
     query,
     Timestamp,
     where
 } from 'firebase/firestore';
 import { Item, ItemConverter } from '../data/Item';
+import { Log, LogConverter } from '../data/Log';
 import { User, UserConverter } from '../data/User';
+
+async function getLogsFirebase(): Promise<Log[]> {
+    const logs: Log[] = [];
+
+    const collectionRef = collection(db, 'Logs').withConverter<Log>(LogConverter);
+
+    const queryRef = await query(collectionRef, orderBy('date', 'desc'), limit(25));
+
+    const data = await getDocs(queryRef);
+
+    data.forEach((doc) => {
+        const log = doc.data();
+        log.id = doc.id;
+        logs.push(log);
+    });
+
+    return logs;
+}
 
 async function getAllUsersFirebase(): Promise<User[]> {
     const users: User[] = [];
@@ -123,6 +143,7 @@ export {
     getAllUsersFirebase,
     getUserFirebase,
     getItemFirebase,
+    getLogsFirebase,
     getAllItemToday,
     getAllItemMonth,
     getAllItems

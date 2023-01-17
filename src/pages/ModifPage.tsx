@@ -5,12 +5,13 @@ import { IPage } from '../interfaces/page';
 import { RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
 import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
+import { ELogAction, Log } from '../data/Log';
 import { Item, ItemConverter, Niveaux, Titres } from '../data/Item';
 import React, { useEffect, useState } from 'react';
 
 const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
     const [item, setItem] = useState<Item>(null);
-    const { setAlert } = AppState();
+    const { setAlert, user } = AppState();
     const [isValidated, setIsValidated] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
 
@@ -72,6 +73,13 @@ const ModifPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
                 );
 
                 await setDoc(collectionRef, item, { merge: true });
+
+                await new Log(
+                    Timestamp.fromDate(new Date()),
+                    user.uid,
+                    ELogAction.Modification,
+                    JSON.stringify(ItemConverter.toFirestore(item))
+                ).submit();
 
                 setAlert({
                     open: true,

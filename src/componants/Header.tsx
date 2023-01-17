@@ -61,6 +61,12 @@ const HeaderBar = (): JSX.Element => {
                                     to="/particip/0">
                                     ✔️ Check !
                                 </Link>
+                                <Link
+                                    onClick={() => setIsExpanded(false)}
+                                    className="dropdown-item"
+                                    to="/logs">
+                                    🕵️ Historique
+                                </Link>
                             </NavDropdown>
                         </>
                     ) : (

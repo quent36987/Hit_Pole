@@ -1,5 +1,7 @@
 import { db } from '../firebase';
+import firebase from 'firebase/compat';
 import { Item } from '../data/Item';
+import Timestamp = firebase.firestore.Timestamp;
 import { User } from '../data/User';
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
@@ -128,6 +130,23 @@ function getUserName(users: User[], userId: string): string {
     return userId;
 }
 
+function getInfosCours(cours: string): string {
+    const item = JSON.parse(cours);
+
+    let titre = '';
+    let date = '';
+
+    if (typeof item.titre === 'string') {
+        titre = item.titre;
+    }
+
+    if (typeof item.date === 'object' && typeof item.date.seconds === 'number') {
+        date = dateCompletAbv(new Timestamp(item.date.seconds, 0).toDate());
+    }
+
+    return `${titre} - ${date}`;
+}
+
 export {
     dateFormat,
     dateCompletAbv,
@@ -137,5 +156,6 @@ export {
     dateTimeAbv,
     annuler,
     reserver,
-    getUserName
+    getUserName,
+    getInfosCours
 };

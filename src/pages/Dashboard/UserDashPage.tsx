@@ -54,7 +54,7 @@ const DashPage: React.FunctionComponent<IPage> = (props) => {
                 new Log(
                     Timestamp.fromDate(new Date()),
                     user.uid,
-                    ELogAction.AjoutItem,
+                    ELogAction.Supression,
                     JSON.stringify(ItemConverter.toFirestore(item))
                 )
                     .submit()
