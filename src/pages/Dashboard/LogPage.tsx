@@ -3,7 +3,6 @@ import './dashboard.css';
 import { dateTimeAbv } from '../../Utils/utils';
 import { AppState } from '../../Context';
 import { IPage } from '../../interfaces/page';
-import { RouteComponentProps } from 'react-router-dom';
 import { User } from '../../data/User';
 import { Button, Table } from 'react-bootstrap';
 import { ELogAction, Log } from '../../data/Log';
@@ -11,7 +10,7 @@ import { getAllUsersFirebase, getLogsFirebase } from '../../Utils/firebaseUtils'
 import React, { useEffect, useState } from 'react';
 import { restoreLog } from '../../Utils/log';
 
-const LogPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
+const LogPage: React.FunctionComponent<IPage> = (props) => {
     const { setAlert, user } = AppState();
 
     const [logs, setLogs] = useState<Log[]>([]);
@@ -71,38 +70,41 @@ const LogPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (prop
     }
 
     return (
-        <div className="logs">
+        <div className="logss">
             <h1> Historique </h1>
-            <Table responsive>
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                        <th>Infos suplémentaires</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {logs.map((log, i) => (
-                        <tr key={`log-${i}`}>
-                            <td>{log.getUserName(users)}</td>
-                            <td>{dateTimeAbv(log.date.toDate())}</td>
-                            <td>{log.actionName}</td>
-                            <td>{log.infos}</td>
-                            <td>
-                                <Button
-                                    variant="outline-danger"
-                                    style={{
-                                        fontSize: '10px'
-                                    }}
-                                    onClick={async () => await cancelLog(log)}>
-                                    ↪️
-                                </Button>
-                            </td>
+            <div>
+                <Table responsive>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                            <th>Infos suplémentaires</th>
+                            <th>Annuler</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {logs.map((log, i) => (
+                            <tr key={`log-${i}`}>
+                                <td>{log.getUserName(users)}</td>
+                                <td>{dateTimeAbv(log.date.toDate())}</td>
+                                <td>{log.actionName}</td>
+                                <td>{log.infos}</td>
+                                <td>
+                                    <Button
+                                        variant="outline-danger"
+                                        style={{
+                                            fontSize: '10px'
+                                        }}
+                                        onClick={async () => await cancelLog(log)}>
+                                        ↪️
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </div>
         </div>
     );
 };
