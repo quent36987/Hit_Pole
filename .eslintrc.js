@@ -71,16 +71,6 @@ module.exports = {
         '@typescript-eslint/ban-ts-ignore': 'off',
         '@typescript-eslint/no-misused-promises': 'off',
         '@typescript-eslint/strict-boolean-expressions': 'off',
-        'sort-imports': [
-            'error',
-            {
-                allowSeparatedGroups: false,
-                ignoreCase: true,
-                ignoreDeclarationSort: false,
-                ignoreMemberSort: false,
-                memberSyntaxSortOrder: ['none', 'all', 'single', 'multiple']
-            }
-        ],
         'padding-line-between-statements': [
             'error',
             {
