@@ -312,7 +312,8 @@ const DashPage: React.FunctionComponent<IPage> = props => {
                             <td>{item.temps}</td>
                             <td>{item.desc}</td>
                             <td>
-                            <OverlayTrigger trigger="click" placement="left" overlay={popover(item.users.map(u => users.find(user => user.id === u)))}>
+                            <OverlayTrigger trigger="click" placement="left" overlay={
+                                 popover(item.users.map(u => getUserName(users,u)))}>
                                 <Button variant="success-outline">❔</Button>
                             </OverlayTrigger>
                             </td>

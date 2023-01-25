@@ -122,13 +122,17 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
                         </InputGroup>
                     </Row>
                     <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
+                    
                         <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Commentaire</Form.Label>
-                        <Form.Control as="textarea" value={desc} placeholder="Description" required
+                        <InputGroup>
+                        <Form.Control as="textarea" value={desc} placeholder="Commentaire" required
                             rows={2}
                             onChange={(e) => setDesc(e.target.value)} />
                         <Form.Control.Feedback type="invalid">
                             Veuillez entrer un Titre.
                         </Form.Control.Feedback>
+                        </InputGroup>
+                        
                     </Row>
 
                     <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
@@ -154,8 +158,7 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
                     </Row>
                     <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
                         <InputGroup>
-                            <Form.Control type="datetime-local" placeholder="date"
-                                onChange={(e) => setDate(e.target.value)} />
+                           
                             <Button variant="outline-secondary" id="button-addon1"
                                 onClick={(e) => {
                                     var d = dates; d.push(date); setDates(d); console.log(dates)
@@ -163,7 +166,7 @@ const AjoutPage: React.FunctionComponent<IPage> = props => {
                                 }}
 
                             >
-                                Ajouter la date
+                                Ajouter une date
                             </Button>
                         </InputGroup>
 
