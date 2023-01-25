@@ -1,13 +1,12 @@
 import './allPage.css';
 import { AppState } from '../Context';
-import { db } from '../firebase';
 import { IPage } from '../interfaces/page';
 import logging from '../config/logging';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
-import { ELogAction, Log } from '../data/Log';
-import { ETypeCour, Item, ItemConverter, Niveaux, Titres } from '../data/Item';
+import { getEmptyItem, Niveaux, Titres } from '../data/Item';
 import React, { useEffect, useState } from 'react';
+import { addItem } from '../Utils/firebase/firebasePut';
 
 const AjoutPage: React.FunctionComponent<IPage> = (props) => {
     const { setAlert, user } = AppState();
@@ -46,29 +45,16 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
 
             try {
                 for (let i = 0; i < dates.length; i++) {
-                    const item = new Item(
+                    const item = getEmptyItem(
                         titre,
                         desc,
                         Timestamp.fromDate(new Date(dates[i])),
                         Number(temps),
                         Number(place),
-                        '',
-                        [],
-                        ETypeCour.COURS,
-                        1,
-                        niveau,
-                        []
+                        niveau
                     );
 
-                    const collectionRef = collection(db, 'calendrier').withConverter(ItemConverter);
-                    await addDoc(collectionRef, item);
-
-                    await new Log(
-                        Timestamp.fromDate(new Date()),
-                        user.uid,
-                        ELogAction.AjoutItem,
-                        JSON.stringify(ItemConverter.toFirestore(item))
-                    ).submit();
+                    await addItem(item, user.uid);
                 }
 
                 setAlert({

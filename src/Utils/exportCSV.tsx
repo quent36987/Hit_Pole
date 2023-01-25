@@ -1,4 +1,4 @@
-import { getAllItems, getAllUsersFirebase } from './firebaseUtils';
+import { getAllItems, getAllUsersFirebase } from './firebase/firebaseGet';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function exportCSV() {

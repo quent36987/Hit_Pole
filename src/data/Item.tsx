@@ -64,8 +64,8 @@ class Item {
         this.participation = participation || [];
     }
 
+    // returun HH:MM - HH:MM
     public getHour(): string {
-        // returun HH:MM - HH:MM
         const datefin = new Date(this.date.seconds * 1000 + this.temps * 60 * 1000);
         const dateDebut = new Date(this.date.seconds * 1000);
 
@@ -165,4 +165,15 @@ function getItem(object: any): Item {
     );
 }
 
-export { getItem, Titres, ETypeCour, Niveaux, ItemConverter, Item };
+function getEmptyItem(
+    titre: string,
+    desc: string,
+    date: Timestamp,
+    temps: number,
+    place: number,
+    niveau: string
+): Item {
+    return new Item(titre, desc, date, temps, place, '', [], ETypeCour.COURS, 1, niveau, []);
+}
+
+export { getItem, getEmptyItem, Titres, ETypeCour, Niveaux, ItemConverter, Item };
