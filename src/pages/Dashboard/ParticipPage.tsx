@@ -8,7 +8,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import { User } from '../../data/User';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { dateFormat, getUserName } from '../../Utils/utils';
-import { getAllItemToday, getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
+import {
+    getAllItemToday,
+    getAllUsersFirebase,
+    getItemFirebase
+} from '../../Utils/firebase/firebaseGet';
 import React, { useEffect, useState } from 'react';
 
 const ParticipPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {

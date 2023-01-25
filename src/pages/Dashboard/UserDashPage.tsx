@@ -1,6 +1,6 @@
 import { AppState } from '../../Context';
 import { db } from '../../firebase';
-import { getAllUsersFirebase } from '../../Utils/firebaseUtils';
+import { getAllUsersFirebase } from '../../Utils/firebase/firebaseGet';
 import { IPage } from '../../interfaces/page';
 import { TabCours } from './TabCours';
 import { TabUsers } from './TabUsers';

@@ -1,4 +1,4 @@
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import {
     collection,
     doc,
@@ -10,9 +10,9 @@ import {
     Timestamp,
     where
 } from 'firebase/firestore';
-import { Item, ItemConverter } from '../data/Item';
-import { Log, LogConverter } from '../data/Log';
-import { User, UserConverter } from '../data/User';
+import { Item, ItemConverter } from '../../data/Item';
+import { Log, LogConverter } from '../../data/Log';
+import { User, UserConverter } from '../../data/User';
 
 async function getLogsFirebase(): Promise<Log[]> {
     const logs: Log[] = [];

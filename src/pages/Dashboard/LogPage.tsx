@@ -6,7 +6,7 @@ import { IPage } from '../../interfaces/page';
 import { User } from '../../data/User';
 import { Button, Table } from 'react-bootstrap';
 import { ELogAction, Log } from '../../data/Log';
-import { getAllUsersFirebase, getLogsFirebase } from '../../Utils/firebaseUtils';
+import { getAllUsersFirebase, getLogsFirebase } from '../../Utils/firebase/firebaseGet';
 import React, { useEffect, useState } from 'react';
 import { restoreLog } from '../../Utils/log';
 

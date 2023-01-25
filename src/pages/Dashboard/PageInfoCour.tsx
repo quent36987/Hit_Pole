@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { User } from '../../data/User';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { Button, Modal } from 'react-bootstrap';
-import { getAllUsersFirebase, getItemFirebase } from '../../Utils/firebaseUtils';
+import { getAllUsersFirebase, getItemFirebase } from '../../Utils/firebase/firebaseGet';
 import React, { useEffect, useState } from 'react';
 
 const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
