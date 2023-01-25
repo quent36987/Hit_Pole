@@ -1,5 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
+:root {
+    --black: #030303;
+    --blue: #1862ad;
+    --light-blue: rgba(24, 98, 173, 0.1);
+    --darker-gray: #1f1f1f;
+    --dark-gray: #333333;
+    --gray: #3c4046;
+    --green: #77b048;
+    --light-gray: rgba(176, 176, 176, 0.47);
+    --orange: #e5893a;
+    --purple: #734de1;
+    --red: #e74e38;
+    --white: #eeeeee;
+    --yellow: #f5d76f;
+
+    --font-color: #2c3e50;
+    --background-color: var(--white);
+
+    --accent-border-size: 0.5em;
+    --border-radius: 0.5em;
+    --footers-size: 3.25rem;
+    --toggle-size: 1.2em;
+    --global-spacing: 1rem;
+    --spacing-xxl: 3rem;
+    --spacing-xl: 1.75rem;
+    --spacing-l: 1.5rem;
+    --small-spacing: 1rem;
+    --spacing-s: 0.5rem;
+    --spacing-xs: 0.25rem;
+
+    --header-font-size: 2em;
+    --font-size-l: 1.2em;
+    --font-size-m: 1em;
+    --font-size-s: 0.8em;
+
+    --layer-popup-z-index: 20000;
+}
+
 html,
 body {
     width: 100%;

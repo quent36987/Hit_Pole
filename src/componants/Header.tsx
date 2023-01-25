@@ -4,19 +4,17 @@ import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import React, { useState } from 'react';
+import { useToast } from '../toast';
 
 const HeaderBar = (): JSX.Element => {
-    const { user, setAlert, hasPerm } = AppState();
+    const { user, hasPerm } = AppState();
+    const toast = useToast();
     const [isExpanded, setIsExpanded] = useState(false);
 
     const logOut = (): void => {
         void signOut(auth);
 
-        setAlert({
-            open: true,
-            type: 'success',
-            message: 'Logout Successfull !'
-        });
+        toast.openSuccess('Déconnexion réussie !');
     };
 
     return (

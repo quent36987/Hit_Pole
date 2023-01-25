@@ -10,7 +10,6 @@ const app = createContext(null);
 
 interface IAppState {
     alert: any;
-    setAlert: any;
     user: User;
     hasPerm: boolean;
     profil: UserModel;
@@ -18,12 +17,6 @@ interface IAppState {
 
 // eslint-disable-next-line react/prop-types
 const Context = ({ children }): JSX.Element => {
-    const [alert, setAlert] = useState({
-        open: false,
-        message: '',
-        type: 'success'
-    });
-
     const [hasPerm, setHasPerm] = useState<boolean>(false);
     const [user, setUser] = useState<User>(null);
     const [profil, setProfil] = useState<UserModel>(null);
@@ -74,8 +67,6 @@ const Context = ({ children }): JSX.Element => {
     return (
         <app.Provider
             value={{
-                alert,
-                setAlert,
                 user,
                 hasPerm,
                 profil

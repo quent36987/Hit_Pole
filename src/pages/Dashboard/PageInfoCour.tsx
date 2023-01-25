@@ -1,5 +1,4 @@
 import '../allPage.css';
-import { AppState } from '../../Context';
 import { db } from '../../firebase';
 import { Forms } from '../../componants/Form';
 import { getUserName } from '../../Utils/utils';
@@ -11,9 +10,10 @@ import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { Button, Modal } from 'react-bootstrap';
 import { getAllUsersFirebase, getItemFirebase } from '../../Utils/firebase/firebaseGet';
 import React, { useEffect, useState } from 'react';
+import { useToast } from '../../toast';
 
 const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
-    const { setAlert } = AppState();
+    const toast = useToast();
     const [items, setItems] = useState<Item>(null);
     const [users, setusers] = useState<User[]>([]);
     const [isUpdate, setIsUpdate] = useState(true);
@@ -59,11 +59,7 @@ const InfoCourPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = 
         }
 
         if (userAdd == null || items.users.includes(id)) {
-            setAlert({
-                open: true,
-                message: 'error',
-                type: 'error'
-            });
+            toast.openError('error');
 
             return;
         }

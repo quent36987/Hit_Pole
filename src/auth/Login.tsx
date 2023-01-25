@@ -1,14 +1,14 @@
-import { AppState } from '../Context';
 import { auth } from '../firebase';
 import { Link } from 'react-router-dom';
 import { Button, Form, Modal } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { useToast } from '../toast';
 
 const Login = (): JSX.Element => {
+    const toast = useToast();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const { setAlert } = AppState();
     const [isShow, setIsShow] = useState(false);
 
     const handleClose = (): void => setIsShow(false);
@@ -26,17 +26,9 @@ const Login = (): JSX.Element => {
         try {
             await forgotPassword(email);
 
-            setAlert({
-                open: true,
-                message: `Un email a été envoyé à ${email}`,
-                type: 'success'
-            });
+            toast.openSuccess(`Un email a été envoyé à ${email}`);
         } catch (error) {
-            setAlert({
-                open: true,
-                message: error.message,
-                type: 'error'
-            });
+            toast.openError('error');
         }
 
         handleClose();
@@ -44,11 +36,7 @@ const Login = (): JSX.Element => {
 
     const handleSubmit = async (): Promise<void> => {
         if (email === '' || password === '') {
-            setAlert({
-                open: true,
-                message: 'Veuillez remplir tous les champs',
-                type: 'error'
-            });
+            toast.openError('Veuillez remplir tous les champs');
 
             return;
         }
@@ -57,17 +45,9 @@ const Login = (): JSX.Element => {
             const result = await signInWithEmailAndPassword(auth, email, password);
             window.location.href = '/';
 
-            setAlert({
-                open: true,
-                message: `Inscription réussie. Bonjour ${result?.user.email ?? ''}`,
-                type: 'success'
-            });
+            toast.openSuccess(`Inscription réussie. Bonjour ${result?.user.email ?? ''}`);
         } catch (error) {
-            setAlert({
-                open: true,
-                message: error.message,
-                type: 'error'
-            });
+            toast.openError('error');
         }
     };
 

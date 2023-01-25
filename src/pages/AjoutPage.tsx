@@ -1,15 +1,16 @@
 import './allPage.css';
 import { AppState } from '../Context';
 import { IPage } from '../interfaces/page';
-import logging from '../config/logging';
 import { Timestamp } from 'firebase/firestore';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
 import { getEmptyItem, Niveaux, Titres } from '../data/Item';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { addItem } from '../Utils/firebase/firebasePut';
+import { useToast } from '../toast';
 
 const AjoutPage: React.FunctionComponent<IPage> = (props) => {
-    const { setAlert, user } = AppState();
+    const { user } = AppState();
+    const toast = useToast();
     const [isValidated, setIsValidated] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
 
@@ -23,10 +24,6 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
     const [temps, setTemps] = useState('');
     const [place, setPlace] = useState('');
 
-    useEffect(() => {
-        logging.info(`Loading ${props.name}`);
-    }, [props.name]);
-
     const handleSubmit = async (event): Promise<void> => {
         const form = event.currentTarget;
         event.preventDefault();
@@ -34,11 +31,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
 
         if (form.checkValidity() === true) {
             if (dates.length === 0) {
-                setAlert({
-                    open: true,
-                    message: 'Veuillez ajouter au moins une date',
-                    type: 'error'
-                });
+                toast.openError('Veuillez ajouter au moins une date');
 
                 return;
             }
@@ -57,17 +50,9 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                     await addItem(item, user.uid);
                 }
 
-                setAlert({
-                    open: true,
-                    message: 'ajouté avec succès',
-                    type: 'sucess'
-                });
+                toast.openSuccess('ajouté avec succès');
             } catch (error) {
-                setAlert({
-                    open: true,
-                    message: error.message,
-                    type: 'danger'
-                });
+                toast.openError(error.message);
             }
         }
 
