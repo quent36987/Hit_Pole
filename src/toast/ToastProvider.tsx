@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { createPortal } from 'react-dom';
 import './toast.css';
 import { ToastContext } from './ToastContext';
 import { Toast } from './Toast';
@@ -37,14 +36,11 @@ export const ToastProvider = ({ children }): JSX.Element => {
     return (
         <ToastContext.Provider value={contextValue}>
             {children}
-            {createPortal(
-                <div className="toasts-wrapper">
-                    {toasts.map((toast) => (
-                        <Toast key={toast.id} alert={toast} close={() => close(toast.id)} />
-                    ))}
-                </div>,
-                document.body
-            )}
+            <div className="toasts-wrapper">
+                {toasts.map((toast) => (
+                    <Toast key={toast.id} alert={toast} close={() => close(toast.id)} />
+                ))}
+            </div>
         </ToastContext.Provider>
     );
 };

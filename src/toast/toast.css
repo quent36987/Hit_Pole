@@ -1,17 +1,24 @@
 .toasts-wrapper {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
 
-    max-height: 25vh;
+    bottom: 0;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+
     overflow: hidden;
+
+    margin-bottom: var(--spacing-s);
 }
 
 .my-toast {
     margin-top: var(--spacing-s);
-}
 
-.my-toast {
+    z-index: 5;
     animation: fadeinout 0.5s linear forwards;
     opacity: 0;
 }

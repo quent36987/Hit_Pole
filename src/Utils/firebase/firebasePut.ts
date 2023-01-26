@@ -3,7 +3,7 @@ import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { ELogAction, Log } from '../../data/Log';
 
-async function addItem(item: Item, userID: string): Promise<Log> {
+async function sendItem(item: Item, userID: string): Promise<Log> {
     const collectionRef = collection(db, 'calendrier').withConverter(ItemConverter);
     await addDoc(collectionRef, item);
 
@@ -19,4 +19,4 @@ async function addItem(item: Item, userID: string): Promise<Log> {
     return newLog;
 }
 
-export { addItem };
+export { sendItem };

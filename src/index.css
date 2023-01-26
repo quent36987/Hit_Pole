@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
+#app {
+    position: fixed;
+
+    z-index: 1;
+
+    height: 100%;
+    width: 100%;
+    margin: 0;
+
+    overflow: auto;
+}
+
 :root {
     --black: #030303;
     --blue: #1862ad;

@@ -2,11 +2,13 @@ import './allPage.css';
 import { AppState } from '../Context';
 import { db } from '../firebase';
 import { IPage } from '../interfaces/page';
-import { addDoc, collection, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import { Button, Form } from 'react-bootstrap';
 import { ELogAction, Log } from '../data/Log';
 import { Item, ItemConverter } from '../data/Item';
 import React, { useState } from 'react';
+import { useToast } from '../toast';
+import { sendItem } from '../Utils/firebase/firebasePut';
 
 const mois = [
     'Janvier',
@@ -29,6 +31,7 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
     const [dateCL, setDateCL] = useState([]);
     const [annee, setAnnee] = useState(new Date().getFullYear());
 
+    const toast = useToast();
     const { user } = AppState();
 
     function option(annee: number): { semaines: string[]; datefirst: Date[] } {
@@ -124,27 +127,18 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
                 item.date = Timestamp.fromDate(date);
                 item.users = [];
 
-                const collectionRef = collection(db, 'calendrier').withConverter(ItemConverter);
-
-                await addDoc(collectionRef, item).catch(console.error);
-
-                await new Log(
-                    Timestamp.fromDate(new Date()),
-                    user.uid,
-                    ELogAction.AjoutItem,
-                    JSON.stringify(ItemConverter.toFirestore(item))
-                ).submit();
+                await sendItem(item, user.uid);
             }
         }
 
-        new Log(
+        toast.openSuccess('Duplication Reussi !');
+
+        await new Log(
             Timestamp.fromDate(new Date()),
             user.uid,
             ELogAction.DuplicationItem,
             JSON.stringify({ list: list.length })
-        )
-            .submit()
-            .catch(console.error);
+        ).submit();
 
         // refesh the page
         window.location.reload();
@@ -157,7 +151,6 @@ const DuplicaPage: React.FunctionComponent<IPage> = (props) => {
             <Form>
                 <Form.Select value={type} onChange={(e) => setType(e.target.value)}>
                     <option value="">Type de duplication</option>
-                    <option value="CP">Duplication de Jours</option>
                     <option value="CL">Duplication de Semaine</option>
                 </Form.Select>
 

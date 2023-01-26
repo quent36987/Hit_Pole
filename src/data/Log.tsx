@@ -69,7 +69,7 @@ class Log {
             case ELogAction.DuplicationItem:
                 return '';
             case ELogAction.Modification:
-                return 'Modification';
+                return getInfosCours(this.data);
             case ELogAction.Unknow:
                 return 'Unknow';
             default:

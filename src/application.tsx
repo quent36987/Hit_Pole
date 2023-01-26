@@ -5,8 +5,8 @@ import React from 'react';
 
 const Application: React.FunctionComponent<{}> = (props) => {
     return (
-        <div>
-            <BrowserRouter>
+        <BrowserRouter>
+            <div id="app">
                 <HeaderBar />
                 <Switch>
                     {routes.map((route, index) => {
@@ -26,8 +26,8 @@ const Application: React.FunctionComponent<{}> = (props) => {
                         );
                     })}
                 </Switch>
-            </BrowserRouter>
-        </div>
+            </div>
+        </BrowserRouter>
     );
 };
 

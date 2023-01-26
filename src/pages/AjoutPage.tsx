@@ -5,7 +5,7 @@ import { Timestamp } from 'firebase/firestore';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
 import { getEmptyItem, Niveaux, Titres } from '../data/Item';
 import React, { useState } from 'react';
-import { addItem } from '../Utils/firebase/firebasePut';
+import { sendItem } from '../Utils/firebase/firebasePut';
 import { useToast } from '../toast';
 
 const AjoutPage: React.FunctionComponent<IPage> = (props) => {
@@ -46,7 +46,7 @@ const AjoutPage: React.FunctionComponent<IPage> = (props) => {
                         niveau
                     );
 
-                    await addItem(item, user.uid);
+                    await sendItem(item, user.uid);
                 }
 
                 toast.openSuccess('ajouté avec succès');
