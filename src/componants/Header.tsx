@@ -44,7 +44,7 @@ const HeaderBar = (): JSX.Element => {
                                 <Link
                                     onClick={() => setIsExpanded(false)}
                                     className="dropdown-item"
-                                    to="/duplica">
+                                    to="/duplication">
                                     ➿ Duplication
                                 </Link>
                                 <Link

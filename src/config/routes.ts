@@ -3,7 +3,6 @@ import { AuthPage } from '../pages/AuthPage';
 import { CalendrierPage } from '../pages/CalendrierPage';
 import { ContactPage } from '../pages/ContactPage';
 import { DashPage } from '../pages/Dashboard/UserDashPage';
-import { DuplicaPage } from '../pages/DuplicaPage';
 import { ExportPage } from '../pages/ExportPage';
 import { HomePage } from '../pages/HomePage';
 import { InfoCourPage } from '../pages/Dashboard/PageInfoCour';
@@ -12,6 +11,8 @@ import { LogPage } from '../pages/Dashboard/LogPage';
 import { ModifPage } from '../pages/ModifPage';
 import { ParticipPage } from '../pages/Dashboard/ParticipPage';
 import { ProfilePage } from '../pages/ProfilePage';
+import { DuplicationPage } from '../pages/duplication/pages/DuplicationPage';
+import { DuplicaPage } from '../pages/DuplicaPage';
 
 const routes: IRoute[] = [
     {
@@ -36,6 +37,12 @@ const routes: IRoute[] = [
         path: '/ajout',
         name: 'Ajout Page',
         component: AjoutPage,
+        exact: true
+    },
+    {
+        path: '/duplication*',
+        name: 'Duplica Page',
+        component: DuplicationPage,
         exact: true
     },
     {

@@ -71,3 +71,44 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.flex-col.center,
+.flex-row.center {
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-col.gap-l,
+.flex-row.gap-l {
+    gap: var(--spacing-l);
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.flex-3 {
+    flex: 3;
+}
+
+.gap-s {
+    gap: var(--spacing-s);
+}

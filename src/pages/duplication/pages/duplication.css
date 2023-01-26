@@ -1,0 +1,12 @@
+.duplication-choix {
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-s);
+    margin: var(--spacing-l);
+    cursor: default;
+    text-align: center;
+}
+
+.duplication-choix:hover {
+    opacity: 0.8;
+}
