@@ -2,11 +2,12 @@
 
 Création d'une WebApp pour réserver des cours de pole dance en ligne. Avec un système de comptes et de solde.
 
-hosting et bd: Firebase
+hosting et bdd: Firebase
 
 site : https://hit-pole.web.app/
 
 ## Usage
+
 ```shell
 git clone git@github.com:quent36987/Hit_Pole.git
 cd Hit_Pole
@@ -19,6 +20,3 @@ npm start
 MIT License
 
 Copyright (c) 2022 Quentin Goujon
-    
-
-

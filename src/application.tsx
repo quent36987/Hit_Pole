@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Switch, RouteComponentProps } from 'react-router-dom';
-import Alert from './componants/Alert';
-import HeaderBar from './componants/Header';
-import logging from './config/logging';
-import routes from './config/routes';
+import { HeaderBar } from './componants/Header';
+import { routes } from './config/routes';
+import { BrowserRouter, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import React from 'react';
 
-
-const Application: React.FunctionComponent<{}> = props => {
-    useEffect(() => {
-        logging.info('Loading application.');
-    }, [])
-
+const Application: React.FunctionComponent<{}> = (props) => {
     return (
         <div>
             <BrowserRouter>
-            <HeaderBar/>
+                <HeaderBar />
                 <Switch>
                     {routes.map((route, index) => {
                         return (
@@ -33,10 +26,9 @@ const Application: React.FunctionComponent<{}> = props => {
                         );
                     })}
                 </Switch>
-                <Alert />
             </BrowserRouter>
         </div>
     );
-}
+};
 
 export default Application;

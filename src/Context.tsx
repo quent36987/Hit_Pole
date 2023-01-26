@@ -1,81 +1,82 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { User, UserConverter } from "./data/User";
+import firebase from 'firebase/compat';
+import User = firebase.User;
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { UserConverter, User as UserModel } from './data/User';
 
-const App = createContext(null);
-const Context = ({ children }) => {
+const app = createContext(null);
 
-    const [alert, setAlert] = useState({
-        open: false,
-        message: "",
-        type: "success",
-    });
-    const [perm, setPerm] = useState(false);
-    const [user, setUser] = useState(null);
-    const [profil, setProfil] = useState<User>(null);
+interface IAppState {
+    user: User;
+    hasPerm: boolean;
+    profil: UserModel;
+}
+
+// eslint-disable-next-line react/prop-types
+const Context = ({ children }): JSX.Element => {
+    const [hasPerm, setHasPerm] = useState<boolean>(false);
+    const [user, setUser] = useState<User>(null);
+    const [profil, setProfil] = useState<UserModel>(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
-            if (user) setUser(user);
-            else setUser(null);
+            if (user) {
+                // @ts-expect-error
+                setUser(user);
+            } else setUser(null);
         });
     }, []);
 
-
-
     useEffect(() => {
-        async function isadm() {
-            if (!user || perm) {
+        async function isadm(): Promise<void> {
+            if (!user || hasPerm) {
                 return;
             }
 
-            console.log("setperm !",user.uid);
-            const ref = doc(db, "ADM", user.uid);
+            console.log('setperm !', user.uid);
+            const ref = doc(db, 'ADM', user.uid);
             const docSnap = await getDoc(ref);
-            if (docSnap.exists()) {
-               
-                setPerm(docSnap.data().perm);
-            }
-        };
-        isadm();
-    }, [user, perm]);
 
-    
+            if (docSnap.exists()) {
+                setHasPerm(docSnap.data().perm);
+            }
+        }
+
+        void isadm();
+    }, [user, hasPerm]);
+
     useEffect(() => {
         if (!user) {
             return;
         }
-        LoadProfile();
+
+        void loadProfile();
     }, [user]);
 
-    async function LoadProfile() {
-        const query = doc(db, "Users", user.uid).withConverter(UserConverter);
+    async function loadProfile(): Promise<void> {
+        const query = doc(db, 'Users', user.uid).withConverter(UserConverter);
         const docsnap = await getDoc(query);
-        let pro = docsnap.data();
+        const pro = docsnap.data();
         pro.id = docsnap.id;
         setProfil(pro);
     }
 
-
     return (
-        <App.Provider
+        <app.Provider
             value={{
-                alert,
-                setAlert,
                 user,
-                perm,
-                profil,
-            }}
-        >
+                hasPerm,
+                profil
+            }}>
             {children}
-        </App.Provider>
+        </app.Provider>
     );
 };
 
-export default Context;
-
-export const AppState = () => {
-    return useContext(App);
+const AppState = (): IAppState => {
+    return useContext(app);
 };
+
+export { Context, AppState };

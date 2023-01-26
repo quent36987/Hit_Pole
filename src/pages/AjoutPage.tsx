@@ -1,207 +1,238 @@
-import React, { useEffect, useState } from 'react';
-import IPage from '../interfaces/page';
-import logging from '../config/logging';
 import './allPage.css';
 import { AppState } from '../Context';
+import { IPage } from '../interfaces/page';
+import { Timestamp } from 'firebase/firestore';
 import { Button, Col, Dropdown, DropdownButton, Form, InputGroup, Row } from 'react-bootstrap';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase';
-import { Item, ItemConverter, Niveaux, Titres, TYPE_COURS } from '../data/Item';
+import { getEmptyItem, Niveaux, Titres } from '../data/Item';
+import React, { useState } from 'react';
+import { addItem } from '../Utils/firebase/firebasePut';
+import { useToast } from '../toast';
 
+const AjoutPage: React.FunctionComponent<IPage> = (props) => {
+    const { user } = AppState();
+    const toast = useToast();
+    const [isValidated, setIsValidated] = useState(false);
+    const [isUpdate, setIsUpdate] = useState(false);
 
-
-
-const AjoutPage: React.FunctionComponent<IPage> = props => {
-
-    const { setAlert } = AppState();
-    const [validated, setValidated] = useState(false);
-    const [update, setUpdate] = useState(false);
-
-    const [titre, setTitre] = useState("");
-    const [niveau, setNiveau] = useState("");
-    const [desc, setDesc] = useState("");
+    const [titre, setTitre] = useState('');
+    const [niveau, setNiveau] = useState('');
+    const [desc, setDesc] = useState('');
 
     const [dates, setDates] = useState([]);
-    const [date, setDate] = useState("");
 
-    const [temps, setTemps] = useState("");
-    const [place, setPlace] = useState("");
+    const [temps, setTemps] = useState('');
+    const [place, setPlace] = useState('');
 
-
-    useEffect(() => {
-        logging.info(`Loading ${props.name}`);
-    }, [props.name])
-
-
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event): Promise<void> => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
+
         if (form.checkValidity() === true) {
             if (dates.length === 0) {
-                setAlert({
-                    open: true,
-                    message: "Veuillez ajouter au moins une date",
-                    type: "error",
-                });
+                toast.openError('Veuillez ajouter au moins une date');
+
                 return;
             }
 
             try {
-                for(let i = 0; i < dates.length; i++) {
-                    var item = new Item(titre,desc,Timestamp.fromDate(new Date(dates[i])),
-                    Number(temps),Number(place),"",[],TYPE_COURS.COURS,1,niveau,[]);
-                    
-                    const collectionRef = collection(db, "calendrier").withConverter(ItemConverter);
-                    await addDoc(collectionRef, item);
-                   
-                }
-                setAlert({
-                        open: true,
-                        message: "ajouté avec succès",
-                        type: "sucess",
-                });
-            } 
-            catch (error) {
-                setAlert({
-                    open: true,
-                    message: error.message,
-                    type: "danger",
-                });
-            }
-            
+                for (let i = 0; i < dates.length; i++) {
+                    const item = getEmptyItem(
+                        titre,
+                        desc,
+                        Timestamp.fromDate(new Date(dates[i])),
+                        Number(temps),
+                        Number(place),
+                        niveau
+                    );
 
+                    await addItem(item, user.uid);
+                }
+
+                toast.openSuccess('ajouté avec succès');
+            } catch (error) {
+                toast.openError(error.message);
+            }
         }
-        setValidated(true);
+
+        setIsValidated(true);
     };
 
     return (
         <div>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-
-                <Form.Group controlId="formBasicEmail">
-                    
-                    <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
-                    <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Titre</Form.Label>
-                    <InputGroup>
-                        <Form.Control type="text" value={titre} placeholder="Titre" required
-                            onChange={(e) => setTitre(e.target.value)} />
-                        <Form.Control.Feedback type="invalid">
-                            Veuillez entrer un Titre.
-                        </Form.Control.Feedback>
-                        <DropdownButton
-          variant="outline-secondary"
-          title=""
-          id="input-group-dropdown-1"
-        >
-          {Titres.map((t, i) => <Dropdown.Item key={i} onClick={() => setTitre(t)}>{t}</Dropdown.Item>)}
-        </DropdownButton>
-                    </InputGroup>
-                    </Row>
-                    
-                    <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
-                        <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Niveau</Form.Label>
+            <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
+                <Form.Group>
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
+                        <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
+                            Titre
+                        </Form.Label>
                         <InputGroup>
-                        <Form.Control type="text" value={niveau}
-                            onChange={(e) => { setNiveau(e.target.value) }}
-                            required
-                            placeholder="Niveau"
-                        />
-                        
-                        <Form.Control.Feedback type="invalid">
-                            Veuillez entrer un Niveau.
-                        </Form.Control.Feedback>
-                        <DropdownButton
-          variant="outline-secondary"
-          title=""
-          id="input-group-dropdown-1"
-        >
-          {Niveaux.map((t, i) => <Dropdown.Item key={i} onClick={() => setNiveau(t)}>{t}</Dropdown.Item>)}
-        </DropdownButton>
-
+                            <Form.Control
+                                type="text"
+                                value={titre}
+                                placeholder="Titre"
+                                required
+                                onChange={(e) => setTitre(e.target.value)}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Veuillez entrer un Titre.
+                            </Form.Control.Feedback>
+                            <DropdownButton
+                                variant="outline-secondary"
+                                title=""
+                                id="input-group-dropdown-1">
+                                {Titres.map((t, i) => (
+                                    <Dropdown.Item key={i} onClick={() => setTitre(t)}>
+                                        {t}
+                                    </Dropdown.Item>
+                                ))}
+                            </DropdownButton>
                         </InputGroup>
                     </Row>
-                    <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
-                    
-                        <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Commentaire</Form.Label>
+
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
+                        <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
+                            Niveau
+                        </Form.Label>
                         <InputGroup>
-                        <Form.Control as="textarea" value={desc} placeholder="Commentaire" required
-                            rows={2}
-                            onChange={(e) => setDesc(e.target.value)} />
-                        <Form.Control.Feedback type="invalid">
-                            Veuillez entrer un Titre.
-                        </Form.Control.Feedback>
+                            <Form.Control
+                                type="text"
+                                value={niveau}
+                                onChange={(e) => {
+                                    setNiveau(e.target.value);
+                                }}
+                                required
+                                placeholder="Niveau"
+                            />
+
+                            <Form.Control.Feedback type="invalid">
+                                Veuillez entrer un Niveau.
+                            </Form.Control.Feedback>
+                            <DropdownButton
+                                variant="outline-secondary"
+                                title=""
+                                id="input-group-dropdown-2">
+                                {Niveaux.map((t, i) => (
+                                    <Dropdown.Item key={i} onClick={() => setNiveau(t)}>
+                                        {t}
+                                    </Dropdown.Item>
+                                ))}
+                            </DropdownButton>
                         </InputGroup>
-                        
+                    </Row>
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
+                        <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
+                            Commentaire
+                        </Form.Label>
+                        <InputGroup>
+                            <Form.Control
+                                as="textarea"
+                                value={desc}
+                                placeholder="Commentaire"
+                                required
+                                rows={2}
+                                onChange={(e) => setDesc(e.target.value)}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Veuillez entrer un Titre.
+                            </Form.Control.Feedback>
+                        </InputGroup>
                     </Row>
 
-                    <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
-                        <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Date</Form.Label>
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
+                        <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
+                            Date
+                        </Form.Label>
                         {dates.map((d, index) => {
                             return (
                                 <InputGroup key={index}>
-                                    <Form.Control type="datetime-local" value={d} placeholder="Date" required
+                                    <Form.Control
+                                        type="datetime-local"
+                                        value={d}
+                                        placeholder="Date"
+                                        required
                                         onChange={(e) => {
-                                            var d = dates; d[index] = e.target.value; setDates(d);
-                                            console.log(dates);
-                                            setUpdate(!update);
-                                        }} />
-                                    <Button variant="outline-danger" onClick={() => {
-                                        var d = dates; d.splice(index, 1); setDates(d);
-                                        setUpdate(!update);
-                                    }
-                                    }>🗑️</Button>
+                                            const d = dates;
+                                            d[index] = e.target.value;
+                                            setDates(d);
+                                            setIsUpdate(!isUpdate);
+                                        }}
+                                    />
+                                    <Button
+                                        variant="outline-danger"
+                                        onClick={() => {
+                                            const d = dates;
+                                            d.splice(index, 1);
+                                            setDates(d);
+                                            setIsUpdate(!isUpdate);
+                                        }}>
+                                        🗑️
+                                    </Button>
                                 </InputGroup>
-                            )
-                        }
-                        )}
+                            );
+                        })}
                     </Row>
-                    <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
-                        <InputGroup>
-                           
-                            <Button variant="outline-secondary" id="button-addon1"
-                                onClick={(e) => {
-                                    var d = dates; d.push(date); setDates(d); console.log(dates)
-                                    setUpdate(!update);
-                                }}
 
-                            >
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
+                        <InputGroup>
+                            <Button
+                                variant="outline-secondary"
+                                id="button-addon1"
+                                onClick={(e) => {
+                                    const d = dates;
+                                    d.push('');
+                                    setDates(d);
+                                    console.log(dates);
+                                    setIsUpdate(!isUpdate);
+                                }}>
                                 Ajouter une date
                             </Button>
                         </InputGroup>
-
                     </Row>
-                    <Row className="mb-3" style={{ "marginRight": "1vw", "marginLeft": "1vw" }}>
+
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
                         <Col>
-                            <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Temps</Form.Label>
-                            <Form.Control type="number" value={temps} placeholder="Minute" required
-                                onChange={(e) => setTemps(e.target.value)} />
+                            <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
+                                Temps
+                            </Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={temps}
+                                placeholder="Minute"
+                                required
+                                onChange={(e) => setTemps(e.target.value)}
+                            />
                             <Form.Control.Feedback type="invalid">
                                 Veuillez entrer un Titre.
                             </Form.Control.Feedback>
                         </Col>
                         <Col>
-                            <Form.Label style={{ "fontSize": "80%", "marginBottom": "0px" }}>Place</Form.Label>
-                            <Form.Control type="number" value={place} placeholder="Place" required
-                                onChange={(e) => setPlace(e.target.value)} />
+                            <Form.Label style={{ fontSize: '80%', marginBottom: '0px' }}>
+                                Place
+                            </Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={place}
+                                placeholder="Place"
+                                required
+                                onChange={(e) => setPlace(e.target.value)}
+                            />
                             <Form.Control.Feedback type="invalid">
                                 Veuillez entrer un Titre.
                             </Form.Control.Feedback>
                         </Col>
                     </Row>
-                    <Button variant="btn btn-outline-success" type="submit">
-                        Submit
-                    </Button>
-
+                    <Row className="mb-3" style={{ marginRight: '1vw', marginLeft: '1vw' }}>
+                        <InputGroup>
+                            <Button variant="btn btn-outline-success" type="submit">
+                                Submit
+                            </Button>
+                        </InputGroup>
+                    </Row>
                 </Form.Group>
-
-
             </Form>
-
-
         </div>
+    );
+};
 
-    )
-}
-
-export default AjoutPage;
+export { AjoutPage };

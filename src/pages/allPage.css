@@ -9,16 +9,22 @@
 }
 
 @media screen and (min-width: 900px) {
-  .Titre {
-    font-size: 3vw;
-    }  
+    .Titre {
+        font-size: 3vw;
+    }
 }
 @media screen and (max-width: 900px) {
     .Titre {
-      font-size: 6vw;
-      }  
-  }
+        font-size: 6vw;
+    }
+}
 
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
 
 .HomePage-content {
     text-align: left;
@@ -30,9 +36,6 @@
     flex-direction: column;
 }
 
-
-
-
 .AuthPage {
     font-family: 'Montserrat', sans-serif;
     align-items: center;
@@ -42,12 +45,10 @@
 }
 
 .AuthPage-content {
-
     margin-top: 5vh;
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .AuthPage-content-form-signup {
@@ -87,13 +88,11 @@
     -webkit-box-shadow: 0 0 20px rgba(38, 38, 38, 0.2);
     flex-grow: 2;
     box-shadow: 0 0 20px rgba(38, 38, 38, 0.2);
-
 }
 
 .div-Profile {
     display: flex;
     flex-direction: row;
-
 
     gap: 1vw;
 }
@@ -101,7 +100,6 @@
 .div-Profile-exo {
     padding: 30px;
     box-shadow: 0 0 20px rgba(38, 38, 38, 0.2);
-
 }
 
 .div-Profile-info {
@@ -127,7 +125,7 @@
     font-size: 15px;
     margin-bottom: 0;
     color: rgb(131, 128, 124);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .valeuritem {
@@ -140,12 +138,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .NewExoPage-content-form {
-
-    width: "100%";
+    width: '100%';
     margin-left: 2vw;
     margin-right: 2vw;
 }
@@ -190,8 +186,6 @@
     min-width: 300px;
 }
 
-
-
 .breakCtrl,
 .sessionCtrl {
     display: inline;
@@ -202,7 +196,6 @@
 }
 
 .base-timer__label {
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -249,26 +242,23 @@
     font-size: 15px;
 }
 
-
-
 /*calendier*/
-.calendar-container__body
-{
+.calendar-container__body {
     padding: 1vh;
 }
 
-  .calendar-table {
+.calendar-table {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: auto;
-    
+
     column-gap: 5px;
     row-gap: 5px;
     justify-items: stretch;
-  }
-  .calendar-table__item {
-    border: 1px solid #F2F6F8;
+}
+.calendar-table__item {
+    border: 1px solid #f2f6f8;
     max-width: 14vw;
     text-align: center;
     font-size: 12px;
@@ -277,9 +267,9 @@
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-  }
+}
 
-  .calendar-table__item_item {
+.calendar-table__item_item {
     font-size: 9px;
     overflow: hidden;
     margin-bottom: 1px;
@@ -288,9 +278,8 @@
     background-color: #81bdad;
     border-radius: 5px;
     font-weight: bold;
-  
-  }
-  .calendar-table__item_item2 {
+}
+.calendar-table__item_item2 {
     font-size: 9px;
     overflow: hidden;
     margin-bottom: 1px;
@@ -299,34 +288,32 @@
     background-color: #a6c8d8;
     border-radius: 5px;
     font-weight: bold;
-  
-  }
-  .calendar-table__item:hover {
+}
+.calendar-table__item:hover {
     background-color: #47545a;
-  }
+}
 
-
-  .calendar-table__item_2{
-    background-color: #F2F6F8;
-    border: 1px solid #F2F6F8;
+.calendar-table__item_2 {
+    background-color: #f2f6f8;
+    border: 1px solid #f2f6f8;
     padding: 5px;
     text-align: center;
     font-size: 12px;
     font-weight: bold;
     height: 100%;
     border-radius: 5px;
-  }
+}
 
-.calendar-table__header  {
+.calendar-table__header {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(7, 1fr);
-  color: #99A4AE;
-  font-size: 11px;
-  column-gap: 5px;
+    color: #99a4ae;
+    font-size: 11px;
+    column-gap: 5px;
     row-gap: 5px;
     justify-items: stretch;
-    border-bottom: 2px solid #F2F6F8;
+    border-bottom: 2px solid #f2f6f8;
     margin-bottom: 4px;
 }
 
@@ -335,106 +322,104 @@
     text-align: center;
     font-weight: bold;
     height: 100%;
-  }
+}
 
-.calendar_header{
+.calendar_header {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     margin-bottom: 1vh;
 }
-.calendar_header_item{
+.calendar_header_item {
     padding: 1vh;
     font-size: 28px;
 }
 
-.calendar-type{
+.calendar-type {
     margin: 10px;
     font-size: 14px;
 }
-.calendar-type-choix{
+.calendar-type-choix {
     margin: 10px;
     font-size: 14px;
     color: rgb(36, 36, 212);
     font-weight: bold;
     border-bottom: rgb(36, 36, 212) solid 2px;
 }
-.calendar_header_item_centre
-{
+.calendar_header_item_centre {
     text-align: center;
     min-width: 28vw;
     font-size: large;
     border: rgb(200, 200, 203) solid 1px;
 }
 
-
-.tt{
+.tt {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     column-gap: 10px;
-    overflow:scroll
+    overflow: scroll;
 }
 
-.t1{
-    font-family:  Calibri;
+.t1 {
+    font-family: Calibri;
     font-size: 20px;
     width: 100px;
     height: 35px;
     text-align: center;
     background-color: #303233;
-    color: #F2F6F8;
+    color: #f2f6f8;
     border-radius: 7px;
 }
-.header{
-    font-size:minmax(2vw,15px)
+.header {
+    font-size: minmax(2vw, 15px);
 }
 
-.semaine{
+.semaine {
     text-align: left;
-    font-family: 'Roboto Condensed','Helvetica','Arial','Lucida','sans-serif';
+    font-family: 'Roboto Condensed', 'Helvetica', 'Arial', 'Lucida', 'sans-serif';
 }
-.jour{
+.jour {
     border-top-style: solid;
-    background-color: rgba(0,0,0,0.03);
-    color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.03);
+    color: rgba(0, 0, 0, 0.8);
     font-size: 14px;
     line-height: 20px;
     padding: 8px 16px;
     border-top-style: none;
     border-bottom-style: solid;
     border-width: 1px;
-    border-color: rgba(0,0,0,0.1);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
-.carte{
+.carte {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: rgba(0,0,0,0.1);
+    border-color: rgba(0, 0, 0, 0.1);
     padding: 8px 16px 12px;
-    background-color: rgba(255,255,255,0.03);
+    background-color: rgba(255, 255, 255, 0.03);
 }
-.carte-info{
+.carte-info {
     align-items: center;
     display: flex;
 }
-.carte-info-1{
+.carte-info-1 {
     flex-grow: 1;
     margin-right: 16px;
     min-width: 0;
 }
-.carte-info-heure{
+.carte-info-heure {
     color: black;
     font-size: 14px;
-    font-weight :500;
+    font-weight: 500;
     line-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 160px;
 }
-.carte-info-plus{
-    color: rgba(0,0,0,0.55);
+.carte-info-plus {
+    color: rgba(0, 0, 0, 0.55);
     font-size: 12px;
     line-height: 18px;
 }
