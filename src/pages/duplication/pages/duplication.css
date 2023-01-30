@@ -10,3 +10,9 @@
 .duplication-choix:hover {
     opacity: 0.8;
 }
+
+.checkbox{
+    height: 20px;
+    width: 20px;
+    margin: var(--spacing-s);
+}

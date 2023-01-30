@@ -69,6 +69,7 @@ async function getItemFirebase(id: string): Promise<Item> {
 }
 
 async function getAllItemToday(): Promise<Item[]> {
+    console.log('lourde tqche');
     const collectionRef = collection(db, 'calendrier').withConverter<Item>(ItemConverter);
     const listItem: Item[] = [];
     const datenow = new Date();
@@ -87,9 +88,30 @@ async function getAllItemToday(): Promise<Item[]> {
                 'date',
                 '<',
                 Timestamp.fromDate(
-                    new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate() + 1)
+                    new Date(datenow.getFullYear(), datenow.getMonth(), datenow.getDate())
                 )
             )
+        )
+    );
+
+    data.forEach((doc) => {
+        const exo = doc.data();
+        exo.id = doc.id;
+        listItem.push(exo);
+    });
+
+    return listItem;
+}
+
+async function getAllItemBetweenDate(first: Date, end: Date): Promise<Item[]> {
+    const collectionRef = collection(db, 'calendrier').withConverter<Item>(ItemConverter);
+    const listItem: Item[] = [];
+
+    const data = await getDocs(
+        query(
+            collectionRef,
+            where('date', '>', Timestamp.fromDate(first)),
+            where('date', '<', Timestamp.fromDate(end))
         )
     );
 
@@ -146,5 +168,6 @@ export {
     getLogsFirebase,
     getAllItemToday,
     getAllItemMonth,
+    getAllItemBetweenDate,
     getAllItems
 };
