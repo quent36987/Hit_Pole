@@ -17,11 +17,11 @@ const MainPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = () =
     return (
         <div className="flex-col center">
             <div className="duplication-choix" onClick={toCours}>
-                Dupliquer un cours sur plusieurs semaines
+                Dupliquer un cours
             </div>
             ou
             <div className="duplication-choix" onClick={toWeek}>
-                Dupliquer un semaine ou une partie sur plusieurs semaines
+                Dupliquer un semaine ou une partie
             </div>
         </div>
     );

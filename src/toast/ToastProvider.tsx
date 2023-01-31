@@ -20,6 +20,13 @@ export const ToastProvider = ({ children }): JSX.Element => {
         ]);
     };
 
+    const openInfo = (message: string): void => {
+        setToasts((currentToasts) => [
+            { id: generateUEID(), type: 'info', message },
+            ...currentToasts
+        ]);
+    };
+
     const openError = (message: string): void => {
         setToasts((currentToasts) => [
             { id: generateUEID(), type: 'error', message },
@@ -31,7 +38,7 @@ export const ToastProvider = ({ children }): JSX.Element => {
         setToasts((currentToasts) => currentToasts.filter((toast) => toast.id !== id));
     };
 
-    const contextValue = useMemo(() => ({ open, openSuccess, openError }), []);
+    const contextValue = useMemo(() => ({ open, openSuccess, openError, openInfo }), []);
 
     return (
         <ToastContext.Provider value={contextValue}>

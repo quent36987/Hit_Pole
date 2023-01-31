@@ -7,7 +7,7 @@ import { getAllItemBetweenDate } from '../../../Utils/firebase/firebaseGet';
 import { Item } from '../../../data/Item';
 import { IToggleItem, TToggleItems } from '../interfaces';
 import { DUPLICATION_PATH } from '../constants';
-import { listToToggleList, toggleItem } from '../utils';
+import { countSelectedItem, getItems, listToToggleList, toggleItem } from '../utils';
 import { WeekSelection } from '../WeekSelection';
 
 interface IStateProps {
@@ -28,7 +28,7 @@ const CopyValidation: React.FunctionComponent<
 
         history.push({
             pathname: `/${DUPLICATION_PATH}/paste-week`,
-            state: { items: itemsSelected() }
+            state: { items: getItems(items) }
         });
     };
 
@@ -60,16 +60,6 @@ const CopyValidation: React.FunctionComponent<
         }
     }, [props.location]);
 
-    function itemsSelected(): Item[] {
-        return items.filter((item) => item.toggle).map((item) => item.item);
-    }
-
-    function selectedCount(): number {
-        return items.filter((item) => {
-            return item.toggle;
-        }).length;
-    }
-
     function selectItem(element: IToggleItem<Item>): void {
         setItems(toggleItem(items, element.id, !element.toggle));
 
@@ -77,12 +67,14 @@ const CopyValidation: React.FunctionComponent<
     }
 
     return (
-        <div className="DuplicaPage">
+        <div className="duplication-page">
+            <div className="duplication-titre">Valider les cours à copier</div>
             <form onSubmit={onSubmit}>
-                <h1>Valider les cours a copier</h1>
                 <WeekSelection monday={monday} items={items} selectItem={selectItem} />
 
-                <button>{`Dupliquer ses ${selectedCount()} cour(s)`}</button>
+                <button className="submit-button">
+                    {`Copier ses ${countSelectedItem(items)} cour(s)`}
+                </button>
             </form>
         </div>
     );

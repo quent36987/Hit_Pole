@@ -4,6 +4,7 @@ import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { getWeek, toggleItem } from '../utils';
 import { Item } from '../../../data/Item';
 import { IToggleItem, TToggleItems } from '../interfaces';
+import './duplication.css';
 
 interface IStateProps {
     items: Item[];
@@ -45,23 +46,24 @@ const PasteWeek: React.FunctionComponent<IPage & RouteComponentProps<any, any, I
 
     return (
         <div>
-            <h1>Selectionner les semaines ou vous souhaitez dupliquer les x cours copier</h1>
+            <div className="duplication-titre">
+                Selectionner les semaines où vous souhaitez coller les cours copier
+            </div>
             <form onSubmit={onSubmit}>
                 {weeks.map((item, index) => {
                     return (
-                        <div key={index}>
-                            <input
-                                type="checkbox"
-                                checked={item.toggle}
-                                onChange={(e) => {
-                                    selectItem(item);
-                                }}
-                            />
-                            {item.label}
+                        <div
+                            key={index}
+                            className="weeks-duplication"
+                            onClick={() => {
+                                selectItem(item);
+                            }}>
+                            <input className="checkbox" type="checkbox" checked={item.toggle} />
+                            <div>{item.label}</div>
                         </div>
                     );
                 })}
-                <button>Valider</button>
+                <button className="submit-button">Valider</button>
             </form>
         </div>
     );

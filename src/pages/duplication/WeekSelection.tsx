@@ -24,14 +24,16 @@ const WeekSelection = (props: {
                                     filteredItem.item.date.toDate().getMonth() === day.getMonth()
                             )
                             .map((item) => (
-                                <div key={`carte-${item.id}`} className="carte">
+                                <div
+                                    key={`carte-${item.id}`}
+                                    className="carte"
+                                    onClick={() => props.selectItem(item)}>
                                     <div className="carte-info">
                                         <div>
                                             <input
                                                 className="checkbox"
                                                 type="checkbox"
                                                 checked={item.toggle}
-                                                onChange={() => props.selectItem(item)}
                                             />
                                         </div>
                                         <div className="carte-info-1">

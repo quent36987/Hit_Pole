@@ -20,6 +20,7 @@ export interface IToast {
     open: (alert: IAlertProps) => void;
     openSuccess: (message: string) => void;
     openError: (message: string) => void;
+    openInfo: (message: string) => void;
     close: (id: number) => void;
 }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IPage } from '../../../interfaces/page';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
-import '../../allPage.css';
+import './duplication.css';
 import { getMonday, getSemaine } from '../utils';
 import { DUPLICATION_PATH } from '../constants';
 
@@ -29,29 +29,33 @@ const CopyWeek: React.FunctionComponent<IPage & RouteComponentProps<any>> = () =
     ];
 
     return (
-        <div className="DuplicaPage">
-            <h1>Selection de la semaine a dupliquer</h1>
+        <div className="duplication-page flex-col center">
+            <div className="duplication-titre">Sélection de la semaine à dupliquer</div>
 
             <Form onSubmit={onSubmit}>
-                <Form.Label>Choix de lannée</Form.Label>
-                <Form.Select value={year} onChange={(e) => setYear(Number(e.target.value))}>
-                    {years.map((year) => (
-                        <option key={year} value={year}>
-                            {year}
-                        </option>
-                    ))}
-                </Form.Select>
+                <Form.Group className="mb-3">
+                    <div>{"Choix de l'année"}</div>
+                    <Form.Select value={year} onChange={(e) => setYear(Number(e.target.value))}>
+                        {years.map((year) => (
+                            <option key={year} value={year}>
+                                {year}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
 
-                <Form.Label>Choix de la semaine</Form.Label>
-                <Form.Select value={week} onChange={(e) => setWeek(Number(e.target.value))}>
-                    {getSemaine(year).map((annee, i) => (
-                        <option key={i} value={i}>
-                            {annee}
-                        </option>
-                    ))}
-                </Form.Select>
+                <Form.Group className="mb-3">
+                    <div>Choix de la semaine</div>
+                    <Form.Select value={week} onChange={(e) => setWeek(Number(e.target.value))}>
+                        {getSemaine(year).map((annee, i) => (
+                            <option key={i} value={i}>
+                                {annee}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
 
-                <button>Valider</button>
+                <button className="submit-button">Valider</button>
             </Form>
         </div>
     );

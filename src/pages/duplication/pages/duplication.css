@@ -7,7 +7,30 @@
     text-align: center;
 }
 
-.duplication-choix:hover {
+.submit-button{
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-s);
+    margin: var(--spacing-s);
+    cursor: default;
+    text-align: center;
+}
+
+.duplication-choix:hover,
+.submit-button:hover{
+    opacity: 0.8;
+}
+
+.weeks-duplication{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+
+    cursor: default;
+}
+
+.weeks-duplication:hover{
     opacity: 0.8;
 }
 
@@ -15,4 +38,13 @@
     height: 20px;
     width: 20px;
     margin: var(--spacing-s);
+}
+
+.duplication-titre{
+    font-size: var(--font-size-l);
+    margin: var(--spacing-s);
+}
+
+.duplication-page{
+
 }

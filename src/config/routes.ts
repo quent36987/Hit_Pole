@@ -12,7 +12,6 @@ import { ModifPage } from '../pages/ModifPage';
 import { ParticipPage } from '../pages/Dashboard/ParticipPage';
 import { ProfilePage } from '../pages/ProfilePage';
 import { DuplicationPage } from '../pages/duplication/pages/DuplicationPage';
-import { DuplicaPage } from '../pages/DuplicaPage';
 
 const routes: IRoute[] = [
     {
@@ -43,12 +42,6 @@ const routes: IRoute[] = [
         path: '/duplication*',
         name: 'Duplica Page',
         component: DuplicationPage,
-        exact: true
-    },
-    {
-        path: '/duplica',
-        name: 'Duplica Page',
-        component: DuplicaPage,
         exact: true
     },
     {

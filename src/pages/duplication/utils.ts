@@ -28,6 +28,20 @@ function listToToggleList<T>(list: T[], allToggle = false): TToggleItems<T> {
     });
 }
 
+function getItems<T>(list: TToggleItems<T>): T[] {
+    return list.map((elt) => elt.item);
+}
+
+function getToggleList<T>(list: TToggleItems<T>, toggle = true): T[] {
+    return getItems(list.filter((elt) => elt.toggle === toggle));
+}
+
+function countSelectedItem(list: TToggleItems<any>): number {
+    return list.filter((item) => {
+        return item.toggle;
+    }).length;
+}
+
 function toggleItem<T>(items: TToggleItems<T>, itemId: number, newValue: boolean): TToggleItems<T> {
     items.find((item) => item.id === itemId).toggle = newValue;
 
@@ -155,4 +169,14 @@ function getSemaine(annee: number): string[] {
     return semaines;
 }
 
-export { getSemaine, getMonday, getWeek, createDuplicateItem, listToToggleList, toggleItem };
+export {
+    getSemaine,
+    getMonday,
+    getWeek,
+    getItems,
+    createDuplicateItem,
+    listToToggleList,
+    toggleItem,
+    getToggleList,
+    countSelectedItem
+};

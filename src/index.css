@@ -112,3 +112,7 @@ code {
 .gap-s {
     gap: var(--spacing-s);
 }
+
+.width-100{
+    width: 100%;
+}
