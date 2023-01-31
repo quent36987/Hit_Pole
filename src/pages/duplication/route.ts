@@ -1,18 +1,17 @@
 import { IRoute } from '../../interfaces/route';
 import { ChoixCours } from './pages/ChoixCours';
-import { ChoixSemaine } from './pages/ChoixSemaine';
-import { ChoixType } from './pages/ChoixType';
-import { ChoixDuplication } from './pages/ChoixDuplication';
-import { Validation } from './pages/Validation';
-import { ValidationCopie } from './pages/ValidationCopie';
-
-const DUPLICATION_PATH = 'duplication';
+import { CopyWeek } from './pages/CopyWeek';
+import { MainPage } from './pages/MainPage';
+import { PasteWeek } from './pages/PasteWeek';
+import { PasteValidation } from './pages/PasteValidation';
+import { CopyValidation } from './pages/CopyValidation';
+import { DUPLICATION_PATH } from './constants';
 
 const routes: IRoute[] = [
     {
         path: `/${DUPLICATION_PATH}/`,
         name: 'Home',
-        component: ChoixType,
+        component: MainPage,
         exact: true
     },
     {
@@ -22,27 +21,27 @@ const routes: IRoute[] = [
         exact: true
     },
     {
-        path: `/${DUPLICATION_PATH}/semaine`,
+        path: `/${DUPLICATION_PATH}/copy-week`,
         name: 'Choix semaine',
-        component: ChoixSemaine,
+        component: CopyWeek,
         exact: true
     },
     {
-        path: `/${DUPLICATION_PATH}/duplication`,
+        path: `/${DUPLICATION_PATH}/paste-week`,
         name: 'Choix duplication',
-        component: ChoixDuplication,
+        component: PasteWeek,
         exact: true
     },
     {
-        path: `/${DUPLICATION_PATH}/validation`,
+        path: `/${DUPLICATION_PATH}/paste-validation`,
         name: 'validation',
-        component: Validation,
+        component: PasteValidation,
         exact: true
     },
     {
-        path: `/${DUPLICATION_PATH}/validationCopie`,
+        path: `/${DUPLICATION_PATH}/copy-validation`,
         name: 'validation',
-        component: ValidationCopie,
+        component: CopyValidation,
         exact: true
     }
 ];

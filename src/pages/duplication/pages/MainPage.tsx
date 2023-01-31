@@ -1,16 +1,17 @@
 import React from 'react';
 import { IPage } from '../../../interfaces/page';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { DUPLICATION_PATH } from '../constants';
 
-const ChoixType: React.FunctionComponent<IPage & RouteComponentProps<any>> = (props) => {
+const MainPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = () => {
     const history = useHistory();
 
-    const toSemaine = (): void => {
-        history.push('/duplication/semaine');
+    const toWeek = (): void => {
+        history.push(`/${DUPLICATION_PATH}/copy-week`);
     };
 
     const toCours = (): void => {
-        history.push('/duplication/cours');
+        history.push(`/${DUPLICATION_PATH}/cours`);
     };
 
     return (
@@ -19,11 +20,11 @@ const ChoixType: React.FunctionComponent<IPage & RouteComponentProps<any>> = (pr
                 Dupliquer un cours sur plusieurs semaines
             </div>
             ou
-            <div className="duplication-choix" onClick={toSemaine}>
+            <div className="duplication-choix" onClick={toWeek}>
                 Dupliquer un semaine ou une partie sur plusieurs semaines
             </div>
         </div>
     );
 };
 
-export { ChoixType };
+export { MainPage };
