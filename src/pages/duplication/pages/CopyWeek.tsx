@@ -3,22 +3,22 @@ import { IPage } from '../../../interfaces/page';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import './duplication.css';
-import { getMonday, getSemaine } from '../utils';
+import { getWeek } from '../utils';
 import { DUPLICATION_PATH } from '../constants';
 
 const CopyWeek: React.FunctionComponent<IPage & RouteComponentProps<any>> = () => {
     const history = useHistory();
 
     const [year, setYear] = useState(new Date().getFullYear());
-    const [week, setWeek] = useState<number>(0);
+
+    const [monday, setMonday] = useState<string>('');
 
     const onSubmit = (e): void => {
         e.preventDefault();
-        const monday = getMonday(week, year);
 
         history.push({
             pathname: `/${DUPLICATION_PATH}/copy-validation`,
-            state: { monday }
+            state: { monday: new Date(monday) }
         });
     };
 
@@ -46,10 +46,13 @@ const CopyWeek: React.FunctionComponent<IPage & RouteComponentProps<any>> = () =
 
                 <Form.Group className="mb-3">
                     <div>Choix de la semaine</div>
-                    <Form.Select value={week} onChange={(e) => setWeek(Number(e.target.value))}>
-                        {getSemaine(year).map((annee, i) => (
-                            <option key={i} value={i}>
-                                {annee}
+                    <Form.Select value={monday} onChange={(e) => setMonday(e.target.value)}>
+                        <option key={-1} value={''}>
+                            ....
+                        </option>
+                        {getWeek(year).map((week, i) => (
+                            <option key={week.id} value={week.item.toString()}>
+                                {week.label}
                             </option>
                         ))}
                     </Form.Select>

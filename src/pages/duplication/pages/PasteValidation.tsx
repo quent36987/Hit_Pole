@@ -2,20 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { IPage } from '../../../interfaces/page';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Item } from '../../../data/Item';
-import {
-    countSelectedItem,
-    createDuplicateItem,
-    getToggleList,
-    listToToggleList,
-    toggleItem
-} from '../utils';
-import { IToggleItem, TToggleItems } from '../interfaces';
+import { createDuplicateItem } from '../utils';
+
 import { WeekSelection } from '../WeekSelection';
 import { sendItem } from '../../../Utils/firebase/firebasePut';
 import { useToast } from '../../../toast';
 import { AppState } from '../../../Context';
 import { ELogAction, Log } from '../../../data/Log';
 import { Timestamp } from 'firebase/firestore';
+import {
+    countSelectedItem,
+    getToggleList,
+    IToggleItem,
+    listToToggleList,
+    toggleItem,
+    TToggleItems
+} from '../../../Utils/toggle-items';
 
 interface ILocationProps {
     items: Item[];

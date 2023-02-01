@@ -21,7 +21,7 @@ const MainPage: React.FunctionComponent<IPage & RouteComponentProps<any>> = () =
             </div>
             ou
             <div className="duplication-choix" onClick={toWeek}>
-                Dupliquer un semaine ou une partie
+                Dupliquer une semaine ou une partie
             </div>
         </div>
     );

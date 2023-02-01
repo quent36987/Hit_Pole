@@ -3,8 +3,8 @@ import { dateFormatAbv } from '../../Utils/utils';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Item } from '../../data/Item';
-import { IToggleItem, TToggleItems } from './interfaces';
 import '../allPage.css';
+import { IToggleItem, TToggleItems } from '../../Utils/toggle-items';
 
 const WeekSelection = (props: {
     monday: Date;

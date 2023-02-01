@@ -1,3 +1,18 @@
 const DUPLICATION_PATH = 'duplication';
 
-export { DUPLICATION_PATH };
+const MOIS = [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+];
+
+export { DUPLICATION_PATH, MOIS };

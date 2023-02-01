@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { IPage } from '../../../interfaces/page';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { getWeek, toggleItem } from '../utils';
+import { getWeek } from '../utils';
 import { Item } from '../../../data/Item';
-import { IToggleItem, TToggleItems } from '../interfaces';
 import './duplication.css';
+import { getToggleList, IToggleItem, toggleItem, TToggleItems } from '../../../Utils/toggle-items';
 
 interface IStateProps {
     items: Item[];
@@ -25,14 +25,10 @@ const PasteWeek: React.FunctionComponent<IPage & RouteComponentProps<any, any, I
             pathname: '/duplication/paste-validation',
             state: {
                 items: props.location.state.items,
-                weeks: itemsSelected()
+                weeks: getToggleList(weeks)
             }
         });
     };
-
-    function itemsSelected(): Date[] {
-        return weeks.filter((item) => item.toggle).map((item) => item.item);
-    }
 
     useEffect(() => {
         setWeeks(getWeek());

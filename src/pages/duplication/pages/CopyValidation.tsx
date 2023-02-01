@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { IPage } from '../../../interfaces/page';
-
 import '../../allPage.css';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { getAllItemBetweenDate } from '../../../Utils/firebase/firebaseGet';
 import { Item } from '../../../data/Item';
-import { IToggleItem, TToggleItems } from '../interfaces';
 import { DUPLICATION_PATH } from '../constants';
-import { countSelectedItem, getItems, listToToggleList, toggleItem } from '../utils';
 import { WeekSelection } from '../WeekSelection';
+import {
+    countSelectedItem,
+    getToggleList,
+    IToggleItem,
+    listToToggleList,
+    toggleItem,
+    TToggleItems
+} from '../../../Utils/toggle-items';
 
 interface IStateProps {
     monday?: Date;
@@ -28,7 +33,7 @@ const CopyValidation: React.FunctionComponent<
 
         history.push({
             pathname: `/${DUPLICATION_PATH}/paste-week`,
-            state: { items: getItems(items) }
+            state: { items: getToggleList(items) }
         });
     };
 
